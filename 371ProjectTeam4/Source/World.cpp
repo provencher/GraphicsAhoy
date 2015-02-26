@@ -121,12 +121,14 @@ void World::LoadScene(const char * scene_path){
 
 
 	//Build heigharchical cube model (testing)
-	glm::vec3 parentPos = glm::vec3(0,0.5, 5);
-	float ofst = 1.1;
+	glm::vec3 parentPos = glm::vec3(-20,0.5, 20);
+	float ofst = 1.01;
 
-	for(int r=0;r<5;r++){
-		for(int c=0;c<5;c++){
-			for(int d=0; d<5; d++){
+	int sections = 8;
+
+	for(int r=0;r<sections;r++){
+		for(int c=0;c<sections;c++){
+			for(int d=0; d<sections; d++){
 				CubeModel* lcube = new CubeModel();
 				(*lcube).SetPosition(glm::vec3(
 					parentPos.x + r*ofst,
