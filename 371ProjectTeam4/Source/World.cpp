@@ -118,7 +118,28 @@ void World::LoadScene(const char * scene_path){
 	input.close();
 
 
-	string help = "fdgefgdefg";
+
+
+	//Build heigharchical cube model (testing)
+	glm::vec3 parentPos = glm::vec3(0,0.5, 5);
+	float ofst = 1.1;
+
+	for(int r=0;r<5;r++){
+		for(int c=0;c<5;c++){
+			for(int d=0; d<5; d++){
+				CubeModel* lcube = new CubeModel();
+				(*lcube).SetPosition(glm::vec3(
+					parentPos.x + r*ofst,
+					parentPos.y + c*ofst,
+					parentPos.z + d*ofst
+					));
+				mModel.push_back(lcube);
+			}
+		}
+	}
+
+
+
 
 	// Set PATH vertex buffers
 	for (vector<Path*>::iterator it = mPath.begin(); it < mPath.end(); ++it){
