@@ -47,7 +47,7 @@ str.push_back("pathspeed = 1.0");
 
 
 	// Main Loop
-	do{
+	do {
 		// Update Event Manager - Frame time / input / events processing 
 		EventManager::Update();
 

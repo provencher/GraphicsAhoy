@@ -23,6 +23,8 @@
 #include <GLFW/glfw3.h>
 #include "EventManager.h"
 
+#include <string>
+
 using namespace std;
 using namespace glm;
 
@@ -116,7 +118,7 @@ void World::LoadScene(const char * scene_path){
 	input.close();
 
 
-
+	string help = "fdgefgdefg";
 
 	// Set PATH vertex buffers
 	for (vector<Path*>::iterator it = mPath.begin(); it < mPath.end(); ++it){

@@ -20,14 +20,10 @@ using namespace glm;
 BSpline::BSpline() : Model()
 {
 }
-bool BSpline::ParseLine(const std::vector<ci_string> &token)
-{
-    if (token.empty())
-    {
+bool BSpline::ParseLine(const std::vector<ci_string> &token){
+    if (token.empty()){
         return true;
-    }
-	else if (token[0] == "controlpoint")
-	{
+    } else if (token[0] == "controlpoint"){
 		assert(token.size() > 4);
 		assert(token[1] == "=");
 
@@ -36,9 +32,7 @@ bool BSpline::ParseLine(const std::vector<ci_string> &token)
 		float z = static_cast<float>(atof(token[4].c_str()));
 		AddControlPoint(glm::vec3(x, y, z));
 		return true;
-	}
-    else
-    {
+	} else {
         return Model::ParseLine(token);
     }
 }

@@ -15,7 +15,7 @@
 #include <glm/gtx/vector_angle.hpp>
 #include <GLFW/glfw3.h>
 #include <algorithm>
-
+#include <math.h>
 
 using namespace glm;
 
@@ -59,14 +59,16 @@ void BSplineCamera::Update(float dt){
 
 
 	//Calculate Bases ------------------------------
-	glm::vec3 tangent = mSpline->GetTangent(mSplineParameterT);
-	glm::vec3 acceleration = mSpline->GetAcceleration(mSplineParameterT);
-	mLookAt = glm::normalize(tangent);
-	mUp = glm::normalize(glm::cross(glm::cross(mLookAt, vec3(0.0f, 1.0f, 0.0f)), mLookAt));
+	mLookAt = glm::normalize(mSpline->GetTangent(mSplineParameterT));
+	glm::vec3 acceleration = glm::normalize(mSpline->GetAcceleration(mSplineParameterT));
+	glm::vec3 right = glm::normalize(glm::cross(mLookAt, vec3(0.0f, 1.0f, 0.0f)));
+	mUp = glm::normalize(glm::cross(right, mLookAt));
+
+
 	//attemp to tilt camera ------------------------
-	//mUp = glm::rotate(mUp, atan(glm::length(acceleration)/mSpeed), mLookAt); //rotate by acceleration along LookAt
-	//std::cout<<atan(glm::length(acceleration)/mSpeed) << "\n"; 
-	
+	//calculate tilt angle as unit acceleration projected onto right vector over 1
+	float ang = ( acos(glm::dot(acceleration,right)/glm::dot(right,right)) / 3.14159265358979323846f*180 ) - 90;
+	mUp = glm::rotate(mUp, ang/-2.0f, mLookAt); //reduced tilt angle by acceleration
 	
 }
 

@@ -147,14 +147,10 @@ void CubeModel::Draw()
 	glDisableVertexAttribArray(0);
 }
 
-bool CubeModel::ParseLine(const std::vector<ci_string> &token)
-{
-	if (token.empty())
-	{
+bool CubeModel::ParseLine(const std::vector<ci_string> &token){
+	if (token.empty()){
 		return true;
-	}
-	else
-	{
+	} else {
 		return Model::ParseLine(token);
 	}
 }
