@@ -19,7 +19,7 @@ using namespace glm;
 
 Model::Model() : mName("UNNAMED"), mPosition(0.0f, 0.0f, 0.0f), mScaling(1.0f, 1.0f, 1.0f), mRotationAxis(0.0f, 1.0f, 0.0f), mRotationAngleInDegrees(0.0f), mPath(nullptr), mSpeed(0.0f), mTargetWaypoint(1), mSpline(nullptr), mSplineParameterT(0.0f)
 {
-
+	mParent = nullptr;
 }
 
 Model::~Model()
@@ -177,7 +177,7 @@ bool Model::ParseLine(const std::vector<ci_string> &token){
 }
 
 //--------------------------------------------------------
-glm::mat4 Model::GetWorldMatrix() const
+glm::mat4 Model::GetWorldMatrix()
 {
 	mat4 worldMatrix(1.0f);
 
@@ -185,11 +185,23 @@ glm::mat4 Model::GetWorldMatrix() const
 	mat4 r = glm::rotate(mat4(1.0f), mRotationAngleInDegrees, mRotationAxis);
 	mat4 s = glm::scale(mat4(1.0f), mScaling);
 	worldMatrix = t * r * s;
+	
 
+	
+	if(HasParent()){
+		worldMatrix = Parent()->GetWorldMatrix() * worldMatrix;
+	//	cout << "True\n";
+	} //else cout << "False\n";
 	return worldMatrix;
 }
 
-//--------------------------------------------------------
+
+
+/*#########################################################
+
+						Orientation
+
+//*///#####################################################
 void Model::SetPosition(glm::vec3 position){
 	mPosition = position;
 }
@@ -201,26 +213,45 @@ void Model::SetRotation(glm::vec3 axis, float angleDegrees){
 	mRotationAngleInDegrees = angleDegrees;
 }
 
+
+/*#########################################################
+
+						Children
+
+//*///#####################################################
 //--------------------------------------------------------
-void	Model::AddChild(Model* m){}	
+void	Model::AddChild(Model* m){
+	m->SetParent(this);
+	mChildren.push_back(m);
+}	
 Model*	Model::RemoveChild(Model* m){ return nullptr;}
 void Model::UpdateChildren(float dt){
 	int count = GetChildCount();
 	if (count > 0){
-		for(int i; i<count; i++){
-			(*mChildren[i]).Update(dt);
+		for(int i=0; i<count; i++){
+			mChildren[i]->Update(dt);
 		}
 	}
 }
 void Model::DrawChildren(){
 	int count = GetChildCount();
 	if (count > 0){
-		for(int i; i<count; i++){
-			(*mChildren[i]).Draw();
+		for(int i=0; i<count; i++){
+			mChildren[i]->Draw();
 		}
 	}
 }
-
+void Model::SetParent(Model* m){
+	mParent = m;
+}
+bool Model::HasParent(){
+	if (mParent != nullptr)
+		return true;
+	return false;
+}
+Model* Model::Parent(){
+	return mParent;
+}
 
 //Physics ------------------------------------------------
 void Model::SetSpeed(float spd){

@@ -29,7 +29,7 @@ public:
 	//------------------------------------------
 	void				Load(ci_istringstream& iss);
 	virtual	bool		ParseLine(const std::vector<ci_string> &token) = 0;
-	virtual	glm::mat4	GetWorldMatrix() const;
+	virtual	glm::mat4	GetWorldMatrix();
 	//------------------------------------------
 	void		SetPosition(glm::vec3 position);
 	glm::vec3	GetPosition()		const	{ return mPosition; }
@@ -46,15 +46,19 @@ public:
 	//------------------------------------------
 	ci_string GetName(){ return mName; }
 	//Children -----------------------------------
+	void SetParent(Model* m);
 	void	AddChild(Model* m);	
 	Model*	RemoveChild(Model* m);
 	int		GetChildCount() const { return mChildren.size(); }
 	void UpdateChildren(float dt);
 	void DrawChildren();
-	
+	bool HasParent();
+	Model* Parent();
 
 protected:
 	
+	Model* mParent;
+
 	//Update Methods
 	virtual void updateSpline(float dt);
 	virtual void updatePath(float dt);

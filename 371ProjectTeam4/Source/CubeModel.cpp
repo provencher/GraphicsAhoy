@@ -145,6 +145,7 @@ void CubeModel::Draw()
 	glDisableVertexAttribArray(2);
 	glDisableVertexAttribArray(1);
 	glDisableVertexAttribArray(0);
+	DrawChildren();
 }
 
 bool CubeModel::ParseLine(const std::vector<ci_string> &token){

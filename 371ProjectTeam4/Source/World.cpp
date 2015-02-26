@@ -116,29 +116,17 @@ void World::LoadScene(const char * scene_path){
 	    }
 	}
 	input.close();
+	
+	
+	/*##############################################################
+	
+			nesting models
+			apply tweens
+
+	################################################################
+	//*///
 
 
-
-
-	//Build heigharchical cube model (testing)
-	glm::vec3 parentPos = glm::vec3(-20,0.5, 20);
-	float ofst = 1.01f;
-
-	int sections = 8;
-
-	for(int r=0;r<sections;r++){
-		for(int c=0;c<sections;c++){
-			for(int d=0; d<sections; d++){
-				CubeModel* lcube = new CubeModel();
-				(*lcube).SetPosition(glm::vec3(
-					parentPos.x + r*ofst,
-					parentPos.y + c*ofst,
-					parentPos.z + d*ofst
-					));
-				mModel.push_back(lcube);
-			}
-		}
-	}
 
 
 
@@ -173,13 +161,72 @@ void World::LoadCameras()
 		vec3(0.0f, 0.5f, 0.0f), 
 		vec3(0.0f, 1.0f, 0.0f)));//3
     
-    // Third Person Cube Character -------------------------
+
+
+
+
+
+
+
+	// Third Person Cube Character -------------------------
     CubeModel* character = new CubeModel();
-    character->SetPosition(vec3(0.0f, 0.5f, 0.0f));
-	character->SetSpeed(7.0f);
-    mCamera.push_back(new ThirdPersonCamera(character)); //4
+	//character->SetRotation(vec3(1,0,0), 90);//change thirs person to accomidate 
+	
+	
+	int sections = 5;
+	float scale = 1/(float)sections;
+
+
+	character->SetScaling(vec3(scale, scale, scale));
+	character->SetPosition(vec3(10.0f, 0.5f, 0.0f));
+	character->SetSpeed(7.0f);	//Should move to camera
     mModel.push_back(character);
+	
+	//Build heigharchical cube model (testing)
+	//glm::vec3 parentPos = glm::vec3(-20,0.5, 20);
+	glm::vec3 parentPos = glm::vec3(0,0,0);
+	float ofst = 1.01f;
+
+	
+
+	for(int r=0;r <sections; r++){
+		for(int c=0; c<sections; c++){
+			for(int d=0; d<sections; d++){
+				CubeModel* lcube = new CubeModel();
+				(*lcube).SetPosition(glm::vec3(
+					parentPos.x + r*ofst,
+					parentPos.y + c*ofst,
+					parentPos.z + d*ofst
+					));
+				//lcube->SetRotation(vec3(0.0f,1.0f,0.0f), 270.0f);
+
+				character->AddChild(lcube);
+				//mModel.push_back(lcube);
+			}
+		}
+	}
+
+
+	
+
     
+
+
+
+	// Create Camera
+	mCamera.push_back(new ThirdPersonCamera(character)); //4
+    
+
+
+	
+    
+
+
+
+
+
+
+
     // BSpline Camera --------------------------------------
     BSpline* spline = FindSpline("\"RollerCoaster\"");
     if (spline == nullptr)

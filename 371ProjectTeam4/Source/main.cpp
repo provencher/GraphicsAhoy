@@ -23,28 +23,11 @@ int main(int argc, char*argv[]){
 		world.LoadScene(argv[1]);
 	} else {
 		#if defined(PLATFORM_OSX)
-			//world.LoadScene("Scenes/CoordinateSystem.scene");
-			//world.LoadScene("Scenes/PathScene.scene");
-			//world.LoadScene("Scenes/BSplineScene.scene");
 			world.LoadScene("Scenes/ProjectSceen.scene");
 		#else
-			//world.LoadScene("../Scenes/CoordinateSystem.scene");
-			//world.LoadScene("../Scenes/PathScene.scene");
-			//world.LoadScene("../Scenes/BSplineScene.scene");
 			world.LoadScene("../Scenes/ProjectSceen.scene");
 		#endif
 	}
-	/*
-	std::vector<string> str;
-	
-	str.push_back("name     = \"Cube\"");
-str.push_back("scaling  = 1.0 1.0 1.0");
-str.push_back("position = 0.0 1.0 0.0");
-str.push_back("rotation = 0.0 0.0 1.0 180");
-str.push_back("boundpath = \"Path2\"");
-str.push_back("pathspeed = 1.0");
-	*/
-
 
 	// Main Loop
 	do {
