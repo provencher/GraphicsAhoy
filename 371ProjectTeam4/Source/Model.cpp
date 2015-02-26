@@ -108,6 +108,8 @@ void Model::Load(ci_istringstream& iss){
 		}
 	}
 }
+
+
 //parse line of text 
 bool Model::ParseLine(const std::vector<ci_string> &token){
 	if (token.empty() == false){

@@ -145,6 +145,12 @@ void ThirdPersonCamera::UpdateTargetPosition(float dt){
 		movementDir -= mRight;
 	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_D ) == GLFW_PRESS)//Right
 		movementDir += mRight;
+	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_SPACE ) == GLFW_PRESS)//Up
+		movementDir += mUp;
+	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_RIGHT_SHIFT ) == GLFW_PRESS ||
+		glfwGetKey(EventManager::GetWindow(), GLFW_KEY_LEFT_SHIFT ) == GLFW_PRESS)//Down
+		movementDir -= mUp;
+	
 	//distance -------------------------------------------------------
 	float dist = dt*mTargetModel->GetSpeed();
 	movementDir = glm::normalize(movementDir)*dist;
