@@ -36,6 +36,7 @@ void Model::Update(float dt){
 	else if (mSpline)		
 		updateSpline(dt);	//Move along Spline
 
+	UpdateChildren(dt);
 }
 
 void Model::updatePath(float dt){
@@ -81,11 +82,11 @@ void Model::updateSpline(float dt){
 
 //void Model::updatePhysics(float dt)
 
+
 //--------------------------------------------------------
 //Draw
 //--------------------------------------------------------
 void Model::Draw(){}
-
 
 //--------------------------------------------------------
 //Load from file
@@ -199,6 +200,27 @@ void Model::SetRotation(glm::vec3 axis, float angleDegrees){
 	mRotationAxis = axis;
 	mRotationAngleInDegrees = angleDegrees;
 }
+
+//--------------------------------------------------------
+void	Model::AddChild(Model* m){}	
+Model*	Model::RemoveChild(Model* m){ return nullptr;}
+void Model::UpdateChildren(float dt){
+	int count = GetChildCount();
+	if (count > 0){
+		for(int i; i<count; i++){
+			(*mChildren[i]).Update(dt);
+		}
+	}
+}
+void Model::DrawChildren(){
+	int count = GetChildCount();
+	if (count > 0){
+		for(int i; i<count; i++){
+			(*mChildren[i]).Draw();
+		}
+	}
+}
+
 
 //Physics ------------------------------------------------
 void Model::SetSpeed(float spd){

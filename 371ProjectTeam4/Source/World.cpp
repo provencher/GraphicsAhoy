@@ -122,7 +122,7 @@ void World::LoadScene(const char * scene_path){
 
 	//Build heigharchical cube model (testing)
 	glm::vec3 parentPos = glm::vec3(-20,0.5, 20);
-	float ofst = 1.01;
+	float ofst = 1.01f;
 
 	int sections = 8;
 
