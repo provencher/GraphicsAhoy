@@ -9,8 +9,7 @@
 
 #include "LayerModel.h"
 #include "Renderer.h"
-#include "Path.h"
-#include "BSpline.h"
+
 
 #include <vector>
 
@@ -108,7 +107,7 @@ void LayerModel::Draw(){
 		for (vector<Path*>::iterator it = mPath.begin(); it < mPath.end(); ++it)
 			(*it)->Draw();
 	
-
+	/*
 	if(mSpline.size() > 0)
 		// Draw B-Spline Lines (using the same shader for Path Lines)
 		for (vector<BSpline*>::iterator it = mSpline.begin(); it < mSpline.end(); ++it)

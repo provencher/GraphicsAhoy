@@ -10,6 +10,8 @@
 #pragma once
 
 #include "Model.h"
+#include "Path.h"
+#include "BSpline.h"
 
 class LayerModel : public Model
 {
