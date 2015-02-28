@@ -46,7 +46,7 @@ public:
 	//------------------------------------------
 	ci_string GetName(){ return mName; }
 	//Children -----------------------------------
-	void SetParent(Model* m);
+	void	SetParent(Model* m);
 	void	AddChild(Model* m);	
 	Model*	RemoveChild(Model* m);
 	int		GetChildCount() const { return mChildren.size(); }

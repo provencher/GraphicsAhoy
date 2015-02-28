@@ -15,6 +15,7 @@
 #include "BSplineCamera.h"
 #include "ThirdPersonCamera.h"
 
+#include "LayerModel.h"
 #include "CubeModel.h"
 #include "SphereModel.h"
 #include "Path.h"
@@ -128,7 +129,63 @@ void World::LoadScene(const char * scene_path){
 
 
 
+	
+	///////////////////////////////////////////////////////////////////////////////////
+	// Third Person Cube Character -------------------------
+    LayerModel* character = new LayerModel();
+	//character->SetRotation(vec3(1,0,0), 90);//change thirs person to accomidate 
+	
+	
+	float sections = 5.0f;
+	float scale = 1;
 
+	character->SetScaling(vec3(scale, scale, scale));
+	character->SetPosition(vec3(-4.0f, sections/2-0.5f+5.0f, 0.0f));
+	character->SetSpeed(7.0f);	//Should move to camera
+  
+	//Build heigharchical cube model (testing)
+	//glm::vec3 parentPos = glm::vec3(-20,0.5, 20);
+	glm::vec3 offset = glm::vec3(0.5f,0.5f,0.5f);
+	float ofst = 1.01f;
+
+	//build character
+	for(int r=0;r <sections; r++){
+		for(int c=0; c<sections; c++){
+			for(int d=0; d<sections; d++){
+				CubeModel* lcube = new CubeModel();
+				(*lcube).SetPosition(glm::vec3(
+					offset.x + r*ofst - sections*ofst/2 + scale/2,  //approximate position to center cube of cubes on target 
+					offset.y + c*ofst - sections*ofst/2 + scale/2,
+					offset.z + d*ofst - sections*ofst/2 + scale/2
+					));
+				//lcube->SetRotation(vec3(0.0f,1.0f,0.0f), 270.0f);
+
+				character->AddChild(lcube);
+			}
+		}
+	}
+	 mModel.push_back(character);
+
+	 ////////////////////////////////////////////////////////////////////////////
+
+
+
+	 /*
+	 name     = "Spline"
+position = -1.0 9 -2.0
+rotation = 0.0 0.0 1.0 90
+scaling = 0.8 0.8 0.8
+controlpoint = 10.0 0.0 0.0
+controlpoint = 7.07 0.0 7.07
+controlpoint = 0.0 0.0 10.0
+controlpoint = -7.07 0.0 7.07
+controlpoint = -10.0 0.0 0.0
+controlpoint = -7.07 0.0 -7.07
+controlpoint = 0.0 0.0 -10.0
+controlpoint = 7.07 0.0 -7.07
+
+AddControlPoint(glm::vec3 point)
+	 //*///
 
 
 	// Set PATH vertex buffers
@@ -169,13 +226,12 @@ void World::LoadCameras()
 
 
 	// Third Person Cube Character -------------------------
-    CubeModel* character = new CubeModel();
+    LayerModel* character = new LayerModel();
 	//character->SetRotation(vec3(1,0,0), 90);//change thirs person to accomidate 
 	
 	
 	int sections = 5;
 	float scale = 1/(float)sections;
-
 
 	character->SetScaling(vec3(scale, scale, scale));
 	character->SetPosition(vec3(10.0f, 0.5f, 0.0f));
@@ -184,7 +240,7 @@ void World::LoadCameras()
 	
 	//Build heigharchical cube model (testing)
 	//glm::vec3 parentPos = glm::vec3(-20,0.5, 20);
-	glm::vec3 parentPos = glm::vec3(0,0,0);
+	glm::vec3 offset = glm::vec3(0.5f,0.5f,0.5f);
 	float ofst = 1.01f;
 
 	
@@ -194,14 +250,13 @@ void World::LoadCameras()
 			for(int d=0; d<sections; d++){
 				CubeModel* lcube = new CubeModel();
 				(*lcube).SetPosition(glm::vec3(
-					parentPos.x + r*ofst,
-					parentPos.y + c*ofst,
-					parentPos.z + d*ofst
+					offset.x + r*ofst - sections*ofst/2 + scale/2,  //approximate position to center cube of cubes on target 
+					offset.y + c*ofst - sections*ofst/2 + scale/2,
+					offset.z + d*ofst - sections*ofst/2 + scale/2
 					));
 				//lcube->SetRotation(vec3(0.0f,1.0f,0.0f), 270.0f);
 
 				character->AddChild(lcube);
-				//mModel.push_back(lcube);
 			}
 		}
 	}

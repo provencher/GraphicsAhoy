@@ -27,7 +27,9 @@ Model::~Model()
 }
 
 //--------------------------------------------------------
+
 //Update
+
 //--------------------------------------------------------
 void Model::Update(float dt){
 
@@ -38,7 +40,6 @@ void Model::Update(float dt){
 
 	UpdateChildren(dt);
 }
-
 void Model::updatePath(float dt){
 	//Translate Along Path
 	//==============================================================================
@@ -66,7 +67,6 @@ void Model::updatePath(float dt){
 		mPosition += step*moveDirection;													//step toward direction
 	}
 }
-
 void Model::updateSpline(float dt){
 	//Translate Along Spline	 @TODO - Animate along the spline
 		//==============================================================================
@@ -84,7 +84,9 @@ void Model::updateSpline(float dt){
 
 
 //--------------------------------------------------------
+
 //Draw
+
 //--------------------------------------------------------
 void Model::Draw(){}
 
@@ -124,27 +126,31 @@ bool Model::ParseLine(const std::vector<ci_string> &token){
 		} else if (token[0] == "position"){
 			assert(token.size() > 4);
 			assert(token[1] == "=");
-
-			mPosition.x = static_cast<float>(atof(token[2].c_str()));
-			mPosition.y = static_cast<float>(atof(token[3].c_str()));
-			mPosition.z = static_cast<float>(atof(token[4].c_str()));
+			SetPosition(vec3(
+				static_cast<float>(atof(token[2].c_str())),
+				static_cast<float>(atof(token[3].c_str())),
+				static_cast<float>(atof(token[4].c_str()))
+			));
 		} else if (token[0] == "rotation"){
 			assert(token.size() > 4);
 			assert(token[1] == "=");
 
-			mRotationAxis.x = static_cast<float>(atof(token[2].c_str()));
-			mRotationAxis.y = static_cast<float>(atof(token[3].c_str()));
-			mRotationAxis.z = static_cast<float>(atof(token[4].c_str()));
-			mRotationAngleInDegrees = static_cast<float>(atof(token[5].c_str()));
+			SetRotation(vec3(
+				static_cast<float>(atof(token[2].c_str())),
+				static_cast<float>(atof(token[3].c_str())),
+				static_cast<float>(atof(token[4].c_str()))),
+				static_cast<float>(atof(token[5].c_str()))  //angle
+			);
 
 			glm::normalize(mRotationAxis);
 		} else if (token[0] == "scaling"){
 			assert(token.size() > 4);
 			assert(token[1] == "=");
-
-			mScaling.x = static_cast<float>(atof(token[2].c_str()));
-			mScaling.y = static_cast<float>(atof(token[3].c_str()));
-			mScaling.z = static_cast<float>(atof(token[4].c_str()));
+			SetScaling(vec3(
+				static_cast<float>(atof(token[2].c_str())),
+				static_cast<float>(atof(token[3].c_str())),
+				static_cast<float>(atof(token[4].c_str()))
+			));
 		} else if (token[0] == "pathspeed"){
 			assert(token.size() > 2);
 			assert(token[1] == "=");
