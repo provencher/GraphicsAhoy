@@ -127,6 +127,7 @@ void Renderer::SetShader(ShaderType type)
 //
 GLuint Renderer::LoadShaders(std::string vertex_shader_path,std::string fragment_shader_path)
 {
+	//std::cout << "\n" << vertex_shader_path << endl;
 	// Create the shaders
 	GLuint VertexShaderID = glCreateShader(GL_VERTEX_SHADER);
 	GLuint FragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);

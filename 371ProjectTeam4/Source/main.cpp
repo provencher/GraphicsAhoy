@@ -3,7 +3,7 @@
 #include "EventManager.h"
 #include <string>
 #include <iostream>
-#include "SDL.h"
+//#include "SDL.h"
 
 int main(int argc, char*argv[]){
 	EventManager::Initialize();
@@ -26,18 +26,9 @@ int main(int argc, char*argv[]){
 			world.LoadScene("../Scenes/ProjectSceen.scene");
 		#endif
 	}
-	/*
-	std::vector<string> str;
 	
-	str.push_back("name     = \"Cube\"");
-str.push_back("scaling  = 1.0 1.0 1.0");
-str.push_back("position = 0.0 1.0 0.0");
-str.push_back("rotation = 0.0 0.0 1.0 180");
-str.push_back("boundpath = \"Path2\"");
-str.push_back("pathspeed = 1.0");
-	*/
-
-
+	
+	
 	// Main Loop
 	do {
 		// Update Event Manager - Frame time / input / events processing 

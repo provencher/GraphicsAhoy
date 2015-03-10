@@ -109,6 +109,9 @@
     <ClCompile Include="..\Source\transform.cpp">
       <Filter>Source Files\Tools</Filter>
     </ClCompile>
+    <ClCompile Include="..\Source\light.cpp">
+      <Filter>Source Files\Tools</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Source\EventManager.h">
@@ -172,6 +175,9 @@
       <Filter>Source Files\Tools</Filter>
     </ClInclude>
     <ClInclude Include="..\Source\mat4op.h">
+      <Filter>Source Files\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\light.h">
       <Filter>Source Files\Tools</Filter>
     </ClInclude>
   </ItemGroup>
