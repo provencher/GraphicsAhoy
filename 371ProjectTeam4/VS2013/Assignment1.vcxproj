@@ -114,6 +114,8 @@
     <ClCompile Include="..\Source\intersection.cpp" />
     <ClCompile Include="..\Source\material.cpp" />
     <ClCompile Include="..\Source\Path.cpp" />
+    <ClCompile Include="..\Source\plane.cpp" />
+    <ClCompile Include="..\Source\ray.cpp" />
     <ClCompile Include="..\Source\SphereModel.cpp" />
     <ClCompile Include="..\Source\StaticCamera.cpp" />
     <ClCompile Include="..\Source\EventManager.cpp" />
@@ -133,7 +135,9 @@
     <ClInclude Include="..\Source\math.h" />
     <ClInclude Include="..\Source\ParsingHelper.h" />
     <ClInclude Include="..\Source\Path.h" />
+    <ClInclude Include="..\Source\plane.h" />
     <ClInclude Include="..\Source\quaternion.h" />
+    <ClInclude Include="..\Source\ray.h" />
     <ClInclude Include="..\Source\SphereModel.h" />
     <ClInclude Include="..\Source\StaticCamera.h" />
     <ClInclude Include="..\Source\EventManager.h" />
