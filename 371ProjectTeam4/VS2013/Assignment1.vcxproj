@@ -111,6 +111,8 @@
     <ClCompile Include="..\Source\BSpline.cpp" />
     <ClCompile Include="..\Source\BSplineCamera.cpp" />
     <ClCompile Include="..\Source\Camera.cpp" />
+    <ClCompile Include="..\Source\intersection.cpp" />
+    <ClCompile Include="..\Source\material.cpp" />
     <ClCompile Include="..\Source\Path.cpp" />
     <ClCompile Include="..\Source\SphereModel.cpp" />
     <ClCompile Include="..\Source\StaticCamera.cpp" />
@@ -126,6 +128,8 @@
     <ClInclude Include="..\Source\BSpline.h" />
     <ClInclude Include="..\Source\BSplineCamera.h" />
     <ClInclude Include="..\Source\Camera.h" />
+    <ClInclude Include="..\Source\intersection.h" />
+    <ClInclude Include="..\Source\material.h" />
     <ClInclude Include="..\Source\math.h" />
     <ClInclude Include="..\Source\ParsingHelper.h" />
     <ClInclude Include="..\Source\Path.h" />

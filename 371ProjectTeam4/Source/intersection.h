@@ -1,7 +1,7 @@
 #ifndef INTERSECTION_H
 #define INTERSECTION_H
 
-#include "vec3.h"
+#include <GLM/glm.hpp>
 #include "material.h"
 
 class Intersection
@@ -9,16 +9,16 @@ class Intersection
 public:
 	static Intersection invalidIntersection;
 
-	Intersection(vec3 position, vec3 normal, float t, Material material);
+	Intersection(glm::vec3 position, glm::vec3 normal, float t, Material material);
 	Intersection();
 
-	void setPosition(vec3 v);
-	void setNormal(vec3 v);
+	void setPosition(glm::vec3 v);
+	void setNormal(glm::vec3 v);
 	void setT(float f);
 	void setMaterial(Material m);
 
-	vec3 getPosition();
-	vec3 getNormal();
+	glm::vec3 getPosition();
+	glm::vec3 getNormal();
 	float getT();
 	Material getMaterial();
 
@@ -32,8 +32,8 @@ public:
 		return !(*this == x);
 	}
 private:
-	vec3 m_position;
-	vec3 m_normal;
+	glm::vec3 m_position;
+	glm::vec3 m_normal;
 	float m_t;
 	Material m_material;
 protected:
