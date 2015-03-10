@@ -94,17 +94,20 @@
     <ClCompile Include="..\Source\ThirdPersonCamera.cpp">
       <Filter>Source Files\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="..\Source\intersection.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\Source\material.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\intersection.cpp">
+      <Filter>Source Files\Tools</Filter>
     </ClCompile>
     <ClCompile Include="..\Source\plane.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Tools</Filter>
     </ClCompile>
     <ClCompile Include="..\Source\ray.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\transform.cpp">
+      <Filter>Source Files\Tools</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -147,23 +150,29 @@
     <ClInclude Include="..\Source\ThirdPersonCamera.h">
       <Filter>Source Files\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="..\Source\math.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Source\quaternion.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Source\intersection.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="..\Source\math2.h">
+      <Filter>Source Files\Tools</Filter>
     </ClInclude>
     <ClInclude Include="..\Source\material.h">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\intersection.h">
+      <Filter>Source Files\Tools</Filter>
     </ClInclude>
     <ClInclude Include="..\Source\plane.h">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\quaternion.h">
+      <Filter>Source Files\Tools</Filter>
     </ClInclude>
     <ClInclude Include="..\Source\ray.h">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\transform.h">
+      <Filter>Source Files\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\mat4op.h">
+      <Filter>Source Files\Tools</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

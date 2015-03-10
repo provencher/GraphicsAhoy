@@ -124,6 +124,7 @@
     <ClCompile Include="..\Source\CubeModel.cpp" />
     <ClCompile Include="..\Source\Renderer.cpp" />
     <ClCompile Include="..\Source\ThirdPersonCamera.cpp" />
+    <ClCompile Include="..\Source\transform.cpp" />
     <ClCompile Include="..\Source\World.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -131,8 +132,9 @@
     <ClInclude Include="..\Source\BSplineCamera.h" />
     <ClInclude Include="..\Source\Camera.h" />
     <ClInclude Include="..\Source\intersection.h" />
+    <ClInclude Include="..\Source\mat4op.h" />
     <ClInclude Include="..\Source\material.h" />
-    <ClInclude Include="..\Source\math.h" />
+    <ClInclude Include="..\Source\math2.h" />
     <ClInclude Include="..\Source\ParsingHelper.h" />
     <ClInclude Include="..\Source\Path.h" />
     <ClInclude Include="..\Source\plane.h" />
@@ -145,6 +147,7 @@
     <ClInclude Include="..\Source\CubeModel.h" />
     <ClInclude Include="..\Source\Renderer.h" />
     <ClInclude Include="..\Source\ThirdPersonCamera.h" />
+    <ClInclude Include="..\Source\transform.h" />
     <ClInclude Include="..\Source\World.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

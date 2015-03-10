@@ -1,11 +1,11 @@
-#ifndef MATH_H
-#define MATH_H
+#ifndef MATH2_H
+#define MATH2_H
 
 #include <iostream>
 #include <algorithm>
 #include <GLM/glm.hpp>
 
-class math
+class math2
 {
 public:
 	static float clamp(float f, float min, float max)
@@ -50,7 +50,7 @@ public:
 		return glm::vec3(x, y, z);
 	}
 private:
-	math();
+	math2();
 protected:
 };
 

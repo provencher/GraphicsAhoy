@@ -1,12 +1,3 @@
-//
-// COMP 371 Assignment Framework
-//
-// Created by Nicolas Bergeron on 8/7/14.
-// Updated by Gary Chang on 14/1/15
-//
-// Copyright (c) 2014-2015 Concordia University. All rights reserved.
-//
-
 #pragma once
 
 struct GLFWwindow;
