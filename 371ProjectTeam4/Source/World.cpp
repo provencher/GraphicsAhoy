@@ -248,7 +248,7 @@ void World::Draw()
 	Renderer::BeginFrame();
 	
 	// Set shader to use
-	glUseProgram(Renderer::GetShaderProgramID());
+	glUseProgram(Renderer::GetShaderProgramID());	
 
 	//Look for lighting Position variable in Vertex Program
 	GLuint LightVecLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "lightPosition");
@@ -263,7 +263,12 @@ void World::Draw()
 	//Send the light color to the shader
 	glm::vec3 lightColor = this->light->getColor();
 	glUniform3fv(LightVecColor, 1, &lightColor[0]);
+		
+	GLuint WorldMatrixLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "WorldTransform");
 
+	//Send the WorldMatrix to the shader
+	mat4 WorldMatrix = mModel[0]->GetWorldMatrix();
+	glUniformMatrix4fv(WorldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
 
 	// This looks for the MVP Uniform variable in the Vertex Program
 	GLuint VPMatrixLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "ViewProjectionTransform");
