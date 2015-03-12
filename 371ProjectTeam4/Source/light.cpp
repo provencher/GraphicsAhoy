@@ -18,13 +18,13 @@ Light::Light(glm::vec3 position, glm::vec3 color, glm::vec3 attenuation, float i
 	m_intensity = intensity;
 }
 
-Light::Light(glm::vec3 position, glm::vec3 color)
+Light::Light(glm::vec3 position, glm::vec3 color, float intensity)
 {
 	m_position = position;	
 	m_color = color;
 	m_direction = glm::vec3();
 	m_attenuation = glm::vec3();
-	m_intensity = 1.0f;
+	m_intensity = intensity;
 }
 
 Light::Light()

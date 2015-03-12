@@ -58,7 +58,7 @@ void Path::Draw()
 		);
 
 	// Draw the triangles !
-	glDrawArrays(GL_LINE_LOOP, 0, mWaypoints.size());
+	//glDrawArrays(GL_LINE_LOOP, 0, mWaypoints.size());
 
 	glDisableVertexAttribArray(0);
 }

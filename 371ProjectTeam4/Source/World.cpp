@@ -34,7 +34,7 @@ World* World::instance;
 World::World()
 {
     instance = this;
-	this->light = new Light(glm::vec3(0, 15, -20), glm::vec3(1, 0, 1));
+	this->light = new Light(glm::vec3(0, 15, -20), glm::vec3(1, 1, 1), 1.0);
 }
 World::~World()
 {
@@ -224,15 +224,6 @@ void World::Update(float dt)
 
 
 
-/*
-	// Spacebar to change the shader
-	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_0 ) == GLFW_PRESS){
-		Renderer::SetShader(SHADER_SOLID_COLOR);
-	}else if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_9 ) == GLFW_PRESS){
-		Renderer::SetShader(SHADER_BLUE);
-	}
-	//*/
-	
 
 
 	// Update current Camera
@@ -263,12 +254,19 @@ void World::Draw()
 	//Send the light color to the shader
 	glm::vec3 lightColor = this->light->getColor();
 	glUniform3fv(LightVecColor, 1, &lightColor[0]);
+
+	//Look for lighting intensity variable in Vertex Program
+	GLuint LightIntensity = glGetUniformLocation(Renderer::GetShaderProgramID(), "lightIntensity");
+
+	//Send the light intensity to the shader
+	float lightIntensity = this->light->getIntensity();
+	glUniform3fv(LightIntensity, 1, &lightIntensity);
 		
-	GLuint WorldMatrixLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "WorldTransform");
+	//GLuint WorldMatrixLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "WorldTransform");
 
 	//Send the WorldMatrix to the shader
-	mat4 WorldMatrix = mModel[0]->GetWorldMatrix();
-	glUniformMatrix4fv(WorldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+	//mat4 WorldMatrix = mModel[0]->GetWorldMatrix();
+	//glUniformMatrix4fv(WorldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
 
 	// This looks for the MVP Uniform variable in the Vertex Program
 	GLuint VPMatrixLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "ViewProjectionTransform");
