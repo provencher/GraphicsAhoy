@@ -34,7 +34,7 @@ World* World::instance;
 World::World()
 {
     instance = this;
-	this->light = new Light(glm::vec3(0, 0, -20), glm::vec3(1, 1, 1));
+	this->light = new Light(glm::vec3(0, 15, -20), glm::vec3(1, 0, 1));
 }
 World::~World()
 {

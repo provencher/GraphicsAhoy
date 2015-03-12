@@ -13,7 +13,7 @@ uniform vec3 lightPosition;
 // Outputs to fragment shader
 out vec3 normal;  // You will need this when you do per-fragment lighting
 out vec4 v_color;
-out toLightVector;
+out vec3 toLightVector;
 
 void main()
 {
