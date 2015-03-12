@@ -11,6 +11,8 @@
 
 #include "ParsingHelper.h"
 #include <vector>
+#include "light.h"
+#include <GLM/glm.hpp>
 
 class Camera;
 class Model;
@@ -35,6 +37,7 @@ public:
     BSpline* FindSpline(ci_string pathName);
     BSpline* FindSplineByIndex(unsigned int index);
     Model* FindModelByIndex(unsigned int index);
+	Light* light;
 
 private:
     static World* instance;
