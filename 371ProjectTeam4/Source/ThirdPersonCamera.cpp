@@ -82,16 +82,16 @@ void ThirdPersonCamera::Update(float dt)
 	// 1 - Map Mouse motion to Spherical Angles
 	float mouseSpeed = 0.005f;
 	mHorizontalAngle -= mouseSpeed * dx;
-	mVerticalAngle   -= mouseSpeed * dy;
+	//mVerticalAngle   -= mouseSpeed * dy;
 	//-------------------------------------------------------
 
 
 	
 	//Apply Limits Camera Angles ----------------------------
 	float pif = 3.14159265358979323846f;	//PI
-    // 2 - Clamp vertical angle to [-85, 85] degrees
-	if(		mVerticalAngle/pif*180 < -85)	mVerticalAngle = -85*(pif/180);
-	else if(mVerticalAngle/pif*180 > 85)	mVerticalAngle = 85*(pif/180);
+    
+	//Vertical angle locked
+	mVerticalAngle = -20*(pif/180);
     // 3 - Wrap Horizontal angle within [-180, 180] degrees
 	if(		mHorizontalAngle > pif)			mHorizontalAngle -= 2*pif;
 	else if(mHorizontalAngle < -pif)		mHorizontalAngle += 2*pif;
@@ -127,7 +127,7 @@ void ThirdPersonCamera::updateCameraLookAt(){
 		cos(mVerticalAngle) * cos(mHorizontalAngle)
 	);
 	mRight = glm::normalize(glm::cross(mLookAt, vec3(0.0f, 1.0f, 0.0f)));
-    mUp = glm::cross(mRight, mLookAt);
+   // mUp = glm::cross(mRight, mLookAt);
 }
 void ThirdPersonCamera::UpdateTargetPosition(float dt){
 		 //*//Move Target Model ////////////////////////////////////////////
@@ -135,16 +135,50 @@ void ThirdPersonCamera::UpdateTargetPosition(float dt){
 	glm::vec3 direction = mLookAt;
 	direction.y = 0.0f; // override to keep movement on plane
 	direction = glm::normalize(direction);
+	
+	glm::vec3 tempUp = glm::normalize(glm::cross(vec3(0.0f, 0.0f, 1.0f), vec3(1.0f, 0.0f, 0.0f)));
+
+	//PI, accurate to however precise the hardware wants to be.
+	float pif = 22/7;
+
+	//Maximum speed of rotation
+	float rotateSpeed = 0.01f;
+	
 	//movement  -----------------------------------------------------
 	glm::vec3 movementDir = glm::vec3(0,0,0);
-    if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_W ) == GLFW_PRESS)//Forward
-		movementDir += direction;
-    if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_S ) == GLFW_PRESS)//Back
-		movementDir -= direction;
-	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_A ) == GLFW_PRESS)//Left
-		movementDir -= mRight;
-	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_D ) == GLFW_PRESS)//Right
-		movementDir += mRight;
+	
+	//Forward and back movement keys have been disabled as the model is meant only to be able to go forward without pause, by game rules
+
+   // if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_W ) == GLFW_PRESS)//Forward
+   //	movementDir += direction;
+   // if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_S ) == GLFW_PRESS)//Back
+   //	movementDir -= direction;
+	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_A) == GLFW_PRESS) {//Left
+		//movementDir -= mRight;
+		mTargetModel->SetRotation(mTargetModel->GetRotationAxis(), (mHorizontalAngle / pif * 180));
+		mHorizontalAngle += rotateSpeed;
+	}
+	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_D) == GLFW_PRESS) {//Right 
+		//movementDir += mRight;
+		mTargetModel->SetRotation(mTargetModel->GetRotationAxis(), (mHorizontalAngle / pif * 180));
+		mHorizontalAngle -= rotateSpeed;
+	}
+	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_SPACE ) == GLFW_PRESS)//Up
+		movementDir += tempUp;
+	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_RIGHT_SHIFT ) == GLFW_PRESS ||
+		glfwGetKey(EventManager::GetWindow(), GLFW_KEY_LEFT_SHIFT ) == GLFW_PRESS)//Down
+		movementDir -= tempUp;
+	
+	//Object is always moving forward as per game rules
+	movementDir += direction;
+
+	//Wrap Horizontal angle within [-90, 90] degrees
+	//Controlled model is not meant to be able to backtrack, limiting its turn radius is the most cost-effective way of doing that
+	if (mHorizontalAngle > pif / 2)			mHorizontalAngle = pif / 2;
+	else if (mHorizontalAngle < -pif / 2)		mHorizontalAngle = -pif / 2;
+
+	//@TODO: Change mUp according to how far the model is turning or how long a movement key has been held down
+
 	//distance -------------------------------------------------------
 	float dist = dt*mTargetModel->GetSpeed();
 	movementDir = glm::normalize(movementDir)*dist;
