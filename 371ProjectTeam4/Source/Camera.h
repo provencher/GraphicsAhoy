@@ -23,6 +23,8 @@ public:
 	virtual glm::mat4 GetProjectionMatrix() const;
 	glm::mat4 GetViewProjectionMatrix() const;
 
+	glm::vec3 getLookAt(){ return glm::vec3(0,0,0); }
+
 private:
 
 };

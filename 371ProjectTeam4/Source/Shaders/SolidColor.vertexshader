@@ -9,12 +9,15 @@ layout(location = 2) in vec3 vertexColor;
 uniform mat4 ViewProjectionTransform;
 uniform mat4 WorldTransform;
 uniform vec3 lightPosition;
-uniform float lightIntensity;
+
+//LookAt Vector
+uniform vec3 lookAt;
 
 // Outputs to fragment shader
 out vec3 normal;  // You will need this when you do per-fragment lighting
 out vec4 v_color;
-out vec3 toLightVector;
+out vec4 lightVector;
+out vec3 eyeVector;
 
 void main()
 {
@@ -26,6 +29,7 @@ void main()
 	normal = (WorldTransform * vec4(vertexNormal_modelspace, 0.0)).xyz;
 	v_color = vec4(vertexColor, 1.0f);	
 
-	toLightVector = (lightPosition - worldPosition.xyz);	
+	eyeVector = lookAt;
+	lightVector = vec4((lightPosition - worldPosition.xyz), 0.0);	
 }
 

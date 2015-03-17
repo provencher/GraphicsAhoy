@@ -116,6 +116,7 @@ void ThirdPersonCamera::Update(float dt)
 	//*///////////////////////////////////////////////////////////////
    
 
+
 	
 
 }
@@ -128,6 +129,8 @@ void ThirdPersonCamera::updateCameraLookAt(){
 	);
 	mRight = glm::normalize(glm::cross(mLookAt, vec3(0.0f, 1.0f, 0.0f)));
     mUp = glm::cross(mRight, mLookAt);
+		
+
 }
 void ThirdPersonCamera::UpdateTargetPosition(float dt){
 		 //*//Move Target Model ////////////////////////////////////////////

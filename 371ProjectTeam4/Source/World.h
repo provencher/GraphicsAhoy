@@ -39,6 +39,8 @@ public:
     Model* FindModelByIndex(unsigned int index);
 	Light* light;
 
+	glm::vec3 lookAt;
+
 private:
     static World* instance;
 
@@ -47,4 +49,10 @@ private:
     std::vector<BSpline*> mSpline;
 	std::vector<Camera*> mCamera;
 	unsigned int mCurrentCamera;
+
+	// Material Coefficients
+	const float ka = 0.2f;
+	const float kd = 0.8f;
+	const float ks = 0.2f;
+	const float n = 50.0f;
 };
