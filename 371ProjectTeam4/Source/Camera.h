@@ -22,8 +22,9 @@ public:
 	virtual glm::mat4 GetViewMatrix() const = 0;
 	virtual glm::mat4 GetProjectionMatrix() const;
 	glm::mat4 GetViewProjectionMatrix() const;
+	
+	virtual glm::vec3 getCamPos(){ return glm::vec3(0, 0, 0); }
 
-	glm::vec3 getLookAt(){ return glm::vec3(0,0,0); }
 
 private:
 

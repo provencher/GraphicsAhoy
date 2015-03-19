@@ -225,8 +225,10 @@ void World::Update(float dt)
 	// Update current Camera
 	mCamera[mCurrentCamera]->Update(dt);
 
-	//Pull CurrentLookAt vector from camera;
-	lookAt = mCamera[mCurrentCamera]->getLookAt();
+	//Pull CurrentLookAt vector from camera;	
+	camPos = mCamera[mCurrentCamera]->getCamPos();
+
+	//std::cout << "x " << camPos.x << "y " << camPos.y << "z " << camPos.z << endl;
 
 	// Update models
 	for (vector<Model*>::iterator it = mModel.begin(); it < mModel.end(); ++it){
@@ -244,37 +246,27 @@ void World::Draw()
 	GLuint MaterialID = glGetUniformLocation(Renderer::GetShaderProgramID(), "materialCoefficients");
 	glUniform4f(MaterialID, ka, kd, ks, n);
 
-	//Look for eyeVector
-	GLuint LookAt = glGetUniformLocation(Renderer::GetShaderProgramID(), "lookAt");
+	//WorldCamPosition
+	GLuint CamPos = glGetUniformLocation(Renderer::GetShaderProgramID(), "worldCamPos");
+	glUniform3fv(CamPos, 1, &camPos[0]);
 
-	//Send the lookAt vector to the shader	
-	glUniform3fv(LookAt, 1, &lookAt[0]);
-
-	//Look for lighting Position variable in Vertex Program
-	GLuint LightVecLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "lightPosition");
-
-	//Send the light position to the shader
+	//lighting Position 
+	GLuint LightVecLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "lightPosition");	
 	glm::vec3 lightPos = this->light->getPosition();
 	glUniform3fv(LightVecLocation, 1, &lightPos[0]);
 
-	//Look for lighting Color variable in Vertex Program
-	GLuint LightVecColor = glGetUniformLocation(Renderer::GetShaderProgramID(), "lightColor");
-
-	//Send the light color to the shader
+	//lighting Color 
+	GLuint LightVecColor = glGetUniformLocation(Renderer::GetShaderProgramID(), "lightColor");	
 	glm::vec3 lightColor = this->light->getColor();
 	glUniform3fv(LightVecColor, 1, &lightColor[0]);
 	
 	//Look for WorldTransform in the Vertex Shader
-	GLuint WorldMatrixLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "WorldTransform");
-
-	//Send the WorldMatrix to the shader
+	GLuint WorldMatrixLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "WorldTransform");	
 	mat4 WorldMatrix = mModel[0]->GetWorldMatrix();
 	glUniformMatrix4fv(WorldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
 
 	// This looks for the MVP Uniform variable in the Vertex Program
-	GLuint VPMatrixLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "ViewProjectionTransform");
-	
-	// Send the view projection constants to the shader
+	GLuint VPMatrixLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "ViewProjectionTransform");	
 	mat4 VP = mCamera[mCurrentCamera]->GetViewProjectionMatrix();
 	glUniformMatrix4fv(VPMatrixLocation, 1, GL_FALSE, &VP[0][0]);
 

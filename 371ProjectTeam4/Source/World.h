@@ -38,8 +38,8 @@ public:
     BSpline* FindSplineByIndex(unsigned int index);
     Model* FindModelByIndex(unsigned int index);
 	Light* light;
-
-	glm::vec3 lookAt;
+		
+	glm::vec3 camPos;
 
 private:
     static World* instance;
