@@ -94,27 +94,6 @@
     <ClCompile Include="..\Source\ThirdPersonCamera.cpp">
       <Filter>Source Files\Camera</Filter>
     </ClCompile>
-<<<<<<< HEAD
-<<<<<<< HEAD
-    <ClCompile Include="..\Source\material.cpp">
-      <Filter>Source Files\Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Source\intersection.cpp">
-      <Filter>Source Files\Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Source\plane.cpp">
-      <Filter>Source Files\Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Source\ray.cpp">
-      <Filter>Source Files\Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Source\transform.cpp">
-      <Filter>Source Files\Tools</Filter>
-    </ClCompile>
-=======
->>>>>>> ad9784653895551eefd52d143c8631625a6ad2cc
-=======
->>>>>>> ad9784653895551eefd52d143c8631625a6ad2cc
     <ClCompile Include="..\Source\light.cpp">
       <Filter>Source Files\Tools</Filter>
     </ClCompile>
@@ -159,44 +138,10 @@
     <ClInclude Include="..\Source\ThirdPersonCamera.h">
       <Filter>Source Files\Camera</Filter>
     </ClInclude>
-<<<<<<< HEAD
-<<<<<<< HEAD
-    <ClInclude Include="..\Source\math2.h">
-      <Filter>Source Files\Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Source\material.h">
-      <Filter>Source Files\Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Source\intersection.h">
-      <Filter>Source Files\Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Source\plane.h">
-      <Filter>Source Files\Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Source\quaternion.h">
-      <Filter>Source Files\Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Source\ray.h">
-      <Filter>Source Files\Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Source\transform.h">
-      <Filter>Source Files\Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Source\mat4op.h">
-      <Filter>Source Files\Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Source\light.h">
-=======
-=======
->>>>>>> ad9784653895551eefd52d143c8631625a6ad2cc
     <ClInclude Include="..\Source\light.h">
       <Filter>Source Files\Tools</Filter>
     </ClInclude>
     <ClInclude Include="..\Source\math2.h">
-<<<<<<< HEAD
->>>>>>> ad9784653895551eefd52d143c8631625a6ad2cc
-=======
->>>>>>> ad9784653895551eefd52d143c8631625a6ad2cc
       <Filter>Source Files\Tools</Filter>
     </ClInclude>
   </ItemGroup>
