@@ -32,11 +32,13 @@ public:
 	//------------------------------------------
 	void SetPosition(glm::vec3 position);
 	void SetScaling(glm::vec3 scaling);
-	void SetRotation(glm::vec3 axis, float angleDegrees);
+	void SetRotationX(glm::vec3 axis, float angleDegrees);
+	void SetRotationY(glm::vec3 axis, float angleDegrees);
 	//--------------------------------------------
 	glm::vec3 GetPosition() const		{ return mPosition; }
 	glm::vec3 GetScaling() const		{ return mScaling; }
-	glm::vec3 GetRotationAxis() const	{ return mRotationAxis; }
+	glm::vec3 GetRotationAxisX() const	{ return mRotationAxisX; }
+	glm::vec3 GetRotationAxisY() const  { return mRotationAxisY; }
 	float     GetRotationAngle() const	{ return mRotationAngleInDegrees; }
     ci_string GetName()                 { return mName; }
 	float	  GetSpeed();
@@ -52,7 +54,8 @@ protected:
 	ci_string mName; // The model name is mainly for debugging
 	glm::vec3 mPosition;
 	glm::vec3 mScaling;
-	glm::vec3 mRotationAxis;
+	glm::vec3 mRotationAxisX;
+	glm::vec3 mRotationAxisY;
 	float     mRotationAngleInDegrees;
 
 

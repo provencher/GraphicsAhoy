@@ -30,23 +30,29 @@ ThirdPersonCamera::ThirdPersonCamera(Model* targetModel)
     // Convert from Spherical to Cartesian Coordinates to get the lookAt Vector
 
 	//Orient ---------------------------------------
-	glm::vec3 defaultDir = glm::vec3(0,0,1);							//front of the model
-	//mTargetModel->SetRotation(mTargetModel->GetRotationAxis(), 45);	//test initial rotation
+	glm::vec3 defaultDir = glm::vec3(1,0,0);							//front of the model
+	//mTargetModel->SetRotationX(mTargetModel->GetRotationAxisX(), 45);	//test initial rotation
 
 	//Calculate Bases ------------------------------
-	mLookAt = glm::rotate(defaultDir, mTargetModel->GetRotationAngle(), mTargetModel->GetRotationAxis());
+	mLookAt = glm::rotate(defaultDir, mTargetModel->GetRotationAngle(), mTargetModel->GetRotationAxisX());
 	mRight = glm::normalize(glm::cross(mLookAt, vec3(0.0f, 1.0f, 0.0f)));
     mUp = glm::normalize(glm::cross(mRight, mLookAt));
 
-	
+	float pif = 3.14159265358979323846f;
+
 	//initialize rotation ---------------------------
 	mHorizontalAngle = atan(-mLookAt.z/mLookAt.x); 
-	//mVerticalAngle = asin(mLookAt.y);
+	mVerticalAngle = -90 / (pif * 180);//asin(mLookAt.y);
 	
-
+	
 	//position and orient ---------------------------
 	mPosition = mTargetModel->GetPosition() - mLookAt*mRadius;
-	mTargetModel->SetRotation(mTargetModel->GetRotationAxis(), (mHorizontalAngle/3.14159265358979323846f*180));
+	mTargetModel->SetRotationX(mTargetModel->GetRotationAxisX(), (mHorizontalAngle / pif *180));
+
+
+
+	mTargetModel->SetRotationY(-mTargetModel->GetRotationAxisY(), (mVerticalAngle / pif * 180));
+
 }
 
 ThirdPersonCamera::~ThirdPersonCamera()
@@ -91,7 +97,7 @@ void ThirdPersonCamera::Update(float dt)
 	float pif = 3.14159265358979323846f;	//PI
     
 	//Vertical angle locked
-	mVerticalAngle = -20*(pif/180);
+	//mVerticalAngle = -20*(pif/180);
     // 3 - Wrap Horizontal angle within [-180, 180] degrees
 	if(		mHorizontalAngle > pif)			mHorizontalAngle -= 2*pif;
 	else if(mHorizontalAngle < -pif)		mHorizontalAngle += 2*pif;
@@ -108,7 +114,8 @@ void ThirdPersonCamera::Update(float dt)
 	// @TODO
 	//*///////////////////////////////////////////////////////////////
     // Align target model with the horizontal angle
-	mTargetModel->SetRotation(mTargetModel->GetRotationAxis(), (mHorizontalAngle/pif*180));
+	mTargetModel->SetRotationX(mTargetModel->GetRotationAxisX(), (mHorizontalAngle/pif*180));
+	
 	mPosition = mTargetModel->GetPosition() - mLookAt*mRadius;
 	//lock camera above ground
 	if(mPosition.y <= 0.1f)
@@ -138,29 +145,28 @@ void ThirdPersonCamera::UpdateTargetPosition(float dt){
 	
 	glm::vec3 tempUp = glm::normalize(glm::cross(vec3(0.0f, 0.0f, 1.0f), vec3(1.0f, 0.0f, 0.0f)));
 
-	//PI, accurate to however precise the hardware wants to be.
-	float pif = 22/7;
+	//PI
+	float pif = 3.14159265358979323846f;
 
 	//Maximum speed of rotation
 	float rotateSpeed = 0.01f;
 	
 	//movement  -----------------------------------------------------
 	glm::vec3 movementDir = glm::vec3(0,0,0);
-	
-	//Forward and back movement keys have been disabled as the model is meant only to be able to go forward without pause, by game rules
-
    // if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_W ) == GLFW_PRESS)//Forward
    //	movementDir += direction;
    // if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_S ) == GLFW_PRESS)//Back
    //	movementDir -= direction;
 	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_A) == GLFW_PRESS) {//Left
 		//movementDir -= mRight;
-		mTargetModel->SetRotation(mTargetModel->GetRotationAxis(), (mHorizontalAngle / pif * 180));
+		mTargetModel->SetRotationX(mTargetModel->GetRotationAxisX(), (mHorizontalAngle / pif * 180));
+		
 		mHorizontalAngle += rotateSpeed;
+
 	}
 	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_D) == GLFW_PRESS) {//Right 
 		//movementDir += mRight;
-		mTargetModel->SetRotation(mTargetModel->GetRotationAxis(), (mHorizontalAngle / pif * 180));
+		mTargetModel->SetRotationX(mTargetModel->GetRotationAxisX(), (mHorizontalAngle / pif * 180));
 		mHorizontalAngle -= rotateSpeed;
 	}
 	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_SPACE ) == GLFW_PRESS)//Up
@@ -173,11 +179,9 @@ void ThirdPersonCamera::UpdateTargetPosition(float dt){
 	movementDir += direction;
 
 	//Wrap Horizontal angle within [-90, 90] degrees
-	//Controlled model is not meant to be able to backtrack, limiting its turn radius is the most cost-effective way of doing that
+	//Controlled model is not meant to be able to backtrack, limiting its range of motion accomplishes this
 	if (mHorizontalAngle > pif / 2)			mHorizontalAngle = pif / 2;
 	else if (mHorizontalAngle < -pif / 2)		mHorizontalAngle = -pif / 2;
-
-	//@TODO: Change mUp according to how far the model is turning or how long a movement key has been held down
 
 	//distance -------------------------------------------------------
 	float dist = dt*mTargetModel->GetSpeed();

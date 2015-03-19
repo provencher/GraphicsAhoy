@@ -17,7 +17,7 @@
 using namespace std;
 using namespace glm;
 
-Model::Model() : mName("UNNAMED"), mPosition(0.0f, 0.0f, 0.0f), mScaling(1.0f, 1.0f, 1.0f), mRotationAxis(0.0f, 1.0f, 0.0f), mRotationAngleInDegrees(0.0f), mPath(nullptr), mSpeed(0.0f), mTargetWaypoint(1), mSpline(nullptr), mSplineParameterT(0.0f)
+Model::Model() : mName("UNNAMED"), mPosition(0.0f, 0.0f, 0.0f), mScaling(1.0f, 1.0f, 1.0f), mRotationAxisX(0.0f, 1.0f, 0.0f), mRotationAxisY(0.0f, 0.0f, 1.0f), mRotationAngleInDegrees(0.0f), mPath(nullptr), mSpeed(0.0f), mTargetWaypoint(1), mSpline(nullptr), mSplineParameterT(0.0f)
 {
 
 }
@@ -129,12 +129,17 @@ bool Model::ParseLine(const std::vector<ci_string> &token){
 			assert(token.size() > 4);
 			assert(token[1] == "=");
 
-			mRotationAxis.x = static_cast<float>(atof(token[2].c_str()));
-			mRotationAxis.y = static_cast<float>(atof(token[3].c_str()));
-			mRotationAxis.z = static_cast<float>(atof(token[4].c_str()));
+			mRotationAxisX.x = static_cast<float>(atof(token[2].c_str()));
+			mRotationAxisX.y = static_cast<float>(atof(token[3].c_str()));
+			mRotationAxisX.z = static_cast<float>(atof(token[4].c_str()));
+
+			mRotationAxisY.x = static_cast<float>(atof(token[2].c_str()));
+			mRotationAxisY.y = static_cast<float>(atof(token[3].c_str()));
+			mRotationAxisY.z = static_cast<float>(atof(token[4].c_str()));
+
 			mRotationAngleInDegrees = static_cast<float>(atof(token[5].c_str()));
 
-			glm::normalize(mRotationAxis);
+			glm::normalize(mRotationAxisX);
 		} else if (token[0] == "scaling"){
 			assert(token.size() > 4);
 			assert(token[1] == "=");
@@ -179,7 +184,7 @@ glm::mat4 Model::GetWorldMatrix() const
 	mat4 worldMatrix(1.0f);
 
 	mat4 t = glm::translate(mat4(1.0f), mPosition);
-	mat4 r = glm::rotate(mat4(1.0f), mRotationAngleInDegrees, mRotationAxis);
+	mat4 r = glm::rotate(mat4(1.0f), mRotationAngleInDegrees, mRotationAxisX + mRotationAxisY);
 	mat4 s = glm::scale(mat4(1.0f), mScaling);
 	worldMatrix = t * r * s;
 
@@ -193,8 +198,15 @@ void Model::SetPosition(glm::vec3 position){
 void Model::SetScaling(glm::vec3 scaling){
 	mScaling = scaling;
 }
-void Model::SetRotation(glm::vec3 axis, float angleDegrees){
-	mRotationAxis = axis;
+void Model::SetRotationX(glm::vec3 axis, float angleDegrees){
+	mRotationAxisX = axis;
+	mRotationAngleInDegrees = angleDegrees;
+}
+
+void Model::SetRotationY(glm::vec3 axis, float angleDegrees)
+{
+	mRotationAxisY = axis;
+
 	mRotationAngleInDegrees = angleDegrees;
 }
 
