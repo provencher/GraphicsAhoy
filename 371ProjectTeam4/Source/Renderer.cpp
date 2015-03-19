@@ -70,18 +70,10 @@ void Renderer::Initialize()
     std::string shaderPathPrefix = "../Source/Shaders/";
 #endif
 
-	sShaderProgramID.push_back(
-                LoadShaders(shaderPathPrefix + "SolidColor.vertexshader",
-                            shaderPathPrefix + "SolidColor.fragmentshader")
-                               );
-	sShaderProgramID.push_back(
-                LoadShaders(shaderPathPrefix + "PathLines.vertexshader",
-                            shaderPathPrefix + "PathLines.fragmentshader")
-                               );
-	sShaderProgramID.push_back(
-                LoadShaders(shaderPathPrefix + "SolidColor.vertexshader",
-                            shaderPathPrefix + "BlueColor.fragmentshader")
-                               );
+	sShaderProgramID.push_back(LoadShaders(shaderPathPrefix + "SolidColor.vertexshader", shaderPathPrefix + "SolidColor.fragmentshader"));
+	sShaderProgramID.push_back(LoadShaders(shaderPathPrefix + "PathLines.vertexshader", shaderPathPrefix + "PathLines.fragmentshader"));
+	sShaderProgramID.push_back(LoadShaders(shaderPathPrefix + "SolidColor.vertexshader", shaderPathPrefix + "BlueColor.fragmentshader"));
+	sShaderProgramID.push_back(LoadShaders(shaderPathPrefix + "Texture.vertexshader", shaderPathPrefix + "Texture.fragmentshader"));
 	sCurrentShader = 0;
 
 }
