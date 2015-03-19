@@ -95,6 +95,7 @@
       <Filter>Source Files\Camera</Filter>
     </ClCompile>
 <<<<<<< HEAD
+<<<<<<< HEAD
     <ClCompile Include="..\Source\material.cpp">
       <Filter>Source Files\Tools</Filter>
     </ClCompile>
@@ -110,6 +111,8 @@
     <ClCompile Include="..\Source\transform.cpp">
       <Filter>Source Files\Tools</Filter>
     </ClCompile>
+=======
+>>>>>>> ad9784653895551eefd52d143c8631625a6ad2cc
 =======
 >>>>>>> ad9784653895551eefd52d143c8631625a6ad2cc
     <ClCompile Include="..\Source\light.cpp">
@@ -157,6 +160,7 @@
       <Filter>Source Files\Camera</Filter>
     </ClInclude>
 <<<<<<< HEAD
+<<<<<<< HEAD
     <ClInclude Include="..\Source\math2.h">
       <Filter>Source Files\Tools</Filter>
     </ClInclude>
@@ -183,10 +187,15 @@
     </ClInclude>
     <ClInclude Include="..\Source\light.h">
 =======
+=======
+>>>>>>> ad9784653895551eefd52d143c8631625a6ad2cc
     <ClInclude Include="..\Source\light.h">
       <Filter>Source Files\Tools</Filter>
     </ClInclude>
     <ClInclude Include="..\Source\math2.h">
+<<<<<<< HEAD
+>>>>>>> ad9784653895551eefd52d143c8631625a6ad2cc
+=======
 >>>>>>> ad9784653895551eefd52d143c8631625a6ad2cc
       <Filter>Source Files\Tools</Filter>
     </ClInclude>
