@@ -94,6 +94,7 @@
     <ClCompile Include="..\Source\ThirdPersonCamera.cpp">
       <Filter>Source Files\Camera</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="..\Source\material.cpp">
       <Filter>Source Files\Tools</Filter>
     </ClCompile>
@@ -109,6 +110,8 @@
     <ClCompile Include="..\Source\transform.cpp">
       <Filter>Source Files\Tools</Filter>
     </ClCompile>
+=======
+>>>>>>> ad9784653895551eefd52d143c8631625a6ad2cc
     <ClCompile Include="..\Source\light.cpp">
       <Filter>Source Files\Tools</Filter>
     </ClCompile>
@@ -153,6 +156,7 @@
     <ClInclude Include="..\Source\ThirdPersonCamera.h">
       <Filter>Source Files\Camera</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="..\Source\math2.h">
       <Filter>Source Files\Tools</Filter>
     </ClInclude>
@@ -178,6 +182,12 @@
       <Filter>Source Files\Tools</Filter>
     </ClInclude>
     <ClInclude Include="..\Source\light.h">
+=======
+    <ClInclude Include="..\Source\light.h">
+      <Filter>Source Files\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\math2.h">
+>>>>>>> ad9784653895551eefd52d143c8631625a6ad2cc
       <Filter>Source Files\Tools</Filter>
     </ClInclude>
   </ItemGroup>
