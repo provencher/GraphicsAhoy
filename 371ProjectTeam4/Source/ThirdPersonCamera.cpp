@@ -3,6 +3,7 @@
 //
 // Created by Nicolas Bergeron on 8/7/14.
 // Updated by Gary Chang on 28/1/15
+// 
 //
 // Copyright (c) 2014-2015 Concordia University. All rights reserved.
 //
@@ -20,6 +21,17 @@
 
 using namespace glm;
 
+/////////////////////////////////////////////////////////////////////////////////
+
+//			Flying Player Movement
+
+//===============================================================================
+
+
+void my_int_func(int x) //Dynamic function being called
+{
+    printf( "%d\n", x );
+}
 
 ThirdPersonCamera::ThirdPersonCamera(Model* targetModel)
     : Camera(), mTargetModel(targetModel), mHorizontalAngle(0.0f), mVerticalAngle(0.0f), mRadius(10.0f)
@@ -47,7 +59,17 @@ ThirdPersonCamera::ThirdPersonCamera(Model* targetModel)
 	//position and orient ---------------------------
 	mPosition = mTargetModel->GetPosition() - mLookAt*mRadius;
 	mTargetModel->SetRotation(mTargetModel->GetRotationAxis(), (mHorizontalAngle/3.14159265358979323846f*180));
+
+
+
+	//#PlayingAround #DynamicFunctionCall ===============================
+    void (*foo)(int);
+    foo = &my_int_func;
+    //------------------
+	foo( 2 );
+    (*foo)( 2 );
 }
+
 
 ThirdPersonCamera::~ThirdPersonCamera()
 {
@@ -116,6 +138,7 @@ void ThirdPersonCamera::Update(float dt)
 	//*///////////////////////////////////////////////////////////////
    
 
+
 	
 
 }
@@ -128,6 +151,8 @@ void ThirdPersonCamera::updateCameraLookAt(){
 	);
 	mRight = glm::normalize(glm::cross(mLookAt, vec3(0.0f, 1.0f, 0.0f)));
     mUp = glm::cross(mRight, mLookAt);
+		
+
 }
 void ThirdPersonCamera::UpdateTargetPosition(float dt){
 		 //*//Move Target Model ////////////////////////////////////////////
@@ -135,6 +160,11 @@ void ThirdPersonCamera::UpdateTargetPosition(float dt){
 	glm::vec3 direction = mLookAt;
 	direction.y = 0.0f; // override to keep movement on plane
 	direction = glm::normalize(direction);
+
+
+	glm::vec3 tempUp = glm::normalize(glm::cross(vec3(0.0f, 0.0f, 1.0f), vec3(1.0f, 0.0f, 0.0f)));
+	
+	
 	//movement  -----------------------------------------------------
 	glm::vec3 movementDir = glm::vec3(0,0,0);
     if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_W ) == GLFW_PRESS)//Forward
@@ -146,10 +176,10 @@ void ThirdPersonCamera::UpdateTargetPosition(float dt){
 	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_D ) == GLFW_PRESS)//Right
 		movementDir += mRight;
 	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_SPACE ) == GLFW_PRESS)//Up
-		movementDir += mUp;
+		movementDir += tempUp;
 	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_RIGHT_SHIFT ) == GLFW_PRESS ||
 		glfwGetKey(EventManager::GetWindow(), GLFW_KEY_LEFT_SHIFT ) == GLFW_PRESS)//Down
-		movementDir -= mUp;
+		movementDir -= tempUp;
 	
 	//distance -------------------------------------------------------
 	float dist = dt*mTargetModel->GetSpeed();

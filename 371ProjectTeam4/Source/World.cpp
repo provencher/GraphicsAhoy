@@ -8,16 +8,18 @@
 //
 
 #include "World.h"
-#include "Renderer.h"
 #include "ParsingHelper.h"
+#include "Renderer.h"
+
 
 #include "StaticCamera.h"
 #include "BSplineCamera.h"
 #include "ThirdPersonCamera.h"
 
-#include "LayerModel.h"
-#include "CubeModel.h"
-#include "SphereModel.h"
+#include "Models/GroupModel.h"
+#include "Models/PlaneModel.h"
+#include "Models/CubeModel.h"
+#include "Models/SphereModel.h"
 #include "Path.h"
 #include "BSpline.h"
 
@@ -35,6 +37,12 @@ World* World::instance;
 World::World()
 {
     instance = this;
+	//Create light
+	this->light = new Light(glm::vec3(0, 15, -20), glm::vec3(1.0f, 1.0f, 1.0f));
+	ka = 0.2f;
+	kd = 0.8f;
+	ks = 0.2f;
+	n = 50.0f;
 }
 World::~World()
 {
@@ -117,75 +125,10 @@ void World::LoadScene(const char * scene_path){
 	    }
 	}
 	input.close();
-	
-	
-	/*##############################################################
-	
-			nesting models
-			apply tweens
-
-	################################################################
-	//*///
 
 
 
-	
-	///////////////////////////////////////////////////////////////////////////////////
-	// Third Person Cube Character -------------------------
-    LayerModel* character = new LayerModel();
-	//character->SetRotation(vec3(1,0,0), 90);//change thirs person to accomidate 
-	
-	
-	float sections = 5.0f;
-	float scale = 1;
 
-	character->SetScaling(vec3(scale, scale, scale));
-	character->SetPosition(vec3(-4.0f, sections/2-0.5f+5.0f, 0.0f));
-	character->SetSpeed(7.0f);	//Should move to camera
-  
-	//Build heigharchical cube model (testing)
-	//glm::vec3 parentPos = glm::vec3(-20,0.5, 20);
-	glm::vec3 offset = glm::vec3(0.5f,0.5f,0.5f);
-	float ofst = 1.01f;
-
-	//build character
-	for(int r=0;r <sections; r++){
-		for(int c=0; c<sections; c++){
-			for(int d=0; d<sections; d++){
-				CubeModel* lcube = new CubeModel();
-				(*lcube).SetPosition(glm::vec3(
-					offset.x + r*ofst - sections*ofst/2 + scale/2,  //approximate position to center cube of cubes on target 
-					offset.y + c*ofst - sections*ofst/2 + scale/2,
-					offset.z + d*ofst - sections*ofst/2 + scale/2
-					));
-				//lcube->SetRotation(vec3(0.0f,1.0f,0.0f), 270.0f);
-
-				character->AddChild(lcube);
-			}
-		}
-	}
-	 mModel.push_back(character);
-
-	 ////////////////////////////////////////////////////////////////////////////
-
-
-
-	 /*
-	 name     = "Spline"
-position = -1.0 9 -2.0
-rotation = 0.0 0.0 1.0 90
-scaling = 0.8 0.8 0.8
-controlpoint = 10.0 0.0 0.0
-controlpoint = 7.07 0.0 7.07
-controlpoint = 0.0 0.0 10.0
-controlpoint = -7.07 0.0 7.07
-controlpoint = -10.0 0.0 0.0
-controlpoint = -7.07 0.0 -7.07
-controlpoint = 0.0 0.0 -10.0
-controlpoint = 7.07 0.0 -7.07
-
-AddControlPoint(glm::vec3 point)
-	 //*///
 
 
 	// Set PATH vertex buffers
@@ -218,66 +161,26 @@ void World::LoadCameras()
 		vec3(0.0f, 0.5f, 0.0f), 
 		vec3(0.0f, 1.0f, 0.0f)));//3
     
-
-
-
-
-
-
+	// Create Character -----------------------------------
+	////////////////////////////////////////////////////////
 
 	// Third Person Cube Character -------------------------
-    LayerModel* character = new LayerModel();
+    GroupModel* character = new PlaneModel();
 	//character->SetRotation(vec3(1,0,0), 90);//change thirs person to accomidate 
-	
-	
-	int sections = 5;
-	float scale = 1/(float)sections;
-
+	float scale = 0.5f;
 	character->SetScaling(vec3(scale, scale, scale));
 	character->SetPosition(vec3(10.0f, 0.5f, 0.0f));
 	character->SetSpeed(7.0f);	//Should move to camera
     mModel.push_back(character);
-	
-	//Build heigharchical cube model (testing)
-	//glm::vec3 parentPos = glm::vec3(-20,0.5, 20);
-	glm::vec3 offset = glm::vec3(0.5f,0.5f,0.5f);
-	float ofst = 1.01f;
-
-	
-
-	for(int r=0;r <sections; r++){
-		for(int c=0; c<sections; c++){
-			for(int d=0; d<sections; d++){
-				CubeModel* lcube = new CubeModel();
-				(*lcube).SetPosition(glm::vec3(
-					offset.x + r*ofst - sections*ofst/2 + scale/2,  //approximate position to center cube of cubes on target 
-					offset.y + c*ofst - sections*ofst/2 + scale/2,
-					offset.z + d*ofst - sections*ofst/2 + scale/2
-					));
-				//lcube->SetRotation(vec3(0.0f,1.0f,0.0f), 270.0f);
-
-				character->AddChild(lcube);
-			}
-		}
-	}
 
 
 	
-
-    
-
-
-
-	// Create Camera
-	mCamera.push_back(new ThirdPersonCamera(character)); //4
-    
-
-
-	
-    
-
-
-
+	// Create Camera -----------------------------------------
+	ThirdPersonCamera* newCam = new ThirdPersonCamera(character);
+	newCam->SetCameraRadius(7.0f);
+	mCamera.push_back(newCam); //4
+    //*note: to be moved into its own class
+	////////////////////////////////////////////////////////
 
 
 
@@ -293,7 +196,10 @@ void World::LoadCameras()
     
     mCurrentCamera = 0;
 }
-
+Camera* World::GetCamera(){
+	//? may require checking if nullptr
+	return mCamera[mCurrentCamera];
+}
 
 //=================================================
 void World::Update(float dt)
@@ -301,20 +207,20 @@ void World::Update(float dt)
 	// User Inputs
 	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_1 ) == GLFW_PRESS){
 		mCurrentCamera = 0;
-	}else if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_2 ) == GLFW_PRESS){
+	} else if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_2 ) == GLFW_PRESS){
 		if (mCamera.size() > 1){
 			mCurrentCamera = 1;
 		}
-	}else if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_3 ) == GLFW_PRESS){
+	} else if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_3 ) == GLFW_PRESS){
 		if (mCamera.size() > 2){
 			mCurrentCamera = 2;
 		}
-	}else if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_4 ) == GLFW_PRESS){
+	} else if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_4 ) == GLFW_PRESS){
         // Spline camera
 		if (mCamera.size() > 3 && mSpline.size() > 0){
 			mCurrentCamera = 3;
 		}
-	}else if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_5 ) == GLFW_PRESS){
+	} else if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_5 ) == GLFW_PRESS){
         // Spline camera
 		if (mCamera.size() > 4 && mModel.size() > 0){
 			mCurrentCamera = 4;
@@ -322,22 +228,13 @@ void World::Update(float dt)
 	}
 
 
-
-
-
-/*
-	// Spacebar to change the shader
-	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_0 ) == GLFW_PRESS){
-		Renderer::SetShader(SHADER_SOLID_COLOR);
-	}else if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_9 ) == GLFW_PRESS){
-		Renderer::SetShader(SHADER_BLUE);
-	}
-	//*/
-	
-
-
 	// Update current Camera
 	mCamera[mCurrentCamera]->Update(dt);
+
+	//Pull CurrentLookAt vector from camera;	
+	camPos = mCamera[mCurrentCamera]->getCamPos();
+
+	//std::cout << "x " << camPos.x << "y " << camPos.y << "z " << camPos.z << endl;
 
 	// Update models
 	for (vector<Model*>::iterator it = mModel.begin(); it < mModel.end(); ++it){
@@ -351,10 +248,31 @@ void World::Draw()
 	// Set shader to use
 	glUseProgram(Renderer::GetShaderProgramID());
 
-	// This looks for the MVP Uniform variable in the Vertex Program
-	GLuint VPMatrixLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "ViewProjectionTransform"); 
+	//Material Attributes uniform
+	GLuint MaterialID = glGetUniformLocation(Renderer::GetShaderProgramID(), "materialCoefficients");
+	glUniform4f(MaterialID, ka, kd, ks, n);
 
-	// Send the view projection constants to the shader
+	//WorldCamPosition
+	GLuint CamPos = glGetUniformLocation(Renderer::GetShaderProgramID(), "worldCamPos");
+	glUniform3fv(CamPos, 1, &camPos[0]);
+
+	//lighting Position 
+	GLuint LightVecLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "lightPosition");	
+	glm::vec3 lightPos = this->light->getPosition();
+	glUniform3fv(LightVecLocation, 1, &lightPos[0]);
+
+	//lighting Color 
+	GLuint LightVecColor = glGetUniformLocation(Renderer::GetShaderProgramID(), "lightColor");	
+	glm::vec3 lightColor = this->light->getColor();
+	glUniform3fv(LightVecColor, 1, &lightColor[0]);
+	
+	//Look for WorldTransform in the Vertex Shader
+	GLuint WorldMatrixLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "WorldTransform");	
+	mat4 WorldMatrix = mModel[0]->GetWorldMatrix();
+	glUniformMatrix4fv(WorldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+
+	// This looks for the MVP Uniform variable in the Vertex Program
+	GLuint VPMatrixLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "ViewProjectionTransform");	
 	mat4 VP = mCamera[mCurrentCamera]->GetViewProjectionMatrix();
 	glUniformMatrix4fv(VPMatrixLocation, 1, GL_FALSE, &VP[0][0]);
 
@@ -393,11 +311,10 @@ void World::Draw()
 }
 
 //=================================================
-
 Path* World::FindPath(ci_string pathName)
 {
     for(std::vector<Path*>::iterator it = mPath.begin(); it < mPath.end(); ++it)
-    {
+	{
         if((*it)->GetName() == pathName)
         {
             return *it;

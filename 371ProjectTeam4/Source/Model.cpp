@@ -19,7 +19,7 @@ using namespace glm;
 
 Model::Model() : mName("UNNAMED"), mPosition(0.0f, 0.0f, 0.0f), mScaling(1.0f, 1.0f, 1.0f), mRotationAxis(0.0f, 1.0f, 0.0f), mRotationAngleInDegrees(0.0f), mPath(nullptr), mSpeed(0.0f), mTargetWaypoint(1), mSpline(nullptr), mSplineParameterT(0.0f)
 {
-	mParent = nullptr;
+
 }
 
 Model::~Model()
@@ -27,9 +27,7 @@ Model::~Model()
 }
 
 //--------------------------------------------------------
-
 //Update
-
 //--------------------------------------------------------
 void Model::Update(float dt){
 
@@ -38,8 +36,8 @@ void Model::Update(float dt){
 	else if (mSpline)		
 		updateSpline(dt);	//Move along Spline
 
-	UpdateChildren(dt);
 }
+
 void Model::updatePath(float dt){
 	//Translate Along Path
 	//==============================================================================
@@ -67,6 +65,7 @@ void Model::updatePath(float dt){
 		mPosition += step*moveDirection;													//step toward direction
 	}
 }
+
 void Model::updateSpline(float dt){
 	//Translate Along Spline	 @TODO - Animate along the spline
 		//==============================================================================
@@ -82,13 +81,11 @@ void Model::updateSpline(float dt){
 
 //void Model::updatePhysics(float dt)
 
-
 //--------------------------------------------------------
-
 //Draw
-
 //--------------------------------------------------------
 void Model::Draw(){}
+
 
 //--------------------------------------------------------
 //Load from file
@@ -126,31 +123,27 @@ bool Model::ParseLine(const std::vector<ci_string> &token){
 		} else if (token[0] == "position"){
 			assert(token.size() > 4);
 			assert(token[1] == "=");
-			SetPosition(vec3(
-				static_cast<float>(atof(token[2].c_str())),
-				static_cast<float>(atof(token[3].c_str())),
-				static_cast<float>(atof(token[4].c_str()))
-			));
+
+			mPosition.x = static_cast<float>(atof(token[2].c_str()));
+			mPosition.y = static_cast<float>(atof(token[3].c_str()));
+			mPosition.z = static_cast<float>(atof(token[4].c_str()));
 		} else if (token[0] == "rotation"){
 			assert(token.size() > 4);
 			assert(token[1] == "=");
 
-			SetRotation(vec3(
-				static_cast<float>(atof(token[2].c_str())),
-				static_cast<float>(atof(token[3].c_str())),
-				static_cast<float>(atof(token[4].c_str()))),
-				static_cast<float>(atof(token[5].c_str()))  //angle
-			);
+			mRotationAxis.x = static_cast<float>(atof(token[2].c_str()));
+			mRotationAxis.y = static_cast<float>(atof(token[3].c_str()));
+			mRotationAxis.z = static_cast<float>(atof(token[4].c_str()));
+			mRotationAngleInDegrees = static_cast<float>(atof(token[5].c_str()));
 
 			glm::normalize(mRotationAxis);
 		} else if (token[0] == "scaling"){
 			assert(token.size() > 4);
 			assert(token[1] == "=");
-			SetScaling(vec3(
-				static_cast<float>(atof(token[2].c_str())),
-				static_cast<float>(atof(token[3].c_str())),
-				static_cast<float>(atof(token[4].c_str()))
-			));
+
+			mScaling.x = static_cast<float>(atof(token[2].c_str()));
+			mScaling.y = static_cast<float>(atof(token[3].c_str()));
+			mScaling.z = static_cast<float>(atof(token[4].c_str()));
 		} else if (token[0] == "pathspeed"){
 			assert(token.size() > 2);
 			assert(token[1] == "=");
@@ -183,7 +176,7 @@ bool Model::ParseLine(const std::vector<ci_string> &token){
 }
 
 //--------------------------------------------------------
-glm::mat4 Model::GetWorldMatrix()
+glm::mat4 Model::GetWorldMatrix() const
 {
 	mat4 worldMatrix(1.0f);
 
@@ -191,23 +184,11 @@ glm::mat4 Model::GetWorldMatrix()
 	mat4 r = glm::rotate(mat4(1.0f), mRotationAngleInDegrees, mRotationAxis);
 	mat4 s = glm::scale(mat4(1.0f), mScaling);
 	worldMatrix = t * r * s;
-	
 
-	
-	if(HasParent()){
-		worldMatrix = Parent()->GetWorldMatrix() * worldMatrix;
-	//	cout << "True\n";
-	} //else cout << "False\n";
 	return worldMatrix;
 }
 
-
-
-/*#########################################################
-
-						Orientation
-
-//*///#####################################################
+//--------------------------------------------------------
 void Model::SetPosition(glm::vec3 position){
 	mPosition = position;
 }
@@ -217,46 +198,6 @@ void Model::SetScaling(glm::vec3 scaling){
 void Model::SetRotation(glm::vec3 axis, float angleDegrees){
 	mRotationAxis = axis;
 	mRotationAngleInDegrees = angleDegrees;
-}
-
-
-/*#########################################################
-
-						Children
-
-//*///#####################################################
-//--------------------------------------------------------
-void	Model::AddChild(Model* m){
-	m->SetParent(this);
-	mChildren.push_back(m);
-}	
-Model*	Model::RemoveChild(Model* m){ return nullptr;}
-void Model::UpdateChildren(float dt){
-	int count = GetChildCount();
-	if (count > 0){
-		for(int i=0; i<count; i++){
-			mChildren[i]->Update(dt);
-		}
-	}
-}
-void Model::DrawChildren(){
-	int count = GetChildCount();
-	if (count > 0){
-		for(int i=0; i<count; i++){
-			mChildren[i]->Draw();
-		}
-	}
-}
-void Model::SetParent(Model* m){
-	mParent = m;
-}
-bool Model::HasParent(){
-	if (mParent != nullptr)
-		return true;
-	return false;
-}
-Model* Model::Parent(){
-	return mParent;
 }
 
 //Physics ------------------------------------------------

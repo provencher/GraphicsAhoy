@@ -27,38 +27,24 @@ public:
 	virtual void Update(float dt) = 0;
 	virtual void Draw() = 0;
 	//------------------------------------------
-	void				Load(ci_istringstream& iss);
-	virtual	bool		ParseLine(const std::vector<ci_string> &token) = 0;
-	virtual	glm::mat4	GetWorldMatrix();
+	void Load(ci_istringstream& iss);
+	virtual glm::mat4 GetWorldMatrix() const;
 	//------------------------------------------
-	void		SetPosition(glm::vec3 position);
-	glm::vec3	GetPosition()		const	{ return mPosition; }
-	//------------------------------------------
-	void		SetScaling(glm::vec3 scaling);
-	glm::vec3	GetScaling()		const	{ return mScaling; }
-	//------------------------------------------
-	void		SetRotation(glm::vec3 axis, float angleDegrees);
-	glm::vec3	GetRotationAxis()	const	{ return mRotationAxis; }
-	float		GetRotationAngle()	const	{ return mRotationAngleInDegrees; }
-    //--------------------------------------------
-	float		GetSpeed();
-	void		SetSpeed(float spd);
-	//------------------------------------------
-	ci_string GetName(){ return mName; }
-	//Children -----------------------------------
-	void	SetParent(Model* m);
-	void	AddChild(Model* m);	
-	Model*	RemoveChild(Model* m);
-	int		GetChildCount() const { return mChildren.size(); }
-	void UpdateChildren(float dt);
-	void DrawChildren();
-	bool HasParent();
-	Model* Parent();
+	void SetPosition(glm::vec3 position);
+	void SetScaling(glm::vec3 scaling);
+	void SetRotation(glm::vec3 axis, float angleDegrees);
+	//--------------------------------------------
+	glm::vec3 GetPosition() const		{ return mPosition; }
+	glm::vec3 GetScaling() const		{ return mScaling; }
+	glm::vec3 GetRotationAxis() const	{ return mRotationAxis; }
+	float     GetRotationAngle() const	{ return mRotationAngleInDegrees; }
+    ci_string GetName()                 { return mName; }
+	float	  GetSpeed();
+	void SetSpeed(float spd);
+	virtual bool ParseLine(const std::vector<ci_string> &token) = 0;
 
 protected:
 	
-	Model* mParent;
-
 	//Update Methods
 	virtual void updateSpline(float dt);
 	virtual void updatePath(float dt);
@@ -68,8 +54,7 @@ protected:
 	glm::vec3 mScaling;
 	glm::vec3 mRotationAxis;
 	float     mRotationAngleInDegrees;
-	
-	std::vector<Model*> mChildren;
+
 
 	//Paths =======================================
     float mSpeed;
