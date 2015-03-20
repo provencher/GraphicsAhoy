@@ -18,11 +18,10 @@ out vec4 worldPosition;
 void main()
 {
 	// Output position of the vertex, in clip space : MVP * position
-	vec4 worldPosition = WorldTransform * vec4(vertexPosition_modelspace,1);
+	worldPosition = WorldTransform * vec4(vertexPosition_modelspace,1);
 	gl_Position =  ViewProjectionTransform * worldPosition;
 
-	//olNormal = vertexNormal_modelspace
-	//normal = normalize(transpose(inverse(WorldTransform)) * vec4(vertexNormal_modelspace, 0.0)).xyz;
+	//olNormal = vertexNormal_modelspace	
 	normal = normalize((WorldTransform * vec4(vertexNormal_modelspace, 0.0)).xyz);
 	v_color = vec4(vertexColor, 1.0f);	
 			

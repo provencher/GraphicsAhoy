@@ -52,20 +52,20 @@ World::World()
 	spotlight.intensities = glm::vec3(2, 2, 2); //strong white light
 	spotlight.attenuation = 0.1f;
 	spotlight.ambientCoefficient = 0.0f; //no ambient light
-	spotlight.coneAngle = 4.0f;
+	spotlight.coneAngle = 5.0f;
 	spotlight.coneDirection = glm::vec3(0, -1, 0);
 
 	Light directionalLight;
 	directionalLight.position = glm::vec4(5, 10, 0.6, 0); //w == 0 indications a directional light
-	directionalLight.intensities = glm::vec3(0.7, 0.3, 0.3); //weak yellowish light
+	directionalLight.intensities = glm::vec3(0.5, 0.5, 0.5); //weak yellowish light
 	directionalLight.ambientCoefficient = 0.06f;
 
 	Light light3;
 	light3.position = glm::vec4(-5, 5, -0.6, 0); //w == 0 indications a directional light
-	light3.intensities = glm::vec3(0.3, 0.3, 0.7); //weak yellowish light
+	light3.intensities = glm::vec3(0.5, 0.5, 0.5); //weak yellowish light
 	light3.ambientCoefficient = 0.06f;
 
-	//gLights->push_back(spotlight);
+	gLights->push_back(spotlight);
 	gLights->push_back(directionalLight);
 	gLights->push_back(light3);
 
