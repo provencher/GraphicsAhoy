@@ -165,7 +165,7 @@ void World::LoadCameras()
     if (spline != nullptr)
         mCamera.push_back(new BSplineCamera(spline , 5.0f)); //5
     
-    
+	mShader = 0; // set mShader to 0
     mCurrentCamera = 0;
 }
 
@@ -198,16 +198,37 @@ void World::Update(float dt)
 
 
 
-
-
-/*
 	// Spacebar to change the shader
-	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_0 ) == GLFW_PRESS){
+	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_7 ) == GLFW_PRESS)
+	{
 		Renderer::SetShader(SHADER_SOLID_COLOR);
-	}else if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_9 ) == GLFW_PRESS){
-		Renderer::SetShader(SHADER_BLUE);
+		mShader = 0;
 	}
-	//*/
+    else if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_8 ) == GLFW_PRESS)
+	{
+		Renderer::SetShader(SHADER_BLUE);
+		mShader = 1;
+	}
+	else if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_9) == GLFW_PRESS)
+	{
+		Renderer::SetShader(SHADER_TEXTURE);
+		mShader = 2;
+	}
+	else{
+		if (mShader == 0)
+		{
+			Renderer::SetShader(SHADER_SOLID_COLOR);
+		}
+		else if (mShader == 1)
+		{
+			Renderer::SetShader(SHADER_BLUE);
+		}
+		else if (mShader == 2)
+		{
+			Renderer::SetShader(SHADER_TEXTURE);
+		}
+	}
+	
 	
 
 

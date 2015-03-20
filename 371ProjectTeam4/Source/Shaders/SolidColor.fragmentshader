@@ -10,4 +10,5 @@ void main()
 {
 	// set the fragment color to the interpolated vertex color
 	color = v_color.rgb;
+	
 }

@@ -44,4 +44,5 @@ private:
     std::vector<BSpline*> mSpline;
 	std::vector<Camera*> mCamera;
 	unsigned int mCurrentCamera;
+	unsigned int mShader; // Shader 
 };
