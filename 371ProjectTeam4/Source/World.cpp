@@ -196,7 +196,7 @@ void World::Update(float dt)
 		}
 	}
 
-
+	/*
 
 	// Spacebar to change the shader
 	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_7 ) == GLFW_PRESS)
@@ -229,7 +229,7 @@ void World::Update(float dt)
 		}
 	}
 	
-	
+	*/
 
 
 	// Update current Camera

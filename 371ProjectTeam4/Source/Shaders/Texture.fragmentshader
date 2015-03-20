@@ -1,4 +1,4 @@
-ersion 120
+ersion 330
 
 // Input from fragment shader
 in vec2 UV; //in vec2 UV
@@ -6,7 +6,7 @@ in vec2 UV; //in vec2 UV
 // Ouput to screen
 //out vec3 color;
 
-// Values that stay constant for the whole mesh.
+// Values that stay constant 
 uniform sampler2D myTextureSampler;
 
 void main()
