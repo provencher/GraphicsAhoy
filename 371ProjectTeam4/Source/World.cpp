@@ -8,15 +8,18 @@
 //
 
 #include "World.h"
-#include "Renderer.h"
 #include "ParsingHelper.h"
+#include "Renderer.h"
+
 
 #include "StaticCamera.h"
 #include "BSplineCamera.h"
 #include "ThirdPersonCamera.h"
 
-#include "CubeModel.h"
-#include "SphereModel.h"
+#include "Models/GroupModel.h"
+#include "Models/PlaneModel.h"
+#include "Models/CubeModel.h"
+#include "Models/SphereModel.h"
 #include "Path.h"
 #include "BSpline.h"
 
@@ -30,22 +33,19 @@ using namespace glm;
 
 World* World::instance;
 
-
-
 //=================================================
 World::World()
 {
     instance = this;
-
 	// Material Coefficients
 	ka = 0.39f;
 	kd = 0.46f;
 	ks = 0.82f;
 	n = 75.0f;
-	
+
 	//Create light Vector
 	gLights = new vector<Light>();
-	
+
 	// setup lights
 	Light spotlight;
 	spotlight.position = glm::vec4(0, 10, 0, 1);
@@ -68,7 +68,6 @@ World::World()
 	gLights->push_back(spotlight);
 	gLights->push_back(directionalLight);
 	gLights->push_back(light3);
-
 }
 World::~World()
 {
@@ -155,27 +154,6 @@ void World::LoadScene(const char * scene_path){
 
 
 
-	//Build heigharchical cube model (testing)
-	glm::vec3 parentPos = glm::vec3(-20,0.5, 20);
-	float ofst = 1.01;
-
-	int sections = 8;
-
-	for(int r=0;r<sections;r++){
-		for(int c=0;c<sections;c++){
-			for(int d=0; d<sections; d++){
-				CubeModel* lcube = new CubeModel();
-				(*lcube).SetPosition(glm::vec3(
-					parentPos.x + r*ofst,
-					parentPos.y + c*ofst,
-					parentPos.z + d*ofst
-					));
-				mModel.push_back(lcube);
-			}
-		}
-	}
-
-
 
 
 	// Set PATH vertex buffers
@@ -208,13 +186,30 @@ void World::LoadCameras()
 		vec3(0.0f, 0.5f, 0.0f), 
 		vec3(0.0f, 1.0f, 0.0f)));//3
     
-    // Third Person Cube Character -------------------------
-    CubeModel* character = new CubeModel();
-    character->SetPosition(vec3(0.0f, 0.5f, 0.0f));
-	character->SetSpeed(7.0f);
-    mCamera.push_back(new ThirdPersonCamera(character)); //4
+	// Create Character -----------------------------------
+	////////////////////////////////////////////////////////
+
+	// Third Person Cube Character -------------------------
+    GroupModel* character = new PlaneModel();
+	//character->SetRotation(vec3(1,0,0), 90);//change thirs person to accomidate 
+	float scale = 0.5f;
+	character->SetScaling(vec3(scale, scale, scale));
+	character->SetPosition(vec3(10.0f, 0.5f, 0.0f));
+	character->SetSpeed(7.0f);	//Should move to camera
     mModel.push_back(character);
-    
+
+
+	
+	// Create Camera -----------------------------------------
+	ThirdPersonCamera* newCam = new ThirdPersonCamera(character);
+	newCam->SetCameraRadius(7.0f);
+	mCamera.push_back(newCam); //4
+    //*note: to be moved into its own class
+	////////////////////////////////////////////////////////
+
+
+
+
     // BSpline Camera --------------------------------------
     BSpline* spline = FindSpline("\"RollerCoaster\"");
     if (spline == nullptr)
@@ -226,7 +221,10 @@ void World::LoadCameras()
     
     mCurrentCamera = 0;
 }
-
+Camera* World::GetCamera(){
+	//? may require checking if nullptr
+	return mCamera[mCurrentCamera];
+}
 
 //=================================================
 void World::Update(float dt)
@@ -234,20 +232,20 @@ void World::Update(float dt)
 	// User Inputs
 	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_1 ) == GLFW_PRESS){
 		mCurrentCamera = 0;
-	}else if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_2 ) == GLFW_PRESS){
+	} else if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_2 ) == GLFW_PRESS){
 		if (mCamera.size() > 1){
 			mCurrentCamera = 1;
 		}
-	}else if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_3 ) == GLFW_PRESS){
+	} else if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_3 ) == GLFW_PRESS){
 		if (mCamera.size() > 2){
 			mCurrentCamera = 2;
 		}
-	}else if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_4 ) == GLFW_PRESS){
+	} else if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_4 ) == GLFW_PRESS){
         // Spline camera
 		if (mCamera.size() > 3 && mSpline.size() > 0){
 			mCurrentCamera = 3;
 		}
-	}else if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_5 ) == GLFW_PRESS){
+	} else if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_5 ) == GLFW_PRESS){
         // Spline camera
 		if (mCamera.size() > 4 && mModel.size() > 0){
 			mCurrentCamera = 4;
@@ -260,11 +258,6 @@ void World::Update(float dt)
 
 	//Pull CurrentLookAt vector from camera;	
 	camPos = mCamera[mCurrentCamera]->getCamPos();
-	lookAt = mCamera[mCurrentCamera]->getLookAt();
-
-	//(*gLights)[0].position = glm::vec4(camPos,1.0);
-	//(*gLights)[0].coneDirection = normalize(lookAt);
-
 
 	//std::cout << "x " << camPos.x << "y " << camPos.y << "z " << camPos.z << endl;
 
@@ -273,8 +266,6 @@ void World::Update(float dt)
 		(*it)->Update(dt);
 	}
 }
-
-char const* CharBuilder(string e){ return e.c_str(); }
 
 string LightNameBuilder(string name, int index){
 
@@ -298,7 +289,6 @@ void World::Draw()
 	//WorldCamPosition
 	GLuint CamPos = glGetUniformLocation(Renderer::GetShaderProgramID(), "worldCamPos");
 	glUniform3fv(CamPos, 1, &camPos[0]);
-	
 
 	//Lights
 	GLuint NumLights = glGetUniformLocation(Renderer::GetShaderProgramID(), "numLights");
@@ -319,37 +309,34 @@ void World::Draw()
 		gluints = vector<GLuint>(6);
 
 		v4f = (*gLights)[i].position;
-		uniformName = LightNameBuilder("position", i);			
+		uniformName = LightNameBuilder("position", i);
 		gluints[0] = glGetUniformLocation(Renderer::GetShaderProgramID(), (c_str = uniformName.c_str()));
 		glUniform4fv(gluints[0], 1, &v4f[0]);
 
-	
+
 		uniformName = LightNameBuilder("intensities", i);
 		temp = (*gLights)[i].intensities;
 		gluints[1] = glGetUniformLocation(Renderer::GetShaderProgramID(), (c_str = uniformName.c_str()));
 		glUniform3fv(gluints[1], 1, &temp[0]);
-		
-		uniformName = LightNameBuilder("attenuation", i);				
+
+		uniformName = LightNameBuilder("attenuation", i);
 		gluints[2] = glGetUniformLocation(Renderer::GetShaderProgramID(), (c_str = uniformName.c_str()));
 		glUniform1f(gluints[2], (*gLights)[i].attenuation);
 
-		uniformName = LightNameBuilder("ambientCoefficient", i);			
+		uniformName = LightNameBuilder("ambientCoefficient", i);
 		gluints[3] = glGetUniformLocation(Renderer::GetShaderProgramID(), (c_str = uniformName.c_str()));
 		glUniform1f(gluints[3], (*gLights)[i].ambientCoefficient);
-		
-		uniformName = LightNameBuilder("coneAngle", i);				
+
+		uniformName = LightNameBuilder("coneAngle", i);
 		gluints[4] = glGetUniformLocation(Renderer::GetShaderProgramID(), (c_str = uniformName.c_str()));
 		glUniform1f(gluints[4], (*gLights)[i].coneAngle);
 
 		temp = (*gLights)[i].coneDirection;
-		uniformName = LightNameBuilder("coneDirection", i);				
+		uniformName = LightNameBuilder("coneDirection", i);
 		gluints[5] = glGetUniformLocation(Renderer::GetShaderProgramID(), (c_str = uniformName.c_str()));
 		glUniform3fv(gluints[5], 1, &temp[0]);
-		
-	}
 
-	
-	
+	}
 	
 	//Look for WorldTransform in the Vertex Shader
 	GLuint WorldMatrixLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "WorldTransform");	
@@ -396,11 +383,10 @@ void World::Draw()
 }
 
 //=================================================
-
 Path* World::FindPath(ci_string pathName)
 {
     for(std::vector<Path*>::iterator it = mPath.begin(); it < mPath.end(); ++it)
-    {
+	{
         if((*it)->GetName() == pathName)
         {
             return *it;

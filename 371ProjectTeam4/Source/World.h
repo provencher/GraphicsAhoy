@@ -11,6 +11,7 @@
 
 #include "ParsingHelper.h"
 #include <vector>
+#include "light.h"
 #include <GLM/glm.hpp>
 
 class Camera;
@@ -38,7 +39,6 @@ public:
     Model* FindModelByIndex(unsigned int index);	
 		
 	glm::vec3 camPos;
-	glm::vec3 lookAt;
 
 	struct Light {
 		glm::vec4 position;
@@ -50,7 +50,7 @@ public:
 	};
 
 	std::vector<Light>* gLights;
-	
+
 
 private:
     static World* instance;
@@ -60,13 +60,11 @@ private:
     std::vector<BSpline*> mSpline;
 	std::vector<Camera*> mCamera;
 	unsigned int mCurrentCamera;
+	Camera* GetCamera();
 
 	// Material Coefficients
 	float ka;
 	float kd;
 	float ks;
 	float n;
-
-	
-
 };

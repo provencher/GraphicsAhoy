@@ -3,6 +3,7 @@
 //
 // Created by Nicolas Bergeron on 8/7/14.
 // Updated by Gary Chang on 28/1/15
+// 
 //
 // Copyright (c) 2014-2015 Concordia University. All rights reserved.
 //
@@ -20,6 +21,17 @@
 
 using namespace glm;
 
+/////////////////////////////////////////////////////////////////////////////////
+
+//			Flying Player Movement
+
+//===============================================================================
+
+
+void my_int_func(int x) //Dynamic function being called
+{
+    printf( "%d\n", x );
+}
 
 ThirdPersonCamera::ThirdPersonCamera(Model* targetModel)
     : Camera(), mTargetModel(targetModel), mHorizontalAngle(0.0f), mVerticalAngle(0.0f), mRadius(10.0f)
@@ -47,7 +59,17 @@ ThirdPersonCamera::ThirdPersonCamera(Model* targetModel)
 	//position and orient ---------------------------
 	mPosition = mTargetModel->GetPosition() - mLookAt*mRadius;
 	mTargetModel->SetRotation(mTargetModel->GetRotationAxis(), (mHorizontalAngle/3.14159265358979323846f*180));
+
+
+
+	//#PlayingAround #DynamicFunctionCall ===============================
+    void (*foo)(int);
+    foo = &my_int_func;
+    //------------------
+	foo( 2 );
+    (*foo)( 2 );
 }
+
 
 ThirdPersonCamera::~ThirdPersonCamera()
 {

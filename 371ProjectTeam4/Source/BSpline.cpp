@@ -70,7 +70,7 @@ void BSpline::GenerateSamplePoints()
 	float sampleLength;
 	float l;
 	glm::vec3 sample;
-	for (int i=0; i < mControlPoints.size(); ++i){
+	for (unsigned int i=0; i < mControlPoints.size(); ++i){
         t = 0.0f;
         
         // Set current control points
