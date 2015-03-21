@@ -21,7 +21,8 @@ public:
     virtual void Update(float dt);
     virtual glm::mat4 GetViewMatrix() const;
 	
-	virtual glm::vec3 getCamPos(){ return mPosition; }	
+	virtual glm::vec3 getCamPos(){ return mPosition; }
+	virtual glm::vec3 getLookAt(){ return mLookAt; }
 
 private:
     glm::vec3 mPosition;

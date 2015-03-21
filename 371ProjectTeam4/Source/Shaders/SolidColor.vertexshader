@@ -5,31 +5,25 @@ layout(location = 0) in vec3 vertexPosition_modelspace;
 layout(location = 1) in vec3 vertexNormal_modelspace;  // You will need this when you do lighting
 layout(location = 2) in vec3 vertexColor; 
 
-// Values that stay constant for the whole mesh.
+// Uniform Inputs
 uniform mat4 ViewProjectionTransform;
 uniform mat4 WorldTransform;
 uniform vec3 lightPosition;
 
-
-uniform vec3 worldCamPos;
-
 // Outputs to fragment shader
 out vec3 normal;  // You will need this when you do per-fragment lighting
 out vec4 v_color;
-out vec4 lightVector;
-out vec3 eyeVector;
+out vec4 worldPosition;
 
 void main()
 {
 	// Output position of the vertex, in clip space : MVP * position
-	vec4 worldPosition = WorldTransform * vec4(vertexPosition_modelspace,1);
+	worldPosition = WorldTransform * vec4(vertexPosition_modelspace,1);
 	gl_Position =  ViewProjectionTransform * worldPosition;
 
-	//olNormal = vertexNormal_modelspace
-	normal = (WorldTransform * vec4(vertexNormal_modelspace, 0.0)).xyz;
+	//olNormal = vertexNormal_modelspace	
+	normal = normalize((WorldTransform * vec4(vertexNormal_modelspace, 0.0)).xyz);
 	v_color = vec4(vertexColor, 1.0f);	
-
-	eyeVector = worldCamPos - worldPosition.xyz;
-	lightVector = vec4((lightPosition - worldPosition.xyz), 0.0);	
+			
 }
 

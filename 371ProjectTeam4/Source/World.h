@@ -11,7 +11,6 @@
 
 #include "ParsingHelper.h"
 #include <vector>
-#include "light.h"
 #include <GLM/glm.hpp>
 
 class Camera;
@@ -36,10 +35,22 @@ public:
     Path* FindPath(ci_string pathName);
     BSpline* FindSpline(ci_string pathName);
     BSpline* FindSplineByIndex(unsigned int index);
-    Model* FindModelByIndex(unsigned int index);
-	Light* light;
+    Model* FindModelByIndex(unsigned int index);	
 		
 	glm::vec3 camPos;
+	glm::vec3 lookAt;
+
+	struct Light {
+		glm::vec4 position;
+		glm::vec3 intensities; //a.k.a. the color of the light
+		float attenuation;
+		float ambientCoefficient;
+		float coneAngle;
+		glm::vec3 coneDirection;
+	};
+
+	std::vector<Light>* gLights;
+	
 
 private:
     static World* instance;
@@ -51,8 +62,11 @@ private:
 	unsigned int mCurrentCamera;
 
 	// Material Coefficients
-	const float ka = 0.2f;
-	const float kd = 0.8f;
-	const float ks = 0.2f;
-	const float n = 50.0f;
+	float ka;
+	float kd;
+	float ks;
+	float n;
+
+	
+
 };
