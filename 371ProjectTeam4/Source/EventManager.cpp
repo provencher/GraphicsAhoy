@@ -63,7 +63,7 @@ void EventManager::Initialize()
     
 	// Open a window and create its OpenGL context
 	glfwWindowHint(GLFW_RESIZABLE, 0);
-	spWindow = glfwCreateWindow(1024*1.5, 768*1.5, "COMP371 - Assignment Framework", nullptr, nullptr);
+	spWindow = glfwCreateWindow(1024*1.0, 768*1.0, "Force Of Nature", nullptr, nullptr);
 
 	if (spWindow == nullptr)
 	{

@@ -36,10 +36,21 @@ public:
     Path* FindPath(ci_string pathName);
     BSpline* FindSpline(ci_string pathName);
     BSpline* FindSplineByIndex(unsigned int index);
-    Model* FindModelByIndex(unsigned int index);
-	
-	Light* light;	
+    Model* FindModelByIndex(unsigned int index);	
+		
 	glm::vec3 camPos;
+
+	struct Light {
+		glm::vec4 position;
+		glm::vec3 intensities; //a.k.a. the color of the light
+		float attenuation;
+		float ambientCoefficient;
+		float coneAngle;
+		glm::vec3 coneDirection;
+	};
+
+	std::vector<Light>* gLights;
+
 
 private:
     static World* instance;

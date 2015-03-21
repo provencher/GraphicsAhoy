@@ -37,12 +37,37 @@ World* World::instance;
 World::World()
 {
     instance = this;
-	//Create light
-	this->light = new Light(glm::vec3(0, 15, -20), glm::vec3(1.0f, 1.0f, 1.0f));
-	ka = 0.2f;
-	kd = 0.8f;
-	ks = 0.2f;
-	n = 50.0f;
+	// Material Coefficients
+	ka = 0.39f;
+	kd = 0.46f;
+	ks = 0.82f;
+	n = 75.0f;
+
+	//Create light Vector
+	gLights = new vector<Light>();
+
+	// setup lights
+	Light spotlight;
+	spotlight.position = glm::vec4(0, 10, 0, 1);
+	spotlight.intensities = glm::vec3(2, 2, 2); //strong white light
+	spotlight.attenuation = 0.1f;
+	spotlight.ambientCoefficient = 0.0f; //no ambient light
+	spotlight.coneAngle = 5.0f;
+	spotlight.coneDirection = glm::vec3(0, -1, 0);
+
+	Light directionalLight;
+	directionalLight.position = glm::vec4(5, 10, 0.6, 0); //w == 0 indications a directional light
+	directionalLight.intensities = glm::vec3(0.5, 0.5, 0.5); //weak yellowish light
+	directionalLight.ambientCoefficient = 0.06f;
+
+	Light light3;
+	light3.position = glm::vec4(-5, 5, -0.6, 0); //w == 0 indications a directional light
+	light3.intensities = glm::vec3(0.5, 0.5, 0.5); //weak yellowish light
+	light3.ambientCoefficient = 0.06f;
+
+	gLights->push_back(spotlight);
+	gLights->push_back(directionalLight);
+	gLights->push_back(light3);
 }
 World::~World()
 {
@@ -241,6 +266,15 @@ void World::Update(float dt)
 		(*it)->Update(dt);
 	}
 }
+
+string LightNameBuilder(string name, int index){
+
+	std::ostringstream ss;
+	ss << "allLights[" << index << "]." << name;
+	return ss.str();
+}
+
+
 void World::Draw()
 {
 	Renderer::BeginFrame();
@@ -256,15 +290,53 @@ void World::Draw()
 	GLuint CamPos = glGetUniformLocation(Renderer::GetShaderProgramID(), "worldCamPos");
 	glUniform3fv(CamPos, 1, &camPos[0]);
 
-	//lighting Position 
-	GLuint LightVecLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "lightPosition");	
-	glm::vec3 lightPos = this->light->getPosition();
-	glUniform3fv(LightVecLocation, 1, &lightPos[0]);
+	//Lights
+	GLuint NumLights = glGetUniformLocation(Renderer::GetShaderProgramID(), "numLights");
+	int numberOfLights = (int)gLights->size();
+	glUniform1i(NumLights, numberOfLights);
 
-	//lighting Color 
-	GLuint LightVecColor = glGetUniformLocation(Renderer::GetShaderProgramID(), "lightColor");	
-	glm::vec3 lightColor = this->light->getColor();
-	glUniform3fv(LightVecColor, 1, &lightColor[0]);
+	vector<GLuint> gluints;
+	string uniformName;
+	const char* c_str;
+
+	glm::vec3 temp;
+	glm::vec4 v4f;
+
+
+	//Stores the light parameters of each light
+	for (size_t i = 0; i < numberOfLights; ++i){
+		//Initialize vector to hold all 6 parameters
+		gluints = vector<GLuint>(6);
+
+		v4f = (*gLights)[i].position;
+		uniformName = LightNameBuilder("position", i);
+		gluints[0] = glGetUniformLocation(Renderer::GetShaderProgramID(), (c_str = uniformName.c_str()));
+		glUniform4fv(gluints[0], 1, &v4f[0]);
+
+
+		uniformName = LightNameBuilder("intensities", i);
+		temp = (*gLights)[i].intensities;
+		gluints[1] = glGetUniformLocation(Renderer::GetShaderProgramID(), (c_str = uniformName.c_str()));
+		glUniform3fv(gluints[1], 1, &temp[0]);
+
+		uniformName = LightNameBuilder("attenuation", i);
+		gluints[2] = glGetUniformLocation(Renderer::GetShaderProgramID(), (c_str = uniformName.c_str()));
+		glUniform1f(gluints[2], (*gLights)[i].attenuation);
+
+		uniformName = LightNameBuilder("ambientCoefficient", i);
+		gluints[3] = glGetUniformLocation(Renderer::GetShaderProgramID(), (c_str = uniformName.c_str()));
+		glUniform1f(gluints[3], (*gLights)[i].ambientCoefficient);
+
+		uniformName = LightNameBuilder("coneAngle", i);
+		gluints[4] = glGetUniformLocation(Renderer::GetShaderProgramID(), (c_str = uniformName.c_str()));
+		glUniform1f(gluints[4], (*gLights)[i].coneAngle);
+
+		temp = (*gLights)[i].coneDirection;
+		uniformName = LightNameBuilder("coneDirection", i);
+		gluints[5] = glGetUniformLocation(Renderer::GetShaderProgramID(), (c_str = uniformName.c_str()));
+		glUniform3fv(gluints[5], 1, &temp[0]);
+
+	}
 	
 	//Look for WorldTransform in the Vertex Shader
 	GLuint WorldMatrixLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "WorldTransform");	
