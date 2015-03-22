@@ -1,0 +1,14 @@
+#version 330 core
+
+//Input from FragmentShader
+in vec2 UV;  
+   
+//Output to screen
+out vec3 color; 
+
+uniform sampler2D mySamplerTexture; 
+
+void main()
+{
+	color = texture2D(mySamplerTexture, UV).rgb;
+}
