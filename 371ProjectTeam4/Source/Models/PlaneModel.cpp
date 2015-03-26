@@ -44,6 +44,7 @@ PlaneModel::PlaneModel(vec3 size) : GroupModel(){
 
 	wings->SetPosition(glm::vec3(0.0f,0.0f,0.0f));
 	AddChild(wings);
+
 	//*/
 	//Torrent Model ----------------------------------------
 	GroupModel* torrentLayer = new GroupModel();
@@ -66,8 +67,6 @@ PlaneModel::PlaneModel(vec3 size) : GroupModel(){
 	torrentLayer->AddChild(torrent1);
 	torrentLayer->SetPosition(vec3(0,-0.2f,0));
 	AddChild(torrentLayer);
-
-
 
 	
 

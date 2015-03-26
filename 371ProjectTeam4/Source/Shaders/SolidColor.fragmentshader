@@ -1,5 +1,8 @@
 #version 330 core
 
+
+//layout(location = 0) out vec3 color2;
+
 // Ouput to fragment shader
 out vec3 color;
 
@@ -11,6 +14,8 @@ in vec4 worldPosition;
 uniform vec4 materialCoefficients; // x: ambient   y: diffuse   z: specular   w: specular exponent
 
 uniform vec3 worldCamPos;
+
+//uniform float time;
 
 #define MAX_LIGHTS 10
 uniform int numLights;
@@ -66,7 +71,10 @@ vec3 ApplyLight(Light light, vec3 surfaceColor, vec3 normal, vec3 surfacePos, ve
     return ambient + attenuation*(diffuse + specular);
 }
 
-void main() {    
+void main() {
+	
+	//color2 = texture( renderedTexture, UV + 0.005*vec2( sin(time+1024.0*UV.x),cos(time+768.0*UV.y)) ).xyz;
+	    
     vec3 surfacePos = worldPosition.xyz;
     vec4 surfaceColor = v_color;//texture(materialTex, fragTexCoord);
     vec3 surfaceToCamera = normalize(worldCamPos - surfacePos);

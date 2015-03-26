@@ -1280,12 +1280,13 @@ SphereModel::SphereModel(vec3 size) : Model()
         { vec3(0.000000, 0.000000, -1.000000), vec3(0.000000, 0.000000, -1.000000), vec3(1.0f, 0.05f, 0.05f) },
     };
 
+	/*
 	// Set up shader constant defaults
-	//ka = 0.2f;
-	//kd = 0.8f;
-	//ks = 0.2f;
-	//n = 50.0f;
-	
+	ka = 0.2f;
+	kd = 0.8f;
+	ks = 0.2f;
+	n = 75.0f;
+	*/
 
     numOfVertices = sizeof(vertexBuffer) / sizeof(Vertex);
 

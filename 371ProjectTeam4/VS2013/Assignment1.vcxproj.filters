@@ -106,6 +106,12 @@
     <ClCompile Include="..\Source\Models\PlaneModel.cpp">
       <Filter>Source Files\Model</Filter>
     </ClCompile>
+    <ClCompile Include="..\Source\Texture.cpp">
+      <Filter>Source Files\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\stb_image.cpp">
+      <Filter>Source Files\Tools</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Source\EventManager.h">
@@ -158,6 +164,15 @@
     </ClInclude>
     <ClInclude Include="..\Source\Models\PlaneModel.h">
       <Filter>Source Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\ReferenceCounter.h">
+      <Filter>Source Files\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Texture.h">
+      <Filter>Source Files\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\stb_image.h">
+      <Filter>Source Files\Tools</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

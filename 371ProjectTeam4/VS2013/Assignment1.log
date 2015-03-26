@@ -1,9 +1,16 @@
-﻿Build started 3/26/2015 12:14:20 PM.
+﻿Build started 3/26/2015 2:50:07 PM.
      1>Project "C:\Users\Eric\Documents\GitHub\GraphicsAhoy\371ProjectTeam4\VS2013\Assignment1.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"../ThirdParty/glew-1.10.0/include" /I"../ThirdParty/glfw-3.0.4/include" /I../ThirdParty/glm /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"C:\Users\Eric\Documents\GitHub\GraphicsAhoy\371ProjectTeam4\VS2013\/../Build/Debug/" /Fd"C:\Users\Eric\Documents\GitHub\GraphicsAhoy\371ProjectTeam4\VS2013\/../Build/Debug/vc120.pdb" /Gd /TP /analyze- /errorReport:prompt ..\Source\World.cpp
-         World.cpp
-     1>c:\users\eric\documents\github\graphicsahoy\371projectteam4\source\world.cpp(305): warning C4018: '<' : signed/unsigned mismatch
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"../ThirdParty/glew-1.10.0/include" /I"../ThirdParty/glfw-3.0.4/include" /I../ThirdParty/glm /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"C:\Users\Eric\Documents\GitHub\GraphicsAhoy\371ProjectTeam4\VS2013\/../Build/Debug/" /Fd"C:\Users\Eric\Documents\GitHub\GraphicsAhoy\371ProjectTeam4\VS2013\/../Build/Debug/vc120.pdb" /Gd /TP /analyze- /errorReport:prompt ..\Source\stb_image.cpp
+         stb_image.cpp
+     1>c:\users\eric\documents\github\graphicsahoy\371projectteam4\source\stb_image.cpp(300): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdio.h(211) : see declaration of 'fopen'
+     1>c:\users\eric\documents\github\graphicsahoy\371projectteam4\source\stb_image.cpp(362): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdio.h(211) : see declaration of 'fopen'
+     1>c:\users\eric\documents\github\graphicsahoy\371projectteam4\source\stb_image.cpp(400): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdio.h(211) : see declaration of 'fopen'
+     1>c:\users\eric\documents\github\graphicsahoy\371projectteam4\source\stb_image.cpp(4354): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdio.h(211) : see declaration of 'fopen'
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Eric\Documents\GitHub\GraphicsAhoy\371ProjectTeam4\VS2013\/../Bin/371ProjectTeam4-Debug.exe" /INCREMENTAL /NOLOGO /LIBPATH:"../ThirdParty/glew-1.10.0/lib/Release/Win32" /LIBPATH:"../ThirdParty/glfw-3.0.4/lib/Win32/lib-msvc110" opengl32.lib glew32s.lib glfw3.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Eric\Documents\GitHub\GraphicsAhoy\371ProjectTeam4\VS2013\/../Bin/371ProjectTeam4-Debug.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Eric\Documents\GitHub\GraphicsAhoy\371ProjectTeam4\VS2013\/../Bin/371ProjectTeam4-Debug.lib" /MACHINE:X86 C:\Users\Eric\Documents\GitHub\GraphicsAhoy\371ProjectTeam4\VS2013\/../Build/Debug/BSpline.obj
          C:\Users\Eric\Documents\GitHub\GraphicsAhoy\371ProjectTeam4\VS2013\/../Build/Debug/BSplineCamera.obj
@@ -19,11 +26,16 @@
          C:\Users\Eric\Documents\GitHub\GraphicsAhoy\371ProjectTeam4\VS2013\/../Build/Debug/EventManager.obj
          C:\Users\Eric\Documents\GitHub\GraphicsAhoy\371ProjectTeam4\VS2013\/../Build/Debug/main.obj
          C:\Users\Eric\Documents\GitHub\GraphicsAhoy\371ProjectTeam4\VS2013\/../Build/Debug/Renderer.obj
+         C:\Users\Eric\Documents\GitHub\GraphicsAhoy\371ProjectTeam4\VS2013\/../Build/Debug/stb_image.obj
+         C:\Users\Eric\Documents\GitHub\GraphicsAhoy\371ProjectTeam4\VS2013\/../Build/Debug/Texture.obj
          C:\Users\Eric\Documents\GitHub\GraphicsAhoy\371ProjectTeam4\VS2013\/../Build/Debug/ThirdPersonCamera.obj
          C:\Users\Eric\Documents\GitHub\GraphicsAhoy\371ProjectTeam4\VS2013\/../Build/Debug/World.obj
+     1>LINK : warning LNK4098: defaultlib 'LIBCMT' conflicts with use of other libs; use /NODEFAULTLIB:library
+     1>LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
+     1>glew32s.lib(glew.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'glew32s.lib(glew.obj)' or at 'C:\Users\Eric\Documents\GitHub\GraphicsAhoy\371ProjectTeam4\Bin\vc100.pdb'; linking object as if no debug info
          Assignment1.vcxproj -> C:\Users\Eric\Documents\GitHub\GraphicsAhoy\371ProjectTeam4\VS2013\/../Bin/371ProjectTeam4-Debug.exe
      1>Done Building Project "C:\Users\Eric\Documents\GitHub\GraphicsAhoy\371ProjectTeam4\VS2013\Assignment1.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:01.59
+Time Elapsed 00:00:00.89

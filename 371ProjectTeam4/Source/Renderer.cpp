@@ -100,11 +100,20 @@ void Renderer::Shutdown()
 	spWindow = nullptr;
 }
 
+void Renderer::BindAsBufferTarget(){
+	// Render to our framebuffer
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	
+	int width, height;
+	glfwGetWindowSize(EventManager::GetWindow(), &width, &height);
+	glViewport(0, 0, width, height); // Render on the whole framebuffer, complete from the lower left corner to the upper right
+}
+
 void Renderer::BeginFrame()
 {
 	// Clear the screen
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+	BindAsBufferTarget();
 }
 
 void Renderer::EndFrame()

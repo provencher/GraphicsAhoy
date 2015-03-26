@@ -45,6 +45,9 @@ str.push_back("boundpath = \"Path2\"");
 str.push_back("pathspeed = 1.0");
 	*/
 
+	// Cull triangles which normal is not towards the camera
+	glEnable(GL_CULL_FACE);
+
 
 	// Main Loop
 	do {
