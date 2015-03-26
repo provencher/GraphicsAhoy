@@ -70,6 +70,7 @@ float ThirdPersonCamera::GetCameraRadius()
 	return mRadius;
 }
 
+
 void ThirdPersonCamera::Update(float dt)
 {
 
@@ -150,7 +151,10 @@ void ThirdPersonCamera::UpdateTargetPosition(float dt){
 
 	//Maximum speed of rotation
 	float rotateSpeed = 0.01f;
-	
+
+	if (mHorizontalAngle > 0) mHorizontalAngle -= 0.003;
+	else if (mHorizontalAngle < 0) mHorizontalAngle += 0.003;
+
 	//movement  -----------------------------------------------------
 	glm::vec3 movementDir = glm::vec3(0,0,0);
    // if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_W ) == GLFW_PRESS)//Forward
@@ -180,8 +184,8 @@ void ThirdPersonCamera::UpdateTargetPosition(float dt){
 
 	//Wrap Horizontal angle within [-90, 90] degrees
 	//Controlled model is not meant to be able to backtrack, limiting its range of motion accomplishes this
-	if (mHorizontalAngle > pif / 2)			mHorizontalAngle = pif / 2;
-	else if (mHorizontalAngle < -pif / 2)		mHorizontalAngle = -pif / 2;
+	if (mHorizontalAngle > pif / 3)			mHorizontalAngle = pif / 3;
+	else if (mHorizontalAngle < -pif / 3)		mHorizontalAngle = -pif / 3;
 
 	//distance -------------------------------------------------------
 	float dist = dt*mTargetModel->GetSpeed();

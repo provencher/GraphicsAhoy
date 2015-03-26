@@ -184,8 +184,15 @@ glm::mat4 Model::GetWorldMatrix() const
 	mat4 worldMatrix(1.0f);
 
 	mat4 t = glm::translate(mat4(1.0f), mPosition);
-	mat4 r = glm::rotate(mat4(1.0f), mRotationAngleInDegrees, mRotationAxisX + mRotationAxisY);
+
+	mat4 r1 = glm::rotate(mat4(1.0f), mRotationAngleInDegrees, mRotationAxisY);
+
+	mat4 r2 = glm::rotate(mat4(1.0f), mRotationAngleInDegrees,mRotationAxisX);
+
+	mat4 r = r2 + r1;
+
 	mat4 s = glm::scale(mat4(1.0f), mScaling);
+
 	worldMatrix = t * r * s;
 
 	return worldMatrix;
