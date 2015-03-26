@@ -5,16 +5,20 @@
 
 std::map<std::string, TextureData*> Texture::s_resourceMap;
 
-TextureData::TextureData(GLenum textureTarget)
+TextureData::TextureData(GLenum textureTarget, int numTextures)
 {
-	glGenTextures(1, &m_textureID);
+	m_textureID = new GLuint[numTextures];
+	glGenTextures(1, m_textureID);
 	m_textureTarget = textureTarget;
+	m_numTextures = numTextures;
 }
 
 TextureData::~TextureData()
 {
-	if (m_textureID) glDeleteTextures(1, &m_textureID);
+	if (*m_textureID) glDeleteTextures(m_numTextures, m_textureID);
+	if (m_textureID) delete m_textureID;
 }
+
 
 
 Texture::Texture(const std::string& fileName, GLenum textureTarget, GLfloat filter)
@@ -80,4 +84,8 @@ void Texture::Bind(unsigned int unit) const
 	assert(unit >= 0 && unit <= 31);
 	glActiveTexture(GL_TEXTURE0 + unit);
 	glBindTexture(m_textureData->GetTextureTarget(), m_textureData->GetTextureID());
+}
+
+void Texture::BindAsRenderTarget(){
+
 }

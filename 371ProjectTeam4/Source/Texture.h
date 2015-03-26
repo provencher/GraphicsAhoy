@@ -9,18 +9,21 @@
 class TextureData : public ReferenceCounter
 {
 public:
-	TextureData(GLenum textureTarget);
+	TextureData(GLenum textureTarget, int numTextures = 1);
 	virtual ~TextureData();
 
 	inline GLenum GetTextureTarget() { return m_textureTarget; }
-	inline GLuint GetTextureID() { return m_textureID; }
+	inline GLuint GetTextureID() { return m_textureID[0]; }
 protected:
 private:
 	TextureData(TextureData& other) {}
 	void operator=(TextureData& other) {}
-
+	
+	GLuint* m_textureID;
 	GLenum m_textureTarget;
-	GLuint m_textureID;
+	int m_numTextures;
+	
+
 };
 
 class Texture
@@ -31,6 +34,8 @@ public:
 	virtual ~Texture();
 
 	void Bind(unsigned int unit = 0) const;
+	void BindAsRenderTarget();
+
 protected:
 private:
 	static std::map<std::string, TextureData*> s_resourceMap;
