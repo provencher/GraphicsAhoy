@@ -43,8 +43,6 @@ public:
 	static unsigned int GetCurrentShader() { return sCurrentShader; }
 	static void SetShader(ShaderType type);
 
-	static void BindAsBufferTarget();
-
 private:
 	static GLFWwindow* spWindow;
 
