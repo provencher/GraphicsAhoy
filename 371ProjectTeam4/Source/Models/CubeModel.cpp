@@ -77,6 +77,13 @@ CubeModel::CubeModel(vec3 size) : Model()
 	glGenBuffers(1, &mVertexBufferID);
 	glBindBuffer(GL_ARRAY_BUFFER, mVertexBufferID);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertexBuffer), vertexBuffer, GL_STATIC_DRAW);
+
+	// Set up shader constant defaults
+	ka = 0.2f;
+	kd = 0.8f;
+	ks = 0.2f;
+	n = 50.0f;
+
 }
 
 CubeModel::~CubeModel()

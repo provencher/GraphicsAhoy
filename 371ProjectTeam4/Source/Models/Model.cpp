@@ -24,6 +24,11 @@ using namespace glm;
 Model::Model() : mName("UNNAMED"), mPosition(0.0f, 0.0f, 0.0f), mScaling(1.0f, 1.0f, 1.0f), mRotationAxis(0.0f, 1.0f, 0.0f), mRotationAngleInDegrees(0.0f), mPath(nullptr), mSpeed(0.0f), mTargetWaypoint(1), mSpline(nullptr), mSplineParameterT(0.0f)
 {
 	mParent = nullptr;
+	// Material Coefficients
+	ka = 0.39f;
+	kd = 0.46f;
+	ks = 0.82f;
+	n = 75.0f;
 
 }
 Model::~Model()
@@ -168,7 +173,10 @@ void Model::Update(float dt){
 }
 
 //Draw------------------------------------------
-void Model::Draw(){}
+void Model::Draw(){
+	
+
+}
 
 
 glm::mat4 Model::GetWorldMatrix(){

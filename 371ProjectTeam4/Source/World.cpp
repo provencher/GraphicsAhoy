@@ -282,9 +282,7 @@ void World::Draw()
 	// Set shader to use
 	glUseProgram(Renderer::GetShaderProgramID());
 
-	//Material Attributes uniform
-	GLuint MaterialID = glGetUniformLocation(Renderer::GetShaderProgramID(), "materialCoefficients");
-	glUniform4f(MaterialID, ka, kd, ks, n);
+	
 
 	//WorldCamPosition
 	GLuint CamPos = glGetUniformLocation(Renderer::GetShaderProgramID(), "worldCamPos");
@@ -348,9 +346,20 @@ void World::Draw()
 	mat4 VP = mCamera[mCurrentCamera]->GetViewProjectionMatrix();
 	glUniformMatrix4fv(VPMatrixLocation, 1, GL_FALSE, &VP[0][0]);
 
+
+	//Material Attributes uniform
+	GLuint MaterialID = glGetUniformLocation(Renderer::GetShaderProgramID(), "materialCoefficients");
+	
+
 	// Draw models
 	for (vector<Model*>::iterator it = mModel.begin(); it < mModel.end(); ++it){
-		// Draw model
+		// Draw model		
+		ka = (*it)->getMaterials().x;
+		kd = (*it)->getMaterials().y;
+		ks = (*it)->getMaterials().z;
+		n = (*it)->getMaterials().w;
+
+		glUniform4f(MaterialID, ka, kd, ks, n);
 		(*it)->Draw();
 	}
 
