@@ -10,7 +10,7 @@ class MeshLoader
 public:
 	MeshLoader();
 	~MeshLoader();
-	void Draw();
+	void Draw(glm::mat4 worldMat);
 private:
 	struct Vertex
 	{
@@ -22,5 +22,5 @@ private:
 	std::vector<Vertex>* mVertexArray;
 	unsigned int mVertexArrayID;
 	unsigned int mVertexBufferID;
-	
+	unsigned int mNumOfVertices;
 };

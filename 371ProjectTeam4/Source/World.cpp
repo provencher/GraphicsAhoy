@@ -16,11 +16,13 @@
 #include "BSplineCamera.h"
 #include "ThirdPersonCamera.h"
 
+//Models
 #include "Models/GroupModel.h"
 #include "Models/PlaneModel.h"
 #include "Models/CubeModel.h"
 #include "Models/SphereModel.h"
 #include "Models/Billboard.h"
+#include "Models/RazorbackModel.h";
 #include "Path.h"
 #include "BSpline.h"
 
@@ -106,14 +108,7 @@ World* World::GetInstance()
 void World::LoadScene(const char * scene_path){
 	
 	
-/*
-	[Cube]
-name     = "Ground"
-scaling  = 1.0 100.0 100.0
-position = 0.0 -0.5 0.0
-rotation = 0.0 0.0 1.0 90.0
-*/
-	if(1){
+	if(1){ //Ground ===============================
 		Model* m = new CubeModel(vec3(0.6,0.6,0.6));
 		m->SetScaling(vec3(1,200,200));
 		m->SetPosition(vec3(0,-0.5f,0));
@@ -122,6 +117,7 @@ rotation = 0.0 0.0 1.0 90.0
 	}	
 	
 	
+	//Load Objects from File =====================
 	// Using case-insensitive strings and streams for easier parsing
 	ci_ifstream input;
 	input.open(scene_path, ios::in);
@@ -172,6 +168,14 @@ rotation = 0.0 0.0 1.0 90.0
 
 
 
+	////////////////////////////////////////////////////
+	Model* m = new RazorbackModel();
+	m->SetPosition(vec3(-5,5,-5));
+	mModel.push_back(m);
+
+
+
+	////////////////////////////////////////////////////
 
 
 

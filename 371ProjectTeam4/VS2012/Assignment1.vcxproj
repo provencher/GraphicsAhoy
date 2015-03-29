@@ -120,6 +120,7 @@
     <ClCompile Include="..\Source\Models\particle.cpp" />
     <ClCompile Include="..\Source\Models\particleEmitter.cpp" />
     <ClCompile Include="..\Source\Models\PlaneModel.cpp" />
+    <ClCompile Include="..\Source\Models\RazorbackModel.cpp" />
     <ClCompile Include="..\Source\Models\SphereModel.cpp" />
     <ClCompile Include="..\Source\Models\TorrentModel.cpp" />
     <ClCompile Include="..\Source\Path.cpp" />
@@ -144,6 +145,7 @@
     <ClInclude Include="..\Source\Models\Model.h" />
     <ClInclude Include="..\Source\Models\particle.h" />
     <ClInclude Include="..\Source\Models\PlaneModel.h" />
+    <ClInclude Include="..\Source\Models\RazorbackModel.h" />
     <ClInclude Include="..\Source\Models\SphereModel.h" />
     <ClInclude Include="..\Source\Models\TorrentModel.h" />
     <ClInclude Include="..\Source\ParsingHelper.h" />
