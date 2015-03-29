@@ -14,10 +14,10 @@
 class SphereModel : public Model
 {
 public:
-	SphereModel(glm::vec3 size = glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3 color = glm::vec3(1.0f, 0.0f, 0.0f));
+	SphereModel(glm::vec3 color = glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3 size = glm::vec3(1.0f, 1.0f, 1.0f));
 	
-	void loadMesh(glm::vec3 size, glm::vec3 color);
-	void destroyMesh();
+	void LoadMesh(glm::vec3 color, glm::vec3 size);
+	void DestroyMesh();
     virtual ~SphereModel(void);
 
     virtual void Update(float dt);

@@ -13,13 +13,13 @@
 
 using namespace glm;
 
-SphereModel::SphereModel(vec3 size, vec3 color) : Model()
+SphereModel::SphereModel(vec3 color, vec3 size) : Model()
 {
-    loadMesh(size, color);
+    LoadMesh(color, size);
 }
 
 
-void SphereModel::loadMesh(vec3 size, vec3 color)
+void SphereModel::LoadMesh(vec3 color, vec3 size)
 {
 
 	SetScaling(size);
@@ -1295,14 +1295,14 @@ void SphereModel::loadMesh(vec3 size, vec3 color)
     glBindBuffer(GL_ARRAY_BUFFER, mVertexBufferID);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertexBuffer), vertexBuffer, GL_STATIC_DRAW);
 }
-void SphereModel::destroyMesh(){
+void SphereModel::DestroyMesh(){
 	glDeleteBuffers(1, &mVertexBufferID);
     glDeleteVertexArrays(1, &mVertexArrayID);
 }
 
 SphereModel::~SphereModel()
 {
-	destroyMesh();
+	DestroyMesh();
 }
 
 
