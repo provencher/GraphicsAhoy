@@ -23,6 +23,8 @@ public:
 	virtual void SetCameraRadius(float r);
 	virtual float GetCameraRadius();
 
+	virtual glm::vec3 getCamPos(){ return mPosition; }	
+
 protected:
 	virtual void UpdateTargetPosition(float dt);
 	virtual void updateCameraLookAt();

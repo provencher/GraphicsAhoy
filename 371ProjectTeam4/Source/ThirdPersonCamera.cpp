@@ -3,6 +3,7 @@
 //
 // Created by Nicolas Bergeron on 8/7/14.
 // Updated by Gary Chang on 28/1/15
+// Updated by Jordan Rutty
 //
 // Copyright (c) 2014-2015 Concordia University. All rights reserved.
 //
@@ -20,14 +21,22 @@
 
 using namespace glm;
 
+/////////////////////////////////////////////////////////////////////////////////
+
+//			Flying Player Movement
+
+//===============================================================================
+
+
+void my_int_func(int x) //Dynamic function being called
+{
+    printf( "%d\n", x );
+}
 
 ThirdPersonCamera::ThirdPersonCamera(Model* targetModel)
     : Camera(), mTargetModel(targetModel), mHorizontalAngle(0.0f), mVerticalAngle(0.0f), mRadius(10.0f)
 {
     assert(mTargetModel != nullptr);
-    // @TODO
-    // Calculate Camera Vectors (LookAt, Up, Right) from Spherical Coordinates
-    // Convert from Spherical to Cartesian Coordinates to get the lookAt Vector
 
 	//Orient ---------------------------------------
 	glm::vec3 defaultDir = glm::vec3(0,0,1);							//front of the model
@@ -47,7 +56,17 @@ ThirdPersonCamera::ThirdPersonCamera(Model* targetModel)
 	//position and orient ---------------------------
 	mPosition = mTargetModel->GetPosition() - mLookAt*mRadius;
 	mTargetModel->SetRotation(mTargetModel->GetRotationAxis(), (mHorizontalAngle/3.14159265358979323846f*180));
+
+
+
+	//#PlayingAround #DynamicFunctionCall ===============================
+    void (*foo)(int);
+    foo = &my_int_func;
+    //------------------
+	foo( 2 );
+    (*foo)( 2 );
 }
+
 
 ThirdPersonCamera::~ThirdPersonCamera()
 {
@@ -116,10 +135,10 @@ void ThirdPersonCamera::Update(float dt)
 	//*///////////////////////////////////////////////////////////////
    
 
+
 	
 
 }
-
 void ThirdPersonCamera::updateCameraLookAt(){
 	mLookAt = glm::vec3(
 		cos(mVerticalAngle) * sin(mHorizontalAngle), 
@@ -128,6 +147,22 @@ void ThirdPersonCamera::updateCameraLookAt(){
 	);
 	mRight = glm::normalize(glm::cross(mLookAt, vec3(0.0f, 1.0f, 0.0f)));
     mUp = glm::cross(mRight, mLookAt);
+		
+
+	/* some crazy stuff with adding an extra transform to model
+	glm::mat4 m = glm::mat4(
+		cos(mVerticalAngle) * sin(mHorizontalAngle), 0, 0, 0,
+		0, sin(mVerticalAngle), 0, 0,
+		0,0,cos(mVerticalAngle) * cos(mHorizontalAngle),0,
+		0,0,0,1);	
+	//glm::mat4 m = vec4(mLookAt,1)*glm::mat4(1.0f);
+	mTargetModel->transform = m;
+	*/
+
+	SetLookAt(mLookAt);
+	SetRight(mRight);
+	SetUp(mUp);
+
 }
 void ThirdPersonCamera::UpdateTargetPosition(float dt){
 		 //*//Move Target Model ////////////////////////////////////////////
@@ -140,16 +175,31 @@ void ThirdPersonCamera::UpdateTargetPosition(float dt){
 	glm::vec3 tempUp = glm::normalize(glm::cross(vec3(0.0f, 0.0f, 1.0f), vec3(1.0f, 0.0f, 0.0f)));
 	
 	
+	int turn = 0;
+	float tiltspeed = 10.0f;
+
 	//movement  -----------------------------------------------------
 	glm::vec3 movementDir = glm::vec3(0,0,0);
     if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_W ) == GLFW_PRESS)//Forward
 		movementDir += direction;
     if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_S ) == GLFW_PRESS)//Back
 		movementDir -= direction;
-	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_A ) == GLFW_PRESS)//Left
+	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_A ) == GLFW_PRESS){//Left
 		movementDir -= mRight;
-	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_D ) == GLFW_PRESS)//Right
+		mTargetModel->mRotationAngleZ = -tiltspeed;
+		mTargetModel->mRotationAngleY = tiltspeed;
+		turn--;
+	}
+	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_D ) == GLFW_PRESS){//Right
 		movementDir += mRight;
+		mTargetModel->mRotationAngleZ = tiltspeed;
+		mTargetModel->mRotationAngleY = -tiltspeed;
+		turn++;
+	}
+	if(turn == 0){
+		mTargetModel->mRotationAngleZ = 0.0f;
+		mTargetModel->mRotationAngleY = 0.0f;
+	}
 	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_SPACE ) == GLFW_PRESS)//Up
 		movementDir += tempUp;
 	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_RIGHT_SHIFT ) == GLFW_PRESS ||

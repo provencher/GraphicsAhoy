@@ -28,6 +28,7 @@ float  EventManager::sMouseDeltaX = 0.0f;
 double EventManager::sLastMousePositionY = 0.0f;
 float  EventManager::sMouseDeltaY = 0.0f;
 
+float schale = 1.5f; //###### scale up windows for larger displays
 // Window
 GLFWwindow* EventManager::spWindow = nullptr;
 
@@ -63,7 +64,7 @@ void EventManager::Initialize()
     
 	// Open a window and create its OpenGL context
 	glfwWindowHint(GLFW_RESIZABLE, 0);
-	spWindow = glfwCreateWindow(1024, 768, "COMP371 - Assignment Framework", nullptr, nullptr);
+	spWindow = glfwCreateWindow(1024*schale, 768*schale, "Force Of Nature", nullptr, nullptr);
 
 	if (spWindow == nullptr)
 	{

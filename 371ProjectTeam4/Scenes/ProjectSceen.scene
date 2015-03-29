@@ -50,11 +50,7 @@ controlpoint = 4.0 -1.0 10.0
 controlpoint = 4.0 0.0 2.5
 
 
-[Cube]
-name     = "Ground"
-scaling  = 1.0 100.0 100.0
-position = 0.0 -0.5 0.0
-rotation = 0.0 0.0 1.0 90.0
+
 
 [Cube]
 name     = "Cube"

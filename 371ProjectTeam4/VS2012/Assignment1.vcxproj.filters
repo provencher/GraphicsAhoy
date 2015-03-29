@@ -24,6 +24,9 @@
     <Filter Include="Source Files\Tools">
       <UniqueIdentifier>{0ab2aed8-6b33-4a65-bd24-b3d72c36f75c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Transforms">
+      <UniqueIdentifier>{1c56d9f5-e732-4ae8-8c56-f4499c8692a7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Source\Shaders\SolidColor.vertexshader">
@@ -70,29 +73,53 @@
     <ClCompile Include="..\Source\Camera.cpp">
       <Filter>Source Files\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="..\Source\Model.cpp">
-      <Filter>Source Files\Model</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Source\CubeModel.cpp">
-      <Filter>Source Files\Model</Filter>
-    </ClCompile>
     <ClCompile Include="..\Source\World.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Source\SphereModel.cpp">
-      <Filter>Source Files\Model</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Source\Path.cpp">
-      <Filter>Source Files\Model</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Source\BSpline.cpp">
-      <Filter>Source Files\Model</Filter>
     </ClCompile>
     <ClCompile Include="..\Source\BSplineCamera.cpp">
       <Filter>Source Files\Camera</Filter>
     </ClCompile>
     <ClCompile Include="..\Source\ThirdPersonCamera.cpp">
       <Filter>Source Files\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\light.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\BSpline.cpp">
+      <Filter>Source Files\Transforms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Path.cpp">
+      <Filter>Source Files\Transforms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Models\CubeModel.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Models\GroupModel.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Models\Model.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Models\SphereModel.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Models\TorrentModel.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Models\PlaneModel.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Models\BillBoard.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Models\particle.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Models\particleEmitter.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\meshLoader.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -108,32 +135,59 @@
     <ClInclude Include="..\Source\Camera.h">
       <Filter>Source Files\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="..\Source\Model.h">
-      <Filter>Source Files\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Source\CubeModel.h">
-      <Filter>Source Files\Model</Filter>
-    </ClInclude>
     <ClInclude Include="..\Source\World.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\Source\ParsingHelper.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Source\SphereModel.h">
-      <Filter>Source Files\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Source\Path.h">
-      <Filter>Source Files\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Source\BSpline.h">
-      <Filter>Source Files\Model</Filter>
-    </ClInclude>
     <ClInclude Include="..\Source\BSplineCamera.h">
       <Filter>Source Files\Camera</Filter>
     </ClInclude>
     <ClInclude Include="..\Source\ThirdPersonCamera.h">
       <Filter>Source Files\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\light.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\BSpline.h">
+      <Filter>Source Files\Transforms</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Path.h">
+      <Filter>Source Files\Transforms</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\math2.h">
+      <Filter>Source Files\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Models\CubeModel.h">
+      <Filter>Source Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Models\GroupModel.h">
+      <Filter>Source Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Models\Model.h">
+      <Filter>Source Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Models\SphereModel.h">
+      <Filter>Source Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Models\TorrentModel.h">
+      <Filter>Source Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Models\PlaneModel.h">
+      <Filter>Source Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Models\BillBoard.h">
+      <Filter>Source Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Models\particle.h">
+      <Filter>Source Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Models\particleEmitter.h">
+      <Filter>Source Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\meshLoader.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
