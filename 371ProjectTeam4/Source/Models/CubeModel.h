@@ -15,13 +15,13 @@ class CubeModel : public Model
 {
 public:
 	//events
-	CubeModel(glm::vec3 size = glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3 color = glm::vec3(0,0,0));
+	CubeModel(glm::vec3 color = glm::vec3(0,0,0), glm::vec3 size = glm::vec3(1.0f, 1.0f, 1.0f));
 	virtual ~CubeModel();
 	virtual void Update(float dt);
 	virtual void Draw();
 	//meshes
-	void loadMesh(glm::vec3 size, glm::vec3 color);
-	void destroyMesh();
+	void LoadMesh(glm::vec3 size, glm::vec3 color);
+	void DestroyMesh();
 	//colors
 	//void SetSideColor(char side, glm::vec3 col);
 	//void SetColor(vec3 col);

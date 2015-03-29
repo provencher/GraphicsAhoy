@@ -8,12 +8,11 @@
 //
 
 #pragma once
-//#include "HashTable.h"
+
 #include "Model.h"
 #include "../Path.h"
 #include "../BSpline.h"
 #include "../light.h"
-//#include "HashTable.h"
 
 class GroupModel : public Model {
 public:

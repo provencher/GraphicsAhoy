@@ -27,7 +27,7 @@ void ParticleEmitter::Init(vec3 dir){
 	mDirection = dir;
 
 	if(0){
-		Model* m = new CubeModel(vec3(0.4), vec3(1));
+		Model* m = new CubeModel(vec3(1), vec3(0.4));
 		AddChild(m);
 	}
 
@@ -50,7 +50,7 @@ void ParticleEmitter::SpawnParticle(){
 	float rotationSpeed = 0;
 
 	Particle* p = new Particle(speed, particleDir, life, 0);
-	Model* m = new CubeModel(vec3(0.4f, 0.3f, 0.001f), mColor);
+	Model* m = new CubeModel(mColor, vec3(0.4f, 0.3f, 0.001f));
 
 	//BillBoard* m = new BillBoard();
 	//World* w = World::GetInstance();

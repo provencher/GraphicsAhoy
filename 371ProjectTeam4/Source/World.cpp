@@ -114,7 +114,7 @@ position = 0.0 -0.5 0.0
 rotation = 0.0 0.0 1.0 90.0
 */
 	if(1){
-		Model* m = new CubeModel(vec3(1), vec3(0.6,0.6,0.6));
+		Model* m = new CubeModel(vec3(0.6,0.6,0.6));
 		m->SetScaling(vec3(1,200,200));
 		m->SetPosition(vec3(0,-0.5f,0));
 		m->SetRotation(vec3(0,0,1), 90.0f);

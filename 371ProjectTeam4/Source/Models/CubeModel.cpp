@@ -15,17 +15,15 @@
 
 using namespace glm;
 
-CubeModel::CubeModel(vec3 size, vec3 color) : Model()
+CubeModel::CubeModel(vec3 color, vec3 size) : Model()
 {
 	// Create Vertex Buffer for all the verices of the Cube
-	
-	loadMesh(size, color);
-	
+	LoadMesh(color, size);
 }
 
 
 
-void CubeModel::loadMesh(vec3 size, vec3 color)
+void CubeModel::LoadMesh(vec3 color, vec3 size)
 {
 
 	vec3 rcol, lcol, tcol, bcol, ncol, fcol;
@@ -105,7 +103,7 @@ void CubeModel::loadMesh(vec3 size, vec3 color)
 	glBindBuffer(GL_ARRAY_BUFFER, mVertexBufferID);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertexBuffer), vertexBuffer, GL_STATIC_DRAW);
 }
-void CubeModel::destroyMesh(){
+void CubeModel::DestroyMesh(){
 	glDeleteBuffers(1, &mVertexBufferID);
     glDeleteVertexArrays(1, &mVertexArrayID);
 }

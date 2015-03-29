@@ -154,6 +154,13 @@
     <ClInclude Include="..\Source\ThirdPersonCamera.h" />
     <ClInclude Include="..\Source\World.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\Scenes\Obj\XA-20_Razorback_Strike_Fighter\Eject_Seat.png" />
+    <Image Include="..\Scenes\Obj\XA-20_Razorback_Strike_Fighter\Glass_Cockpit.png" />
+    <Image Include="..\Scenes\Obj\XA-20_Razorback_Strike_Fighter\Pilot_usa.png" />
+    <Image Include="..\Scenes\Obj\XA-20_Razorback_Strike_Fighter\XA-20_Razorback_Strike_Fighter_N.png" />
+    <Image Include="..\Scenes\Obj\XA-20_Razorback_Strike_Fighter\XA-20_Razorback_Strike_Fighter_P01.png" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

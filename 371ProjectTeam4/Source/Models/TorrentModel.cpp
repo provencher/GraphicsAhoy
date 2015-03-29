@@ -17,12 +17,12 @@
 using namespace glm;
 
 TorrentModel::TorrentModel(vec3 size) : GroupModel(){
-	CubeModel* rutter= new CubeModel(vec3(1), vec3(0.4f,0.4f,0.4f));
+	CubeModel* rutter= new CubeModel(vec3(0.4f,0.4f,0.4f));
 	rutter->SetRotation(glm::vec3(0.0f,0.0f,2.0f), -45.0f);
 	rutter->SetScaling(glm::vec3(0.3f,0.15f, 0.75f));
 	AddChild(rutter);
 	
-	CubeModel* rutter2= new CubeModel(vec3(1), vec3(0.4f,0.4f,0.4f));
+	CubeModel* rutter2= new CubeModel(vec3(0.4f,0.4f,0.4f));
 	rutter2->SetRotation(glm::vec3(0.0f,0.0f,2.0f), 45.0f);
 	rutter2->SetScaling(glm::vec3(0.3f,0.15f, 0.75f));
 	AddChild(rutter2);

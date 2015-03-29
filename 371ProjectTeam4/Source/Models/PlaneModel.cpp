@@ -63,7 +63,7 @@ PlaneModel::PlaneModel(vec3 size) : GroupModel(){
 			torrentLayer->AddChild(m);
 		}
 		if(1){
-			Model* m = new CubeModel(vec3(1), vec3(0.4f));
+			Model* m = new CubeModel(vec3(0.4f));
 			m->SetPosition(vec3(-1.7f,0.2f,0.0f));
 			m->SetScaling(vec3(0.3f, 0.3f, 0.5f));
 			torrentLayer->AddChild(m);
@@ -79,7 +79,7 @@ PlaneModel::PlaneModel(vec3 size) : GroupModel(){
 			torrentLayer->AddChild(m);
 		}
 		if(1){
-			Model* m = new CubeModel(vec3(1), vec3(0.4f));
+			Model* m = new CubeModel(vec3(0.4f));
 			m->SetPosition(vec3(1.7f,0.2f,0.0f));
 			m->SetScaling(vec3(0.3f, 0.3f, 0.5f));
 			torrentLayer->AddChild(m);
@@ -123,14 +123,14 @@ PlaneModel::PlaneModel(vec3 size) : GroupModel(){
 		vec3 thrusterColor = vec3(0.4,0.4,0.4);
 		GroupModel* group = new GroupModel();
 		if(1){//thruster1
-			CubeModel* model= new CubeModel(vec3(1.0f), thrusterColor);
+			CubeModel* model= new CubeModel(thrusterColor);
 			model->SetScaling(vec3(0.7f, 0.3f, 2));
 			model->SetPosition(vec3(-0.4f,	-0.1f,	-1.4f));
 			model->SetRotation(vec3(0.0f,	1.0f,	0.0f), 5.0f);
 			group->AddChild(model);
 		}
 		if(1){//thruster2
-			CubeModel* model= new CubeModel(vec3(1.0f), thrusterColor);
+			CubeModel* model= new CubeModel(thrusterColor);
 			model->SetScaling(vec3(0.7f, 0.3f, 2));
 			model->SetPosition(vec3(0.4f,	-0.1f,	-1.4f));
 			model->SetRotation(vec3(0.0f,	1.0f,	0.0f), -5.0f);
@@ -143,7 +143,7 @@ PlaneModel::PlaneModel(vec3 size) : GroupModel(){
 
 	vec3 color =  vec3(1,0,0);
 	if(1){//body
-		SphereModel* model = new SphereModel(vec3(1.0f), color);
+		SphereModel* model = new SphereModel(color);
 		model->SetScaling(vec3(0.8f, 0.5f, 2.5f));
 		model->SetPosition(vec3(0.0f, 0.0f, 0.0f));
 		//model->SetRotation(vec3(0.0f, 1.0f, 0.0f), 45.0f);
@@ -154,14 +154,14 @@ PlaneModel::PlaneModel(vec3 size) : GroupModel(){
 	if(1){//cockpit
 		GroupModel* group = new GroupModel();
 		if(1){ //glass
-			SphereModel* model = new SphereModel(vec3(1.0f), vec3(0.4f,0.4f,0.4f));
+			SphereModel* model = new SphereModel(vec3(0.4f,0.4f,0.4f));
 			model->SetScaling(vec3(0.5f, 0.4f, 1.7f));
 			model->SetPosition(vec3(0.0f, 0.3f, 0.0f));
 			//model->SetRotation(vec3(0.0f, 1.0f, 0.0f), 45.0f);
 			group->AddChild("glass", model);
 		}
 		if(1){ //back
-			SphereModel* model = new SphereModel(vec3(1.0f), color);
+			SphereModel* model = new SphereModel(color);
 			model->SetScaling(vec3(0.5f, 0.4f, 2.0f));
 			model->SetPosition(vec3(0.0f, 0.3f, -0.4f));
 			//model->SetRotation(vec3(0.0f, 1.0f, 0.0f), 45.0f);
@@ -178,7 +178,7 @@ PlaneModel::PlaneModel(vec3 size) : GroupModel(){
 	vec3 rudderColor = vec3(1,0,0);
 	if(1){//Right
 		GroupModel* group = new GroupModel();
-			CubeModel* model = new CubeModel(vec3(1), rudderColor);
+			CubeModel* model = new CubeModel(rudderColor);
 			model->SetPosition(vec3(0.0f,0.5f,-2.0f));
 			model->SetRotation(vec3(1.0f,0.0f,0.0f), -30.0f);	
 			model->SetScaling(rudderSize);
@@ -188,7 +188,7 @@ PlaneModel::PlaneModel(vec3 size) : GroupModel(){
 	}
 	if(1){//Left
 		GroupModel* group = new GroupModel();
-			CubeModel* model = new CubeModel(vec3(1), rudderColor);
+			CubeModel* model = new CubeModel(rudderColor);
 			model->SetPosition(vec3(0.0f,0.5f,-2.0f));
 			model->SetRotation(vec3(1.0f,0.0f,0.0f), -30.0f);	
 			model->SetScaling(rudderSize);

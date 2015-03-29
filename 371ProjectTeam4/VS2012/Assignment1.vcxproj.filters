@@ -24,8 +24,14 @@
     <Filter Include="Source Files\Tools">
       <UniqueIdentifier>{0ab2aed8-6b33-4a65-bd24-b3d72c36f75c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Transforms">
+    <Filter Include="Source Files\Model\Transforms">
       <UniqueIdentifier>{1c56d9f5-e732-4ae8-8c56-f4499c8692a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Obj">
+      <UniqueIdentifier>{c0c1ba7a-adf9-4e91-a433-ee3e9f5995ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Obj\XA-20">
+      <UniqueIdentifier>{6502994e-a591-44de-a630-a50ae2360ec8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -86,10 +92,10 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\Source\BSpline.cpp">
-      <Filter>Source Files\Transforms</Filter>
+      <Filter>Source Files\Model\Transforms</Filter>
     </ClCompile>
     <ClCompile Include="..\Source\Path.cpp">
-      <Filter>Source Files\Transforms</Filter>
+      <Filter>Source Files\Model\Transforms</Filter>
     </ClCompile>
     <ClCompile Include="..\Source\Models\CubeModel.cpp">
       <Filter>Source Files\Model</Filter>
@@ -151,10 +157,10 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\Source\BSpline.h">
-      <Filter>Source Files\Transforms</Filter>
+      <Filter>Source Files\Model\Transforms</Filter>
     </ClInclude>
     <ClInclude Include="..\Source\Path.h">
-      <Filter>Source Files\Transforms</Filter>
+      <Filter>Source Files\Model\Transforms</Filter>
     </ClInclude>
     <ClInclude Include="..\Source\math2.h">
       <Filter>Source Files\Tools</Filter>
@@ -189,5 +195,22 @@
     <ClInclude Include="..\Source\meshLoader.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\Scenes\Obj\XA-20_Razorback_Strike_Fighter\Glass_Cockpit.png">
+      <Filter>Resource Files\Obj\XA-20</Filter>
+    </Image>
+    <Image Include="..\Scenes\Obj\XA-20_Razorback_Strike_Fighter\Pilot_usa.png">
+      <Filter>Resource Files\Obj\XA-20</Filter>
+    </Image>
+    <Image Include="..\Scenes\Obj\XA-20_Razorback_Strike_Fighter\XA-20_Razorback_Strike_Fighter_N.png">
+      <Filter>Resource Files\Obj\XA-20</Filter>
+    </Image>
+    <Image Include="..\Scenes\Obj\XA-20_Razorback_Strike_Fighter\XA-20_Razorback_Strike_Fighter_P01.png">
+      <Filter>Resource Files\Obj\XA-20</Filter>
+    </Image>
+    <Image Include="..\Scenes\Obj\XA-20_Razorback_Strike_Fighter\Eject_Seat.png">
+      <Filter>Resource Files\Obj\XA-20</Filter>
+    </Image>
   </ItemGroup>
 </Project>
