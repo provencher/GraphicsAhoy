@@ -24,7 +24,7 @@
     <Filter Include="Source Files\Tools">
       <UniqueIdentifier>{0ab2aed8-6b33-4a65-bd24-b3d72c36f75c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Transforms">
+    <Filter Include="Source Files\Tools\Transforms">
       <UniqueIdentifier>{1c56d9f5-e732-4ae8-8c56-f4499c8692a7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -55,6 +55,18 @@
     </None>
     <None Include="..\Scenes\ProjectSceen.scene">
       <Filter>Resource Files\Scenes</Filter>
+    </None>
+    <None Include="..\Source\Shaders\shadow.vertexshader">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="..\Source\Shaders\shadow.fragmentshader">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="..\Source\Shaders\light.fragmentshader">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="..\Source\Shaders\light.vertexshader">
+      <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="..\Source\Shaders\Texture.fragmentshader">
       <Filter>Resource Files\Shaders</Filter>
@@ -89,10 +101,10 @@
       <Filter>Source Files\Camera</Filter>
     </ClCompile>
     <ClCompile Include="..\Source\BSpline.cpp">
-      <Filter>Source Files\Transforms</Filter>
+      <Filter>Source Files\Tools\Transforms</Filter>
     </ClCompile>
     <ClCompile Include="..\Source\Path.cpp">
-      <Filter>Source Files\Transforms</Filter>
+      <Filter>Source Files\Tools\Transforms</Filter>
     </ClCompile>
     <ClCompile Include="..\Source\Models\CubeModel.cpp">
       <Filter>Source Files\Model</Filter>
@@ -113,12 +125,12 @@
       <Filter>Source Files\Model</Filter>
     </ClCompile>
     <ClCompile Include="..\Source\Texture.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\stb_image.cpp">
+      <Filter>Source Files\Tools</Filter>
     </ClCompile>
     <ClCompile Include="..\Source\Models\CubeModelGround.cpp">
-      <Filter>Source Files\Model</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Source\Models\PropellerModel.cpp">
       <Filter>Source Files\Model</Filter>
     </ClCompile>
   </ItemGroup>
@@ -148,13 +160,10 @@
       <Filter>Source Files\Camera</Filter>
     </ClInclude>
     <ClInclude Include="..\Source\BSpline.h">
-      <Filter>Source Files\Transforms</Filter>
+      <Filter>Source Files\Tools\Transforms</Filter>
     </ClInclude>
     <ClInclude Include="..\Source\Path.h">
-      <Filter>Source Files\Transforms</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Source\math2.h">
-      <Filter>Source Files\Tools</Filter>
+      <Filter>Source Files\Tools\Transforms</Filter>
     </ClInclude>
     <ClInclude Include="..\Source\Models\CubeModel.h">
       <Filter>Source Files\Model</Filter>
@@ -174,13 +183,16 @@
     <ClInclude Include="..\Source\Models\PlaneModel.h">
       <Filter>Source Files\Model</Filter>
     </ClInclude>
-    <ClInclude Include="..\Source\Texture.hpp">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="..\Source\Texture.h">
+      <Filter>Source Files\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\stb_image.h">
+      <Filter>Source Files\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\referenceCounter.h">
+      <Filter>Source Files\Tools</Filter>
     </ClInclude>
     <ClInclude Include="..\Source\Models\CubeModelGround.h">
-      <Filter>Source Files\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Source\Models\PropellerModel.h">
       <Filter>Source Files\Model</Filter>
     </ClInclude>
   </ItemGroup>

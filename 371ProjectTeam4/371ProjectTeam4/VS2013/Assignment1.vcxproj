@@ -102,8 +102,12 @@
     <None Include="..\Scenes\PathScene.scene" />
     <None Include="..\Scenes\ProjectSceen.scene" />
     <None Include="..\Source\Shaders\BlueColor.fragmentshader" />
+    <None Include="..\Source\Shaders\light.fragmentshader" />
+    <None Include="..\Source\Shaders\light.vertexshader" />
     <None Include="..\Source\Shaders\PathLines.fragmentshader" />
     <None Include="..\Source\Shaders\PathLines.vertexshader" />
+    <None Include="..\Source\Shaders\shadow.fragmentshader" />
+    <None Include="..\Source\Shaders\shadow.vertexshader" />
     <None Include="..\Source\Shaders\SolidColor.vertexshader" />
     <None Include="..\Source\Shaders\SolidColor.fragmentshader" />
     <None Include="..\Source\Shaders\Texture.fragmentshader" />
@@ -118,7 +122,6 @@
     <ClCompile Include="..\Source\Models\GroupModel.cpp" />
     <ClCompile Include="..\Source\Models\Model.cpp" />
     <ClCompile Include="..\Source\Models\PlaneModel.cpp" />
-    <ClCompile Include="..\Source\Models\PropellerModel.cpp" />
     <ClCompile Include="..\Source\Models\SphereModel.cpp" />
     <ClCompile Include="..\Source\Models\TorrentModel.cpp" />
     <ClCompile Include="..\Source\Path.cpp" />
@@ -126,6 +129,7 @@
     <ClCompile Include="..\Source\EventManager.cpp" />
     <ClCompile Include="..\Source\main.cpp" />
     <ClCompile Include="..\Source\Renderer.cpp" />
+    <ClCompile Include="..\Source\stb_image.cpp" />
     <ClCompile Include="..\Source\Texture.cpp" />
     <ClCompile Include="..\Source\ThirdPersonCamera.cpp" />
     <ClCompile Include="..\Source\World.cpp" />
@@ -134,21 +138,21 @@
     <ClInclude Include="..\Source\BSpline.h" />
     <ClInclude Include="..\Source\BSplineCamera.h" />
     <ClInclude Include="..\Source\Camera.h" />
-    <ClInclude Include="..\Source\math2.h" />
     <ClInclude Include="..\Source\Models\CubeModel.h" />
     <ClInclude Include="..\Source\Models\CubeModelGround.h" />
     <ClInclude Include="..\Source\Models\GroupModel.h" />
     <ClInclude Include="..\Source\Models\Model.h" />
     <ClInclude Include="..\Source\Models\PlaneModel.h" />
-    <ClInclude Include="..\Source\Models\PropellerModel.h" />
     <ClInclude Include="..\Source\Models\SphereModel.h" />
     <ClInclude Include="..\Source\Models\TorrentModel.h" />
     <ClInclude Include="..\Source\ParsingHelper.h" />
     <ClInclude Include="..\Source\Path.h" />
+    <ClInclude Include="..\Source\referenceCounter.h" />
     <ClInclude Include="..\Source\StaticCamera.h" />
     <ClInclude Include="..\Source\EventManager.h" />
     <ClInclude Include="..\Source\Renderer.h" />
-    <ClInclude Include="..\Source\Texture.hpp" />
+    <ClInclude Include="..\Source\stb_image.h" />
+    <ClInclude Include="..\Source\Texture.h" />
     <ClInclude Include="..\Source\ThirdPersonCamera.h" />
     <ClInclude Include="..\Source\World.h" />
   </ItemGroup>
