@@ -71,9 +71,9 @@ World::World()
 	light3.intensities = glm::vec3(0.5, 0.5, 0.5); //weak yellowish light
 	light3.ambientCoefficient = 0.06f;
 
-	//gLights->push_back(spotlight);
+	gLights->push_back(spotlight);
 	gLights->push_back(directionalLight);
-	//gLights->push_back(light3);
+	gLights->push_back(light3);
 
 
 }
@@ -298,7 +298,7 @@ void World::Draw()
 
 	DrawObjects();
 
-
+	
 	// Restore previous shader
 	Renderer::SetShader((ShaderType)prevShader);
 
@@ -333,7 +333,7 @@ void World::Draw()
 	glDisable(GL_BLEND);
 
 	DrawPathLines();
-
+	
 	Renderer::EndFrame();
 }
 
@@ -407,6 +407,7 @@ void World::DrawObjects(){
 	mat4 altVP = altCamera->GetViewProjectionMatrix();
 	glUniformMatrix4fv(LightVP, 1, GL_FALSE, &altVP[0][0]);
 
+
 	//Lights
 	GLuint NumLights = glGetUniformLocation(Renderer::GetShaderProgramID(), "numLights");
 	int numberOfLights = (int)gLights->size();
@@ -452,17 +453,7 @@ void World::DrawObjects(){
 		gluints[5] = glGetUniformLocation(Renderer::GetShaderProgramID(), (c_str = uniformName.c_str()));
 		glUniform3fv(gluints[5], 1, &temp[0]);
 	}
-	/*
-	//RENDER TEXTURE
-	Renderer::SetShader(SHADER_TEXTURE);
-	glUseProgram(Renderer::GetShaderProgramID());
-*/
-	// Set Shader for path lines
-	unsigned int prevShader = Renderer::GetCurrentShader();
-	//Renderer::SetShader(SHADER_TEXTURE);
-	//glUseProgram(Renderer::GetShaderProgramID());
-	// Restore previous shader
-	//Renderer::SetShader((ShaderType)prevShader);
+
 
 	// Draw models With all lights established
 	for (vector<Model*>::iterator it = mModel.begin(); it < mModel.end(); ++it){

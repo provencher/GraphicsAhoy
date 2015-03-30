@@ -11,7 +11,10 @@ in vec3 normal; // You will need this when you do per-fragment lighting
 in vec4 worldPosition;
 
 in vec3 t_color; // texture sampler
+//Input from FragmentShader
+in vec2 UV;
 
+uniform sampler2D mySamplerTexture;  
 
 // Light and Material Uniform Variables
 uniform vec4 materialCoefficients; // x: ambient   y: diffuse   z: specular   w: specular exponent
@@ -82,7 +85,7 @@ void main() {
 	//color2 = texture( renderedTexture, UV + 0.005*vec2( sin(time+1024.0*UV.x),cos(time+768.0*UV.y)) ).xyz;
 	    
     vec3 surfacePos = worldPosition.xyz;
-    vec4 surfaceColor = v_color;//texture(materialTex, fragTexCoord);
+    vec3 surfaceColor = texture2D(mySamplerTexture, UV).rgb;//texture(materialTex, fragTexCoord);
     vec3 surfaceToCamera = normalize(worldCamPos - surfacePos);
 
     //combine color from all the lights

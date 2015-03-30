@@ -114,9 +114,11 @@
     <ClCompile Include="..\Source\BSplineCamera.cpp" />
     <ClCompile Include="..\Source\Camera.cpp" />
     <ClCompile Include="..\Source\Models\CubeModel.cpp" />
+    <ClCompile Include="..\Source\Models\CubeModelGround.cpp" />
     <ClCompile Include="..\Source\Models\GroupModel.cpp" />
     <ClCompile Include="..\Source\Models\Model.cpp" />
     <ClCompile Include="..\Source\Models\PlaneModel.cpp" />
+    <ClCompile Include="..\Source\Models\PropellerModel.cpp" />
     <ClCompile Include="..\Source\Models\SphereModel.cpp" />
     <ClCompile Include="..\Source\Models\TorrentModel.cpp" />
     <ClCompile Include="..\Source\Path.cpp" />
@@ -134,9 +136,11 @@
     <ClInclude Include="..\Source\Camera.h" />
     <ClInclude Include="..\Source\math2.h" />
     <ClInclude Include="..\Source\Models\CubeModel.h" />
+    <ClInclude Include="..\Source\Models\CubeModelGround.h" />
     <ClInclude Include="..\Source\Models\GroupModel.h" />
     <ClInclude Include="..\Source\Models\Model.h" />
     <ClInclude Include="..\Source\Models\PlaneModel.h" />
+    <ClInclude Include="..\Source\Models\PropellerModel.h" />
     <ClInclude Include="..\Source\Models\SphereModel.h" />
     <ClInclude Include="..\Source\Models\TorrentModel.h" />
     <ClInclude Include="..\Source\ParsingHelper.h" />
