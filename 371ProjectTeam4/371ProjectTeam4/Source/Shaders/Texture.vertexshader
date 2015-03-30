@@ -20,7 +20,9 @@ void main()
 	// Output position of the vertex, in clip space : MVP * position
 	gl_Position =  ViewProjectionTransform * WorldTransform * vec4(vertexPosition_modelspace,1);
 
-	normal = vertexNormal_modelspace; 
+	//normal = vertexNormal_modelspace; 
+	normal = normalize((WorldTransform * vec4(vertexNormal_modelspace, 0.0)).xyz);
+
 	v_color = vec4(vertexColor, 1.0f);
 
 	UV = vertexUV;

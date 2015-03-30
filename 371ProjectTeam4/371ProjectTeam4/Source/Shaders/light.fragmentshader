@@ -9,15 +9,14 @@ out vec3 color;
 in vec4 v_color;
 in vec3 normal; // You will need this when you do per-fragment lighting
 in vec4 worldPosition;
-in vec4 shadowMapCoords;
 
-in vec3 t_color; //TEXTURE
+in vec3 t_color; // texture sampler
+
 
 // Light and Material Uniform Variables
 uniform vec4 materialCoefficients; // x: ambient   y: diffuse   z: specular   w: specular exponent
 
 uniform vec3 worldCamPos;
-uniform sampler2D R_shadowMap;
 
 
 
@@ -34,7 +33,7 @@ uniform struct Light {
 
 
 
-vec3 ApplyLight(Light light, vec3 t_color, vec3 normal, vec3 surfacePos, vec3 surfaceToCamera) {
+vec3 ApplyLight(Light light, vec3 surfaceColor, vec3 normal, vec3 surfacePos, vec3 surfaceToCamera) {
     vec3 surfaceToLight;
     float attenuation = 1.0;
     if(light.position.w == 0.0) {
@@ -56,11 +55,11 @@ vec3 ApplyLight(Light light, vec3 t_color, vec3 normal, vec3 surfacePos, vec3 su
         }
     }	
     //ambient
-    vec3 ambient = light.ambientCoefficient * t_color  * light.intensities;
+    vec3 ambient = light.ambientCoefficient * surfaceColor.rgb * light.intensities;
 
     //diffuse
     float diffuseCoefficient = max(0.0, dot(normal, surfaceToLight));
-    vec3 diffuse = diffuseCoefficient * t_color * light.intensities;
+    vec3 diffuse = diffuseCoefficient * surfaceColor.rgb * light.intensities;
     
     //specular
     float specularCoefficient = 0.0;	
@@ -76,16 +75,7 @@ vec3 ApplyLight(Light light, vec3 t_color, vec3 normal, vec3 surfacePos, vec3 su
     return ambient + attenuation*(diffuse + specular);
 }
 
-float SampleShadowMap(sampler2D shadowMap, vec2 coords, float compare)
-{
-	return step(compare, texture2D(shadowMap, coords.xy).r);
-}
 
-float CalcShadowAmount(sampler2D shadowMap, vec4 initialShadowMapCoords)
-{
-	vec3 shadowMapCoords = (initialShadowMapCoords.xyz / initialShadowMapCoords.w) *vec3(0.5) + vec3(0.5);
-	return SampleShadowMap(shadowMap, shadowMapCoords.xy, shadowMapCoords.z);
-}
 
 void main() {
 	
@@ -98,14 +88,14 @@ void main() {
     //combine color from all the lights
     vec3 linearColor = vec3(0);
     for(int i = 0; i < numLights; ++i){
-        linearColor += ApplyLight(allLights[i], t_color, normal, surfacePos, surfaceToCamera);
+        linearColor += ApplyLight(allLights[i], surfaceColor.rgb, normal, surfacePos, surfaceToCamera);
     }
 
-	float shadowAmt = CalcShadowAmount(R_shadowMap, shadowMapCoords);
+	
     
     //final color (after gamma correction)
     //vec3 gamma = vec3(1.0/2.2);
-    color = (surfaceColor.rgb * linearColor) * shadowAmt;
-	
+	color = (surfaceColor.rgb * linearColor);
+
 }
 

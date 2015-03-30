@@ -13,16 +13,19 @@ struct GLFWwindow;
 
 // Include GLEW - OpenGL Extension Wrangler
 #include <GL/glew.h>
-
 #include <vector>
 #include <GLM/glm.hpp>
+#include "Texture.h"
 
 
 enum ShaderType
 {
 	SHADER_SOLID_COLOR,
+	SHADER_SHADOW,
+	SHADER_LIGHT,
 	SHADER_PATH_LINES,
 	SHADER_BLUE,
+	SHADER_TEXTURE,
 	NUM_SHADERS
 };
 
@@ -43,11 +46,16 @@ public:
 	static unsigned int GetCurrentShader() { return sCurrentShader; }
 	static void SetShader(ShaderType type);
 
+	static void BindAsRenderTarget();
+
+	static int w_width;
+	static int w_height;	
+
 private:
 	static GLFWwindow* spWindow;
 
 	static std::vector<unsigned int> sShaderProgramID;
-	static unsigned int sCurrentShader;
+	static unsigned int sCurrentShader;	
 
 };
 

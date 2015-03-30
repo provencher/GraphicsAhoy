@@ -24,7 +24,12 @@ public:
 	glm::mat4 GetViewProjectionMatrix() const;
 	
 	virtual glm::vec3 getCamPos(){ return glm::vec3(0, 0, 0); }
+	virtual glm::vec3 getLookAt(){ return glm::vec3(0, 0, 0); }
+	virtual glm::vec3 getCamUpV(){ return glm::vec3(0, 0, 0); }
 
+	virtual void setCamPos(glm::vec3 val){}
+	virtual void setLookAt(glm::vec3 val){}
+	virtual void setCamUpV(glm::vec3 val){}
 
 private:
 

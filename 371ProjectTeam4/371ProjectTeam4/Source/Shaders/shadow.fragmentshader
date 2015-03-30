@@ -1,0 +1,9 @@
+#version 330 core
+// Ouput to fragment shader
+out vec3 color;
+
+in vec3 v_color;
+
+void main() {
+	color = vec4(gl_FragCoord.z).xyz  ;
+}

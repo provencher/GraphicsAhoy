@@ -50,11 +50,12 @@ controlpoint = 4.0 -1.0 10.0
 controlpoint = 4.0 0.0 2.5
 
 
-[Cube]
+[cube_ground]
 name     = "Ground"
 scaling  = 1.0 100.0 100.0
 position = 0.0 -0.5 0.0
 rotation = 0.0 0.0 1.0 90.0
+texture_path = ../Source/Textures/grass4.bmp
 
 [Cube]
 name     = "Cube"
@@ -63,6 +64,7 @@ position = 0.0 1.0 0.0
 rotation = 0.0 0.0 1.0 180
 boundpath = "Path2"
 pathspeed = 1.0
+texture_path = ../Source/Textures/wood.bmp
 
 [Sphere]
 name     = "Sphere1"

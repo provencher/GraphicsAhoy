@@ -12,7 +12,6 @@
 #include "Model.h"
 #include "../Path.h"
 #include "../BSpline.h"
-#include "../light.h"
 //#include "HashTable.h"
 
 class GroupModel : public Model {
@@ -42,6 +41,5 @@ private:
 
 
 	std::vector<Path*> mPath;
-    std::vector<BSpline*> mSpline;
-	std::vector<Light*> mLight;
+    std::vector<BSpline*> mSpline;	
 };

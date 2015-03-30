@@ -19,10 +19,10 @@
 #include "Models/GroupModel.h"
 #include "Models/PlaneModel.h"
 #include "Models/CubeModel.h"
+#include "Models/CubeModelGround.h"
 #include "Models/SphereModel.h"
 #include "Path.h"
 #include "BSpline.h"
-#include "Texture.hpp"
 
 #include <GLFW/glfw3.h>
 #include "EventManager.h"
@@ -38,6 +38,8 @@ World* World::instance;
 World::World()
 {
     instance = this;
+	SetTexture("shadowMap", new Texture(1024, 768, 0, GL_TEXTURE_2D, GL_NEAREST, GL_DEPTH_COMPONENT16, GL_DEPTH_COMPONENT, true, GL_DEPTH_ATTACHMENT));
+
 	// Material Coefficients
 	ka = 0.39f;
 	kd = 0.46f;
@@ -59,16 +61,21 @@ World::World()
 	Light directionalLight;
 	directionalLight.position = glm::vec4(5, 10, 0.6, 0); //w == 0 indications a directional light
 	directionalLight.intensities = glm::vec3(0.5, 0.5, 0.5); //weak yellowish light
-	directionalLight.ambientCoefficient = 0.06f;
+	directionalLight.ambientCoefficient = 0.06f;	
+
+	
+	//directionalLight.m_shadowInfo = glm::ortho(-40.0f, -40.f, -40.f, -40.f, -40.0f, 1.0f);
 
 	Light light3;
 	light3.position = glm::vec4(-5, 5, -0.6, 0); //w == 0 indications a directional light
 	light3.intensities = glm::vec3(0.5, 0.5, 0.5); //weak yellowish light
 	light3.ambientCoefficient = 0.06f;
 
-	gLights->push_back(spotlight);
+	//gLights->push_back(spotlight);
 	gLights->push_back(directionalLight);
-	gLights->push_back(light3);
+	//gLights->push_back(light3);
+
+
 }
 World::~World()
 {
@@ -94,7 +101,8 @@ World::~World()
 	// Camera
 	for (vector<Camera*>::iterator it = mCamera.begin(); it < mCamera.end(); ++it){
 		delete *it;
-	}
+	}	
+
 	mCamera.clear();
 }
 World* World::GetInstance()
@@ -121,11 +129,16 @@ void World::LoadScene(const char * scene_path){
 
 		ci_string result;
 		if( std::getline( iss, result, ']') ){
-			if( result == "cube" ){
+			if (result == "cube"){
 				// Load Box --------------
 				CubeModel* cube = new CubeModel();
 				cube->Load(iss);
 				mModel.push_back(cube);
+			}else if (result == "cube_ground"){
+				// Load Cube Box --------------
+				CubeModelGround* ground = new CubeModelGround();
+				ground->Load(iss);
+				mModel.push_back(ground);
 			} else if( result == "sphere" ){
 				// Load Sphere -----------
                 SphereModel* sphere = new SphereModel();
@@ -151,6 +164,7 @@ void World::LoadScene(const char * scene_path){
 	    }
 	}
 	input.close();
+
 
 	// Set PATH vertex buffers
 	for (vector<Path*>::iterator it = mPath.begin(); it < mPath.end(); ++it){
@@ -201,7 +215,7 @@ void World::LoadCameras()
 	newCam->SetCameraRadius(7.0f);
 	mCamera.push_back(newCam); //4
     //*note: to be moved into its own class
-	////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////	
 
 
     // BSpline Camera --------------------------------------
@@ -214,6 +228,13 @@ void World::LoadCameras()
     
     
     mCurrentCamera = 0;
+
+
+	//Setup Alt Camera
+	glm::vec3 pos = mCamera[0]->getCamPos();
+	glm::vec3 look = mCamera[0]->getLookAt();
+	glm::vec3 up = mCamera[0]->getCamUpV();
+	altCamera = new StaticCamera(pos, look, up);
 }
 Camera* World::GetCamera(){
 	//? may require checking if nullptr
@@ -261,6 +282,97 @@ void World::Update(float dt)
 	}
 }
 
+
+void World::Draw()
+{
+	Renderer::BeginFrame();
+
+	unsigned int prevShader = Renderer::GetCurrentShader();
+	
+
+
+	Renderer::SetShader(SHADER_LIGHT);
+	glUseProgram(Renderer::GetShaderProgramID());
+
+	
+
+	DrawObjects();
+
+
+	// Restore previous shader
+	Renderer::SetShader((ShaderType)prevShader);
+
+	for (size_t i = 0; i < gLights->size(); ++i){
+
+		GetTexture("shadowMap")->BindAsRenderTarget();
+		glClear(GL_DEPTH_BUFFER_BIT);
+	
+		altCamera->setCamPos((glm::vec3)(*gLights)[i].position);	
+
+
+		//Set Camera to altCam
+		//Camera* tempCam = mCamera[mCurrentCamera];
+		//mCamera[mCurrentCamera] = altCamera;	
+
+		//DrawShadow();	
+
+		//Restore camera
+		//mCamera[mCurrentCamera] = tempCam;
+	}
+
+	Renderer::BindAsRenderTarget();
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_ONE, GL_ONE);
+	glDepthMask(GL_FALSE);
+	glDepthFunc(GL_EQUAL);
+
+	DrawObjects();
+
+	glDepthMask(GL_TRUE);
+	glDepthFunc(GL_LESS);
+	glDisable(GL_BLEND);
+
+	DrawPathLines();
+
+	Renderer::EndFrame();
+}
+
+void World::DrawShadow(){
+	//Set Shaders to shadows
+	unsigned int prevShader = Renderer::GetCurrentShader();
+	Renderer::SetShader(SHADER_SHADOW);
+	glUseProgram(Renderer::GetShaderProgramID());	
+
+	//Look for WorldTransform in the Vertex Shader
+	GLuint WorldMatrixLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "WorldTransform");
+	mat4 WorldMatrix = mModel[0]->GetWorldMatrix();
+	glUniformMatrix4fv(WorldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+
+	// This looks for the MVP Uniform variable in the Vertex Program
+	GLuint VPMatrixLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "ViewProjectionTransform");
+	lightVP = altCamera->GetViewProjectionMatrix();
+	glUniformMatrix4fv(VPMatrixLocation, 1, GL_FALSE, &lightVP[0][0]);
+
+
+	GLuint shadowMapHandle = glGetUniformLocation(Renderer::GetShaderProgramID(), "R_shadowMap");
+	//glActiveTexture(GL_TEXTURE0);
+	glUniform1i(shadowMapHandle, 0);
+	
+
+	Texture* tex = GetTexture("shadowMap");
+	//glGetIntegerv(GL_TEXTURE_BINDING_2D, &tex);
+
+	//Draw All models
+	for (vector<Model*>::iterator it = mModel.begin(); it < mModel.end(); ++it){	
+	
+		(*it)->Draw();
+	}
+
+	// Restore previous shader
+	Renderer::SetShader((ShaderType)prevShader);
+	
+}
+
 string LightNameBuilder(string name, int index){
 
 	std::ostringstream ss;
@@ -268,11 +380,7 @@ string LightNameBuilder(string name, int index){
 	return ss.str();
 }
 
-
-void World::Draw()
-{
-	Renderer::BeginFrame();
-	
+void World::DrawObjects(){
 	// Set shader to use
 	glUseProgram(Renderer::GetShaderProgramID());
 
@@ -283,6 +391,21 @@ void World::Draw()
 	//WorldCamPosition
 	GLuint CamPos = glGetUniformLocation(Renderer::GetShaderProgramID(), "worldCamPos");
 	glUniform3fv(CamPos, 1, &camPos[0]);
+
+	//Look for WorldTransform in the Vertex Shader
+	GLuint WorldMatrixLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "WorldTransform");
+	mat4 WorldMatrix = mModel[0]->GetWorldMatrix();
+	glUniformMatrix4fv(WorldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+
+	// This looks for the MVP Uniform variable in the Vertex Program
+	GLuint VPMatrixLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "ViewProjectionTransform");
+	mat4 VP = mCamera[mCurrentCamera]->GetViewProjectionMatrix();
+	glUniformMatrix4fv(VPMatrixLocation, 1, GL_FALSE, &VP[0][0]);
+	
+	//Light View Proction	
+	GLuint LightVP = glGetUniformLocation(Renderer::GetShaderProgramID(), "LightVP");
+	mat4 altVP = altCamera->GetViewProjectionMatrix();
+	glUniformMatrix4fv(LightVP, 1, GL_FALSE, &altVP[0][0]);
 
 	//Lights
 	GLuint NumLights = glGetUniformLocation(Renderer::GetShaderProgramID(), "numLights");
@@ -307,7 +430,6 @@ void World::Draw()
 		gluints[0] = glGetUniformLocation(Renderer::GetShaderProgramID(), (c_str = uniformName.c_str()));
 		glUniform4fv(gluints[0], 1, &v4f[0]);
 
-
 		uniformName = LightNameBuilder("intensities", i);
 		temp = (*gLights)[i].intensities;
 		gluints[1] = glGetUniformLocation(Renderer::GetShaderProgramID(), (c_str = uniformName.c_str()));
@@ -329,27 +451,37 @@ void World::Draw()
 		uniformName = LightNameBuilder("coneDirection", i);
 		gluints[5] = glGetUniformLocation(Renderer::GetShaderProgramID(), (c_str = uniformName.c_str()));
 		glUniform3fv(gluints[5], 1, &temp[0]);
-
 	}
-	
-	//Look for WorldTransform in the Vertex Shader
-	GLuint WorldMatrixLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "WorldTransform");	
-	mat4 WorldMatrix = mModel[0]->GetWorldMatrix();
-	glUniformMatrix4fv(WorldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+	/*
+	//RENDER TEXTURE
+	Renderer::SetShader(SHADER_TEXTURE);
+	glUseProgram(Renderer::GetShaderProgramID());
+*/
+	// Set Shader for path lines
+	unsigned int prevShader = Renderer::GetCurrentShader();
+	//Renderer::SetShader(SHADER_TEXTURE);
+	//glUseProgram(Renderer::GetShaderProgramID());
+	// Restore previous shader
+	//Renderer::SetShader((ShaderType)prevShader);
 
-	// This looks for the MVP Uniform variable in the Vertex Program
-	GLuint VPMatrixLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "ViewProjectionTransform");	
-	mat4 VP = mCamera[mCurrentCamera]->GetViewProjectionMatrix();
-	glUniformMatrix4fv(VPMatrixLocation, 1, GL_FALSE, &VP[0][0]);
-
-	// Draw models
+	// Draw models With all lights established
 	for (vector<Model*>::iterator it = mModel.begin(); it < mModel.end(); ++it){
 		// Draw model
 		(*it)->Draw();
 	}
 
-	// Draw Path Lines
 	
+	
+}
+
+void World::DrawPathLines(){
+	// Draw Path Lines
+
+	// This looks for the MVP Uniform variable in the Vertex Program
+	GLuint VPMatrixLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "ViewProjectionTransform");
+	mat4 VP = GetCamera()->GetViewProjectionMatrix();
+	glUniformMatrix4fv(VPMatrixLocation, 1, GL_FALSE, &VP[0][0]);
+
 	// Set Shader for path lines
 	unsigned int prevShader = Renderer::GetCurrentShader();
 	Renderer::SetShader(SHADER_PATH_LINES);
@@ -364,17 +496,17 @@ void World::Draw()
 		(*it)->Draw();
 	}
 
-    // Draw B-Spline Lines (using the same shader for Path Lines)
-    for (vector<BSpline*>::iterator it = mSpline.begin(); it < mSpline.end(); ++it){
+	// Draw B-Spline Lines (using the same shader for Path Lines)
+	for (vector<BSpline*>::iterator it = mSpline.begin(); it < mSpline.end(); ++it){
 		// Draw model
 		(*it)->Draw();
 	}
 
 	// Restore previous shader
-	Renderer::SetShader((ShaderType) prevShader);
-
-	Renderer::EndFrame();
+	Renderer::SetShader((ShaderType)prevShader);
 }
+
+
 
 //=================================================
 Path* World::FindPath(ci_string pathName)

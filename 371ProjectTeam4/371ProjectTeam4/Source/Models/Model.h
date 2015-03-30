@@ -58,6 +58,10 @@ public:		//------------------------------------------
 	bool HasParent();
 	Model* Parent();
 
+	virtual glm::vec4 getMaterials(){ return glm::vec4(ka, kd, ks, n); }
+
+	
+
 protected: //------------------------------------------
 	//Children 
 	Model* mParent;
@@ -80,5 +84,11 @@ protected: //------------------------------------------
 	
 	BSpline* mSpline;
 	float mSplineParameterT;
+
+	// Material Coefficients
+	float ka;
+	float kd;
+	float ks;
+	float n;
     
 };
