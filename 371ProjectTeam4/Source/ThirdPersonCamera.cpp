@@ -130,8 +130,7 @@ void ThirdPersonCamera::Update(float dt)
 	mTargetModel->SetRotation(mTargetModel->GetRotationAxis(), (mHorizontalAngle/pif*180));
 	mPosition = mTargetModel->GetPosition() - mLookAt*mRadius;
 	//lock camera above ground
-	if(mPosition.y <= 0.1f)
-		mPosition.y = 0.1f;
+	//if(mPosition.y <= 0.1f)	mPosition.y = 0.1f;
 	//*///////////////////////////////////////////////////////////////
    
 

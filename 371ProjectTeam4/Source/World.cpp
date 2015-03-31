@@ -51,20 +51,20 @@ World::World()
 
 	// setup lights
 	Light spotlight;
-	spotlight.position = glm::vec4(0, 10, 0, 1);
-	spotlight.intensities = glm::vec3(2, 2, 2); //strong white light
+	spotlight.position = glm::vec4(0, 5, 0, 1);
+	spotlight.intensities = glm::vec3(0, 1, 2); //strong white light
 	spotlight.attenuation = 0.1f;
 	spotlight.ambientCoefficient = 0.0f; //no ambient light
 	spotlight.coneAngle = 5.0f;
 	spotlight.coneDirection = glm::vec3(0, -1, 0);
 
 	Light directionalLight;
-	directionalLight.position = glm::vec4(5, 10, 0.6, 0); //w == 0 indications a directional light
+	directionalLight.position = glm::vec4(5, 20, 0.6, 0); //w == 0 indications a directional light
 	directionalLight.intensities = glm::vec3(1, 1, 1); 
 	directionalLight.ambientCoefficient = 0.2f;
 
 	Light light3;
-	light3.position = glm::vec4(-5, 5, -0.6, 0); //w == 0 indications a directional light
+	light3.position = glm::vec4(-5, 5, 15, 0); //w == 0 indications a directional light
 	light3.intensities = glm::vec3(0.5, 0.5, 0.5); //weak yellowish light
 	light3.ambientCoefficient = 0.06f;
 

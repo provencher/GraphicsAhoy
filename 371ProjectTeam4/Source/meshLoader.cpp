@@ -5,12 +5,16 @@
 #include "Renderer.h"
 #include <GL/glew.h>
 
+#include <iostream>
+#include <fstream>
+
+
 using namespace glm;
 
 
 
 MeshLoader::MeshLoader(){
-	vec3 color = vec3(1,1,1);
+	vec3 color = vec3(0.7f);
 	vec3 size = vec3(1);
 	vec3 rcol, lcol, tcol, bcol, ncol, fcol;
 		 rcol = color;
@@ -19,9 +23,14 @@ MeshLoader::MeshLoader(){
 		 bcol = color;
 		 ncol = color;
 		 fcol = color;
+
+		//string x = "";
+
+	LoadMesh("../Scenes/Obj/XA-20_Razorback_Strike_Fighter/XA-20_Razorback_Strike_Fighter.obj", vec3(0.4f));
 	
-
-
+	
+	
+	/*
 	vec3 halfSize = size * 0.5f;
 	Vertex vertexBuffer[] = {  // position,                normal,                  color
 								{ vec3(-halfSize.x,-halfSize.y,-halfSize.z), vec3(-1.0f, 0.0f, 0.0f),lcol }, //left - red
@@ -82,6 +91,7 @@ MeshLoader::MeshLoader(){
 	glGenBuffers(1, &mVertexBufferID);
 	glBindBuffer(GL_ARRAY_BUFFER, mVertexBufferID);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertexBuffer), vertexBuffer, GL_STATIC_DRAW);
+	//*/
 }
 MeshLoader::~MeshLoader(){
 	glDeleteBuffers(1, &mVertexBufferID);
@@ -140,4 +150,121 @@ void MeshLoader::Draw(mat4 worldMat){
     glDisableVertexAttribArray(1);
     glDisableVertexAttribArray(0);
 	//*/
+}
+
+
+void MeshLoader::LoadMesh(const char * path, vec3 color){
+	std::vector< glm::vec3 > vertices;
+	std::vector< glm::vec2 > uvs;
+	std::vector< glm::vec3 > normals; // Won't be used at the moment.
+	bool res = LoadObj("../Scenes/Obj/XA-20_Razorback_Strike_Fighter/XA-20_Razorback_Strike_Fighter.obj", vertices, uvs, normals);
+
+	
+	//Load data into our Vertices's structure 
+	Vertex *vertexBuffer; 
+	unsigned int size = vertices.size();
+	vertexBuffer = new Vertex[size];
+	for( unsigned int i=0; i<size; i++){
+		vertexBuffer[i].position = vertices[i];
+		vertexBuffer[i].normal = normals[i];
+		vertexBuffer[i].color = color;
+		vertexBuffer[i].uvs = uvs[i];
+	}
+
+	//*
+	mNumOfVertices = size;
+	std::cout << mNumOfVertices << "####\n";
+	// Create a vertex array
+	glGenVertexArrays(1, &mVertexArrayID);
+
+	// Upload Vertex Buffer to the GPU, keep a reference to it (mVertexBufferID)
+	glGenBuffers(1, &mVertexBufferID);
+	glBindBuffer(GL_ARRAY_BUFFER, mVertexBufferID);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertexBuffer), vertexBuffer, GL_STATIC_DRAW);
+	//*/
+}
+
+bool MeshLoader::LoadObj(	const char * path, 	
+						std::vector<glm::vec3> & out_vertices, 	
+						std::vector<glm::vec2> & out_uvs,	
+						std::vector<glm::vec3> & out_normals ){
+	printf("Loading OBJ file %s...\n", path);
+
+	std::vector<unsigned int> vertexIndices, uvIndices, normalIndices;
+	std::vector<glm::vec3> temp_vertices; 
+	std::vector<glm::vec2> temp_uvs;
+	std::vector<glm::vec3> temp_normals;
+
+	FILE * file = fopen("../Scenes/Obj/XA-20_Razorback_Strike_Fighter/XA-20_Razorback_Strike_Fighter.obj", "r");
+	if (file == NULL){
+		printf("Impossible to open the file !\n");
+		return false;
+	}
+
+	while(true){
+		char lineHeader[128];
+		// read the first word of the line
+		int res = fscanf(file, "%s", lineHeader);
+		if (res == EOF)
+			break; // EOF = End Of File. Quit the loop.
+
+		// else : parse lineHeader
+		if (strcmp(lineHeader, "v") == 0){
+			glm::vec3 vertex;
+			fscanf(file, "%f %f %f\n", &vertex.x, &vertex.y, &vertex.z);
+			temp_vertices.push_back(vertex);
+
+		} else if (strcmp(lineHeader, "vt") == 0){
+			glm::vec2 uv;
+			fscanf(file, "%f %f\n", &uv.x, &uv.y);
+			temp_uvs.push_back(uv);
+
+		} else if (strcmp(lineHeader, "vn") == 0){
+			glm::vec3 normal;
+			fscanf(file, "%f %f %f\n", &normal.x, &normal.y, &normal.z);
+			temp_normals.push_back(normal);
+
+		} else if (strcmp(lineHeader, "f") == 0){
+			std::string vertex1, vertex2, vertex3;
+			unsigned int vertexIndex[3], uvIndex[3], normalIndex[3];
+			int matches = fscanf(file, "%d/%d/%d %d/%d/%d %d/%d/%d\n", &vertexIndex[0], &uvIndex[0], &normalIndex[0], &vertexIndex[1], &uvIndex[1], &normalIndex[1], &vertexIndex[2], &uvIndex[2], &normalIndex[2]);
+			if (matches != 9){
+				printf("File can't be read by our simple parser : ( Try exporting with other options\n");
+				return false;
+			}
+			vertexIndices.push_back(vertexIndex[0]);
+			vertexIndices.push_back(vertexIndex[1]);
+			vertexIndices.push_back(vertexIndex[2]);
+			uvIndices.push_back(uvIndex[0]);
+			uvIndices.push_back(uvIndex[1]);
+			uvIndices.push_back(uvIndex[2]);
+			normalIndices.push_back(normalIndex[0]);
+			normalIndices.push_back(normalIndex[1]);
+			normalIndices.push_back(normalIndex[2]);
+		}
+	}
+
+	//*
+
+	//Convert Vectors to glm::vec3
+	unsigned int size = vertexIndices.size();
+	for( unsigned int i=0; i<size; i++ ){
+
+		// Get the indices of its attributes
+		unsigned int vertexIndex = vertexIndices[i];
+		unsigned int uvIndex	 = uvIndices[i];
+		unsigned int normalIndex = normalIndices[i];
+		
+		// Get the attributes thanks to the index
+		glm::vec3 vertex	= temp_vertices[ vertexIndex-1 ];
+		glm::vec2 uv		= temp_uvs[ uvIndex-1 ];
+		glm::vec3 normal	= temp_normals[ normalIndex-1 ];
+		
+		//pass
+		out_vertices.push_back(vertex);
+		out_uvs     .push_back(uv);
+		out_normals .push_back(normal);
+	}
+	//*/
+	return true;
 }

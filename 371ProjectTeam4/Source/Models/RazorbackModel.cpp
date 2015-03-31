@@ -9,6 +9,7 @@
 
 #include "RazorbackModel.h"
 #include "../Renderer.h"
+#include "CubeModel.h"
 
 // Include GLEW - OpenGL Extension Wrangler
 #include <GL/glew.h>
@@ -18,7 +19,11 @@ using namespace glm;
 RazorbackModel::RazorbackModel(vec3 color, vec3 size) : Model()
 {
 	// Create Vertex Buffer for all the verices of the Cube
-	LoadMesh(color, size);
+	mMeshLoader = new MeshLoader();
+	AddChild(new CubeModel(vec3(1, 0, 0), vec3(1, 0.1f, 0.1f)));
+	AddChild(new CubeModel(vec3(0, 1, 0), vec3(0.1f, 1, 0.1f)));
+	AddChild(new CubeModel(vec3(0, 0, 1), vec3(0.1f, 0.1f, 1)));
+	
 }
 
 
@@ -43,7 +48,8 @@ void RazorbackModel::LoadMesh(vec3 color, vec3 size)
 		 fcol = color;
 	}
 
-
+	
+	/*
 	vec3 halfSize = size * 0.5f;
 	Vertex vertexBuffer[] = {  // position,                normal,                  color
 								{ vec3(-halfSize.x,-halfSize.y,-halfSize.z), vec3(-1.0f, 0.0f, 0.0f),lcol }, //left - red
@@ -102,11 +108,9 @@ void RazorbackModel::LoadMesh(vec3 color, vec3 size)
 	glGenBuffers(1, &mVertexBufferID);
 	glBindBuffer(GL_ARRAY_BUFFER, mVertexBufferID);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertexBuffer), vertexBuffer, GL_STATIC_DRAW);
+	*/
 }
-void RazorbackModel::DestroyMesh(){
-	glDeleteBuffers(1, &mVertexBufferID);
-    glDeleteVertexArrays(1, &mVertexArrayID);
-}
+
 
 
 //void RazorbackModel::SetSideColor(char side, glm::vec3 col){}
@@ -114,9 +118,6 @@ void RazorbackModel::DestroyMesh(){
 
 RazorbackModel::~RazorbackModel()
 {
-	// Free the GPU from the Vertex Buffer
-	glDeleteBuffers(1, &mVertexBufferID);
-	glDeleteVertexArrays(1, &mVertexArrayID);
 }
 
 void RazorbackModel::Update(float dt)
@@ -130,6 +131,10 @@ void RazorbackModel::Update(float dt)
 
 void RazorbackModel::Draw()
 {
+	DrawChildren();
+	mMeshLoader->Draw(GetWorldMatrix());
+
+	/*
 	// Draw the Vertex Buffer
 	// Note this draws a unit Cube
 	// The Model View Projection transforms are computed in the Vertex Shader
@@ -178,6 +183,7 @@ void RazorbackModel::Draw()
 	glDisableVertexAttribArray(2);
 	glDisableVertexAttribArray(1);
 	glDisableVertexAttribArray(0);
+	*/
 }
 
 bool RazorbackModel::ParseLine(const std::vector<ci_string> &token){

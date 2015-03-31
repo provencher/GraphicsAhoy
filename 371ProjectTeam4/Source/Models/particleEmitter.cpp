@@ -43,10 +43,10 @@ ParticleEmitter::~ParticleEmitter(){
 
 
 void ParticleEmitter::SpawnParticle(){
-	float speed = (rand() % 10 + 30)/10;
+	float speed = (rand() % 10 + 50)/10;
 	vec3 particleDir = mDirection+ vec3();
 	float timestamp = 0;
-	float life = 1.5f;
+	float life = 0.5f;
 	float rotationSpeed = 0;
 
 	Particle* p = new Particle(speed, particleDir, life, 0);
@@ -87,7 +87,7 @@ void ParticleEmitter::Update(float dt) {
         }
     }
 
-	if(rand() % 100 > 50){
+	if(1||rand() % 100 > 20){
 		SpawnParticle();
 	}
 }
