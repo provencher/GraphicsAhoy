@@ -26,13 +26,14 @@ MeshLoader::MeshLoader(){
 
 		//string x = "";
 
-	LoadMesh("../Scenes/Obj/XA-20_Razorback_Strike_Fighter/XA-20_Razorback_Strike_Fighter.obj", vec3(0.4f));
+	//LoadMesh("../Scenes/Obj/XA-20_Razorback_Strike_Fighter/XA-20_Razorback_Strike_Fighter.obj", vec3(0.4f));
 	
 	
-	
-	/*
+	//*
 	vec3 halfSize = size * 0.5f;
-	Vertex vertexBuffer[] = {  // position,                normal,                  color
+	
+	
+	Vertex V[] = {  // position,                normal,                  color
 								{ vec3(-halfSize.x,-halfSize.y,-halfSize.z), vec3(-1.0f, 0.0f, 0.0f),lcol }, //left - red
 								{ vec3(-halfSize.x,-halfSize.y, halfSize.z), vec3(-1.0f, 0.0f, 0.0f),lcol },
 								{ vec3(-halfSize.x, halfSize.y, halfSize.z), vec3(-1.0f, 0.0f, 0.0f),lcol },
@@ -82,15 +83,23 @@ MeshLoader::MeshLoader(){
 								{ vec3(-halfSize.x, halfSize.y, halfSize.z), vec3( 0.0f, 1.0f, 0.0f), tcol }
 						};
 
-	mNumOfVertices = sizeof(vertexBuffer) / sizeof(Vertex);
+	
+	mNumOfVertices = sizeof(V) / sizeof(Vertex);
 
+	for(unsigned int i=0; i<(sizeof(V) / sizeof(Vertex)); i++){
+		mVertexArray.push_back(V[i]);
+	}
+
+
+	Vertex *vb = V;
+	std::cout << sizeof(vb)<<"########\n";
 	// Create a vertex array
 	glGenVertexArrays(1, &mVertexArrayID);
 
 	// Upload Vertex Buffer to the GPU, keep a reference to it (mVertexBufferID)
 	glGenBuffers(1, &mVertexBufferID);
 	glBindBuffer(GL_ARRAY_BUFFER, mVertexBufferID);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertexBuffer), vertexBuffer, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(mVertexArray), &mVertexArray[0], GL_STATIC_DRAW);
 	//*/
 }
 MeshLoader::~MeshLoader(){
@@ -157,19 +166,24 @@ void MeshLoader::LoadMesh(const char * path, vec3 color){
 	std::vector< glm::vec3 > vertices;
 	std::vector< glm::vec2 > uvs;
 	std::vector< glm::vec3 > normals; // Won't be used at the moment.
-	bool res = LoadObj("../Scenes/Obj/XA-20_Razorback_Strike_Fighter/XA-20_Razorback_Strike_Fighter.obj", vertices, uvs, normals);
+	//bool res = LoadObj("../Scenes/Obj/XA-20_Razorback_Strike_Fighter/XA-20_Razorback_Strike_Fighter.obj", vertices, uvs, normals);
+	LoadObj("../Scenes/Obj/asteroid1.obj", vertices, uvs, normals);
 
 	
+	
 	//Load data into our Vertices's structure 
-	Vertex *vertexBuffer; 
+	
 	unsigned int size = vertices.size();
 	vertexBuffer = new Vertex[size];
 	for( unsigned int i=0; i<size; i++){
+		//*
 		vertexBuffer[i].position = vertices[i];
 		vertexBuffer[i].normal = normals[i];
-		vertexBuffer[i].color = color;
 		vertexBuffer[i].uvs = uvs[i];
+		vertexBuffer[i].color = color;
+		//*/
 	}
+
 
 	//*
 	mNumOfVertices = size;

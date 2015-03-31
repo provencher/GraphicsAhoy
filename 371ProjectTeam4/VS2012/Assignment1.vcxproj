@@ -112,6 +112,7 @@
     <ClCompile Include="..\Source\BSplineCamera.cpp" />
     <ClCompile Include="..\Source\Camera.cpp" />
     <ClCompile Include="..\Source\light.cpp" />
+    <ClCompile Include="..\Source\Mesh.cpp" />
     <ClCompile Include="..\Source\meshLoader.cpp" />
     <ClCompile Include="..\Source\Models\BillBoard.cpp" />
     <ClCompile Include="..\Source\Models\CubeModel.cpp" />
@@ -137,6 +138,7 @@
     <ClInclude Include="..\Source\Camera.h" />
     <ClInclude Include="..\Source\light.h" />
     <ClInclude Include="..\Source\math2.h" />
+    <ClInclude Include="..\Source\Mesh.h" />
     <ClInclude Include="..\Source\meshLoader.h" />
     <ClInclude Include="..\Source\Models\BillBoard.h" />
     <ClInclude Include="..\Source\Models\CubeModel.h" />

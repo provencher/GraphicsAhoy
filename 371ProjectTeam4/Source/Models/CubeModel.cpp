@@ -15,10 +15,11 @@
 
 using namespace glm;
 
-CubeModel::CubeModel(vec3 color, vec3 size) : Model()
+CubeModel::CubeModel(vec3 color, vec3 size, vec3 pos) : Model()
 {
 	// Create Vertex Buffer for all the verices of the Cube
 	LoadMesh(color, size);
+	SetPosition(pos);
 }
 
 

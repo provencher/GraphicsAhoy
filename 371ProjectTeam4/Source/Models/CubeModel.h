@@ -15,7 +15,7 @@ class CubeModel : public Model
 {
 public:
 	//events
-	CubeModel(glm::vec3 color = glm::vec3(0,0,0), glm::vec3 size = glm::vec3(1.0f, 1.0f, 1.0f));
+	CubeModel(glm::vec3 color = glm::vec3(0,0,0), glm::vec3 size = glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3 pos = glm::vec3(0.0f, 0.0f, 0.0f));
 	virtual ~CubeModel();
 	virtual void Update(float dt);
 	virtual void Draw();

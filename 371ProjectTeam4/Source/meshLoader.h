@@ -25,8 +25,8 @@ private:
 		glm::vec3 color;
 		glm::vec2 uvs;
 	};
-	
-	std::vector<Vertex>* mVertexArray;
+	Vertex *vertexBuffer; 
+	std::vector<Vertex> mVertexArray;
 	unsigned int mVertexArrayID;
 	unsigned int mVertexBufferID;
 	unsigned int mNumOfVertices;
