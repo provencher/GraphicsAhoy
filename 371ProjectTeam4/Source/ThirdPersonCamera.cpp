@@ -168,12 +168,12 @@ void ThirdPersonCamera::UpdateTargeModel(float dt){
 	
 	int turn = 0;
 	int verticalTilt = 0;
-	float tiltspeed = 20.0f;
+	float tiltspeed = 10.0f;
 
 	//vec3 v3MaxAngles = vec3(0,0,0);
 	float maxZTilt = 45;
-	float maxYTilt = 90;
-	float maxXTilt = 90;
+	float maxYTilt = 45;
+	float maxXTilt = 20;
 
 	//normalTilt
 	float normalTiltZ = 0;
@@ -184,6 +184,7 @@ void ThirdPersonCamera::UpdateTargeModel(float dt){
 	glm::vec3 movementDir = glm::vec3(0,0,0);
     if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_W ) == GLFW_PRESS){ //Forward
 		movementDir += direction;
+		//mTargetModel->mSpeed += 0.5f;
 	} 
 
 	// Down
@@ -197,7 +198,7 @@ void ThirdPersonCamera::UpdateTargeModel(float dt){
 	if(1){
 		// Left
 		if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_A ) == GLFW_PRESS){ //Left
-			mTargetModel->mRotationAngleZ-=0.2*tiltspeed;
+			mTargetModel->mRotationAngleZ-=tiltspeed;
 
 			//Limit Right roll
 			if(mTargetModel->mRotationAngleZ < -maxZTilt) 
@@ -212,7 +213,7 @@ void ThirdPersonCamera::UpdateTargeModel(float dt){
 		if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_D ) == GLFW_PRESS){ //Right
 			//Go right
 			movementDir += mRight;
-			mTargetModel->mRotationAngleZ+=0.2*tiltspeed;
+			mTargetModel->mRotationAngleZ+=tiltspeed;
 			//Limit Right roll
 			if(mTargetModel->mRotationAngleZ > maxZTilt) 
 				mTargetModel->mRotationAngleZ = maxZTilt;
@@ -260,11 +261,11 @@ void ThirdPersonCamera::UpdateTargeModel(float dt){
 	if(turn == 0){
 		//Correct roll - 
 		if(mTargetModel->mRotationAngleZ < normalTiltZ)
-			mTargetModel->mRotationAngleZ += 0.2*tiltspeed;
+			mTargetModel->mRotationAngleZ += tiltspeed;
 
 		//Correct roll +
 		if(mTargetModel->mRotationAngleZ > -normalTiltZ)
-			mTargetModel->mRotationAngleZ -= 0.2*tiltspeed;
+			mTargetModel->mRotationAngleZ -= tiltspeed;
 		//mTargetModel->mRotationAngleZ = 0.0f;
 		//mTargetModel->mRotationAngleY = 0.0f;
 	}

@@ -198,35 +198,45 @@ void World::LoadScene(const char * scene_path){
 	GroupModel* world = new GroupModel();
 
 	if(1){ //Ground ===============================
-		Model* m = new CubeModel(vec3(0.6,0.6,0.6));
-		m->SetScaling(vec3(1,200,200));
-		m->SetPosition(vec3(0,-0.5f,0));
-		m->SetRotation(vec3(0,0,1), 90.0f);
-		Model* ground = m;
-		m = nullptr;
-
-		if(1){
-			//world->AddChild("Ground", m);
-			//ground
-		}
-
 		
-	//Billboard
-	//============================================
-	for(int i=0; i< 5; i++){
-		float randf = rand() % 10+5;
-		if(1){
-			BillBoard* shape = new BillBoard();
+		GroupModel* ground = new GroupModel();
+		vec3 plateSize = vec3(vec3(200,1,200));
+
+
+		Model* groundPlate = new CubeModel(vec3(0.6f));
+		groundPlate->SetScaling(plateSize);
+		groundPlate->SetPosition(vec3(0,-0.5f,0));
+		//m->SetRotation(vec3(0,0,1), 90.0f);
+		ground->AddChild(groundPlate);
+		
+
+		//Billboard
+		//============================================
+		for(int i=0; i< 50; i++){
 			
+			vec3 randSize = vec3(
+				rand() % 10+3,
+				rand() % 10+3,
+				rand() % 10+3
+			);
+			vec3 randPos = vec3(
+				(rand() % (int)plateSize.x) - 0.5f*plateSize.x,
+				randSize.y/2,
+				(rand() % (int)plateSize.z) - 0.5f*plateSize.z
+			);
+
+			
+
+			Model* shape = new CubeModel(vec3(0.8f));
 			int x = 1.0f;
-			shape->SetPosition(vec3(randf,randf,randf));
-			shape->SetScaling(vec3(x,x,x));
+			shape->SetPosition(randPos);
+			shape->SetScaling(randSize);
 			ground->AddChild(shape);
 		}
-	}
 
 		world->AddChild("Ground", ground);
 	}	
+	
 	//(rand() % 10 + 50)/10;
 
 	mModel.push_back(world);
@@ -234,7 +244,7 @@ void World::LoadScene(const char * scene_path){
 
 
 
-	if(1){
+	if(0){
 		//Big Plane
 		GroupModel* character = new PlaneModel();
 		//character->SetRotation(vec3(1,0,0), 90);//change thirs person to accomidate 
