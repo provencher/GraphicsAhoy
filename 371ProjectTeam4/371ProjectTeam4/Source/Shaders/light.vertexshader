@@ -28,6 +28,6 @@ void main()
 	//olNormal = vertexNormal_modelspace	
 	normal = normalize((WorldTransform * vec4(vertexNormal_modelspace, 0.0)).xyz);
 	v_color = vec4(vertexColor, 1.0f);
-	UV = vertexUV;	
+	UV = vertexUV * 10;	
 			
 }

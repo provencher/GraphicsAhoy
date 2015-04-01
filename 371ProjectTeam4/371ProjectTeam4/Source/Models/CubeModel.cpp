@@ -77,54 +77,53 @@ CubeModel::CubeModel(vec3 size) : Model()
 
 	static const GLfloat g_uv_buffer_data[] =
 	{
-		0.0f, 0.0f,
-		0.0f, 1.0f,
-		1.0f, 1.0f,
+		0.0f, 0.0f, //left
+		0.0f, 0.1f,
+		0.1f, 0.1f,
 
 		0.0f, 0.0f,
-		1.0f, 1.0f,
-		1.0f, 0.0f,
+		0.1f, 0.1f,
+		0.1f, 0.0f,
 
+		0.0f, 0.1f, //far
+		0.1f, 0.0f,
 		0.0f, 0.0f,
-		0.0f, 1.0f,
-		1.0f, 1.0f,
 
+		0.0f, 0.1f,
+		0.1f, 0.1f,
+		0.1f, 0.1f,
+
+		0.1f, 0.1f, // bottom
 		0.0f, 0.0f,
-		0.0f, 1.0f,
-		1.0f, 1.0f,
+		0.0f, 0.1f,
 
+		0.1f, 0.1f,
 		0.0f, 0.0f,
-		1.0f, 1.0f,
-		1.0f, 0.0f,
+		0.1f, 0.0f,
 
+		0.0f, 0.0f, //near
+		0.1f, 0.0f,
+		0.1f, 0.1f,
+
+		0.1f, 0.0f,
+		0.0f, 0.1f,
+		0.1f, 0.1f,
+
+		0.0f, 0.0f, //right
+		0.1f, 0.1f,
+		0.0f, 0.1f,
+
+		0.1f, 0.1f,
 		0.0f, 0.0f,
-		0.0f, 1.0f,
-		1.0f, 1.0f,
+		0.1f, 0.0f,
 
+		0.1f, 0.1f, //top
+		0.0f, 0.1f,
 		0.0f, 0.0f,
-		1.0f, 1.0f,
-		1.0f, 0.0f,
 
+		0.1f, 0.1f,
 		0.0f, 0.0f,
-		0.0f, 1.0f,
-		1.0f, 1.0f,
-
-		0.0f, 0.0f,
-		1.0f, 1.0f,
-		1.0f, 0.0f,
-
-		0.0f, 0.0f,
-		0.0f, 1.0f,
-		1.0f, 1.0f,
-
-		0.0f, 0.0f,
-		1.0f, 1.0f,
-		1.0f, 0.0f,
-
-		1.0f, 0.0f,
-		0.0f, 1.0f,
-		1.0f, 1.0f
-
+		0.1f, 0.0f
 	};
 
 	// Create a vertex array
@@ -296,10 +295,12 @@ GLuint CubeModel::BitmapLoader(ci_string file_path)
 		printf("Image %s could not be loaded", file_path);
 
 	if (fread(header, 1, 54, file) != 54)
-		return BitmapLoader("../Source/Textures/ice.bmp");
+		//return BitmapLoader("../Source/Textures/ice.bmp");
+		return BitmapLoader(file_path);
 
 	if (header[0] != 'B' || header[1] != 'M')
-		return BitmapLoader("../Source/Textures/ice.bmp");
+		//return BitmapLoader("../Source/Textures/ice.bmp");
+		return BitmapLoader(file_path);
 
 	dataPos = *(int*)&(header[0x0A]);
 	imageSize = *(int*)&(header[0x22]);

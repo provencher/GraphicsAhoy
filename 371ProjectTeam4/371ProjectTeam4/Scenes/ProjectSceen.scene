@@ -55,7 +55,7 @@ name     = "Ground"
 scaling  = 1.0 100.0 100.0
 position = 0.0 -0.5 0.0
 rotation = 0.0 0.0 1.0 90.0
-texture_path = ../Source/Textures/grass4.bmp
+texture_path = ../Source/Textures/tiles1.bmp
 
 [Cube]
 name     = "Cube"

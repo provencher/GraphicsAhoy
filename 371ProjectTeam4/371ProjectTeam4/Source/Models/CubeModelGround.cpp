@@ -9,7 +9,7 @@ CubeModelGround::CubeModelGround(vec3 size) : CubeModel()
 {
 
 	// Load the texture using any two methods
-	Texture = BitmapLoader("../Source/Textures/grass4.bmp");
+	Texture = BitmapLoader("../Source/Textures/tiles1.bmp");
 
 	// Get a handle for our "myTextureSampler" uniform
 	TextureID = glGetUniformLocation(Renderer::GetShaderProgramID(), "mySamplerTexture");
@@ -69,53 +69,53 @@ CubeModelGround::CubeModelGround(vec3 size) : CubeModel()
 
 	static const GLfloat g_uv_buffer_data[] =
 	{
-		0.0f, 0.0f,
+		0.0f, 0.0f, //left
 		0.0f, 1.0f,
 		1.0f, 1.0f,
 
 		0.0f, 0.0f,
 		1.0f, 1.0f,
+		1.0f, 0.0f, 
+
+		0.0f, 1.0f, //far
+		1.0f, 0.0f,
+		0.0f, 0.0f,
+
+		0.0f, 1.0f,
+		1.0f, 1.0f,
+		1.0f, 1.0f,
+
+		1.0f, 1.0f, // bottom
+		0.0f, 0.0f,
+		0.0f, 1.0f,
+
+		1.0f, 1.0f,
+		0.0f, 0.0f,
 		1.0f, 0.0f,
 
-		0.0f, 0.0f,
-		0.0f, 1.0f,
-		1.0f, 1.0f,
-
-		0.0f, 0.0f,
-		0.0f, 1.0f,
-		1.0f, 1.0f,
-
-		0.0f, 0.0f,
-		1.0f, 1.0f,
+		0.0f, 0.0f, //near
 		1.0f, 0.0f,
-
-		0.0f, 0.0f,
-		0.0f, 1.0f,
 		1.0f, 1.0f,
-
-		0.0f, 0.0f,
-		1.0f, 1.0f,
-		1.0f, 0.0f,
-
-		0.0f, 0.0f,
-		0.0f, 1.0f,
-		1.0f, 1.0f,
-
-		0.0f, 0.0f,
-		1.0f, 1.0f,
-		1.0f, 0.0f,
-
-		0.0f, 0.0f,
-		0.0f, 1.0f,
-		1.0f, 1.0f,
-
-		0.0f, 0.0f,
-		1.0f, 1.0f,
-		1.0f, 0.0f,
 
 		1.0f, 0.0f,
 		0.0f, 1.0f,
-		1.0f, 1.0f
+		1.0f, 1.0f,
+
+		0.0f, 0.0f, //right
+		1.0f, 1.0f,
+		0.0f, 1.0f,
+
+		1.0f, 1.0f,
+		0.0f, 0.0f,
+		1.0f, 0.0f,
+
+		1.0f, 1.0f, //top
+		0.0f, 1.0f,
+		0.0f, 0.0f,
+
+		1.0f, 1.0f,
+		0.0f, 0.0f,
+		1.0f, 0.0f
 	};
 
 
@@ -291,10 +291,10 @@ GLuint CubeModelGround::BitmapLoader(ci_string file_path)
 		printf("Image %s could not be loaded", file_path);
 
 	if (fread(header, 1, 54, file) != 54)
-		return BitmapLoader("../Source/Textures/grass4.bmp");
+		return BitmapLoader("../Source/Textures/tiles1.bmp");
 
 	if (header[0] != 'B' || header[1] != 'M')
-		return BitmapLoader("../Source/Textures/grass4.bmp");
+		return BitmapLoader("../Source/Textures/tiles1.bmp");
 
 	dataPos = *(int*)&(header[0x0A]);
 	imageSize = *(int*)&(header[0x22]);
