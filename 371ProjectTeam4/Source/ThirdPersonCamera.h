@@ -26,10 +26,11 @@ public:
 	virtual glm::vec3 getCamPos(){ return mPosition; }	
 
 protected:
-	virtual void UpdateTargetPosition(float dt);
+	virtual void UpdateTargeModel(float dt);
 	virtual void updateCameraLookAt();
 
 private:
+
     Model* mTargetModel;
     // Cartesian Coordinates
     float mHorizontalAngle;
@@ -40,6 +41,8 @@ private:
     glm::vec3 mLookAt;
     glm::vec3 mRight;
     glm::vec3 mUp;
-
+	//Player
+	//Flying
+	glm::vec3 mVelocity;
     // @TODO - Maybe you should add more camera attributes (Speed, etc)
 };

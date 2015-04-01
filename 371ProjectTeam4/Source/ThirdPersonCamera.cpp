@@ -7,7 +7,6 @@
 //
 // Copyright (c) 2014-2015 Concordia University. All rights reserved.
 //
-
 #include "ThirdPersonCamera.h"
 #include "EventManager.h"
 #include "World.h"
@@ -18,24 +17,19 @@
 #include <GLFW/glfw3.h>
 #include <algorithm>
 #include <math.h>
-
 using namespace glm;
-
-/////////////////////////////////////////////////////////////////////////////////
+//####$%^%$#@!$%^&*%$#@$%^&*(^%$#@$%^&*(&^%$#$%^&*()*&^%$#%^&*(#$%^&*^%$#%^&*(^%$
 
 //			Flying Player Movement
 
-//===============================================================================
-
-
+//####$%^%$#@!$%^&*%$#@$%^&*(^%$#@$%^&*(&^%$#$%^&*()*&^%$#%^&*(#$%^&*^%$#%^&*(^%$
 void my_int_func(int x) //Dynamic function being called
 {
     printf( "%d\n", x );
 }
-
+/////////////////////////////////////////////////////////
 ThirdPersonCamera::ThirdPersonCamera(Model* targetModel)
-    : Camera(), mTargetModel(targetModel), mHorizontalAngle(0.0f), mVerticalAngle(0.0f), mRadius(10.0f)
-{
+    : Camera(), mTargetModel(targetModel), mHorizontalAngle(0.0f), mVerticalAngle(0.0f), mRadius(10.0f){
     assert(mTargetModel != nullptr);
 
 	//Orient ---------------------------------------
@@ -57,32 +51,17 @@ ThirdPersonCamera::ThirdPersonCamera(Model* targetModel)
 	mPosition = mTargetModel->GetPosition() - mLookAt*mRadius;
 	mTargetModel->SetRotation(mTargetModel->GetRotationAxis(), (mHorizontalAngle/3.14159265358979323846f*180));
 
-
-
-	//#PlayingAround #DynamicFunctionCall ===============================
-    void (*foo)(int);
-    foo = &my_int_func;
-    //------------------
-	foo( 2 );
-    (*foo)( 2 );
+	//defailt move direction
+	mVelocity = mLookAt;
 }
-
-
-ThirdPersonCamera::~ThirdPersonCamera()
-{
+ThirdPersonCamera::~ThirdPersonCamera(){
 }
-
-
-void ThirdPersonCamera::SetCameraRadius(float r)
-{
+void ThirdPersonCamera::SetCameraRadius(float r){
 	mRadius = r;
 }
-
-float ThirdPersonCamera::GetCameraRadius()
-{
+float ThirdPersonCamera::GetCameraRadius(){
 	return mRadius;
 }
-
 void ThirdPersonCamera::Update(float dt)
 {
 
@@ -92,11 +71,10 @@ void ThirdPersonCamera::Update(float dt)
 	dx = EventManager::GetMouseDX();
 	dy = EventManager::GetMouseMotionY();
 	//-----------------------------------
-	/*/Make Compatible with Pen				//attempt to make compatible with stylus/touch
-	if(glm::length(glm::vec2(dx,dy)) > 20)
-		EventManager::EnableMouseCursor();
-	else //*///
-		EventManager::DisableMouseCursor();
+	EventManager::DisableMouseCursor();
+	
+	float pif = 3.14159265358979323846f;	//PI
+	//*
 	//------------------------------------
 	// 1 - Map Mouse motion to Spherical Angles
 	float mouseSpeed = 0.005f;
@@ -107,7 +85,7 @@ void ThirdPersonCamera::Update(float dt)
 
 	
 	//Apply Limits Camera Angles ----------------------------
-	float pif = 3.14159265358979323846f;	//PI
+	
     // 2 - Clamp vertical angle to [-85, 85] degrees
 	if(		mVerticalAngle/pif*180 < -85)	mVerticalAngle = -85*(pif/180);
 	else if(mVerticalAngle/pif*180 > 85)	mVerticalAngle = 85*(pif/180);
@@ -122,13 +100,18 @@ void ThirdPersonCamera::Update(float dt)
 	
 
 	 // @TODO
-	UpdateTargetPosition(dt);
+	UpdateTargeModel(dt);
 
 	// @TODO
 	//*///////////////////////////////////////////////////////////////
     // Align target model with the horizontal angle
 	mTargetModel->SetRotation(mTargetModel->GetRotationAxis(), (mHorizontalAngle/pif*180));
 	mPosition = mTargetModel->GetPosition() - mLookAt*mRadius;
+	/*idea
+	mat4 Model transform = new transformModel()->SetRotation;
+	transform = model
+	
+	//*/
 	//lock camera above ground
 	//if(mPosition.y <= 0.1f)	mPosition.y = 0.1f;
 	//*///////////////////////////////////////////////////////////////
@@ -139,13 +122,19 @@ void ThirdPersonCamera::Update(float dt)
 
 }
 void ThirdPersonCamera::updateCameraLookAt(){
-	mLookAt = glm::vec3(
-		cos(mVerticalAngle) * sin(mHorizontalAngle), 
-		sin(mVerticalAngle),
-		cos(mVerticalAngle) * cos(mHorizontalAngle)
-	);
-	mRight = glm::normalize(glm::cross(mLookAt, vec3(0.0f, 1.0f, 0.0f)));
-    mUp = glm::cross(mRight, mLookAt);
+}
+glm::mat4 ThirdPersonCamera::GetViewMatrix() const
+{
+    return glm::lookAt(mPosition, mPosition + mLookAt, mUp);
+}
+//////////////////////////////////////////////////////////
+
+//Update Target Model
+
+void ThirdPersonCamera::UpdateTargeModel(float dt){
+		 //*//Move Target Model ////////////////////////////////////////////
+	//direction ------------------------------------------------------
+	
 		
 
 	/* some crazy stuff with adding an extra transform to model
@@ -162,11 +151,14 @@ void ThirdPersonCamera::updateCameraLookAt(){
 	SetRight(mRight);
 	SetUp(mUp);
 
-}
-void ThirdPersonCamera::UpdateTargetPosition(float dt){
-		 //*//Move Target Model ////////////////////////////////////////////
-	//direction ------------------------------------------------------
-	glm::vec3 direction = mLookAt;
+
+	///////////////////////////////////////////////////
+
+	//POSITION
+
+
+
+	glm::vec3 direction = mLookAt;//mVelocity;
 	direction.y = 0.0f; // override to keep movement on plane
 	direction = glm::normalize(direction);
 
@@ -175,35 +167,122 @@ void ThirdPersonCamera::UpdateTargetPosition(float dt){
 	
 	
 	int turn = 0;
-	float tiltspeed = 10.0f;
+	int verticalTilt = 0;
+	float tiltspeed = 20.0f;
 
-	//movement  -----------------------------------------------------
+	//vec3 v3MaxAngles = vec3(0,0,0);
+	float maxZTilt = 45;
+	float maxYTilt = 90;
+	float maxXTilt = 90;
+
+	//normalTilt
+	float normalTiltZ = 0;
+	float normalTiltX = 0;
+	float normalTiltY = 0;
+	
+	// Movement  -----------------------------------------------------
 	glm::vec3 movementDir = glm::vec3(0,0,0);
-    if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_W ) == GLFW_PRESS)//Forward
+    if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_W ) == GLFW_PRESS){ //Forward
 		movementDir += direction;
-    if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_S ) == GLFW_PRESS)//Back
+	} 
+
+	// Down
+	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_S ) == GLFW_PRESS){ //Back
+		//Point down -------------------------------
 		movementDir -= direction;
-	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_A ) == GLFW_PRESS){//Left
-		movementDir -= mRight;
-		mTargetModel->mRotationAngleZ = -tiltspeed;
-		mTargetModel->mRotationAngleY = tiltspeed;
-		turn--;
+	} 
+
+	//===========================================================================
+	//Roll Angle
+	if(1){
+		// Left
+		if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_A ) == GLFW_PRESS){ //Left
+			mTargetModel->mRotationAngleZ-=0.2*tiltspeed;
+
+			//Limit Right roll
+			if(mTargetModel->mRotationAngleZ < -maxZTilt) 
+				mTargetModel->mRotationAngleZ = -maxZTilt;
+
+			//left
+			turn--;
+			//mHorizontalAngle --;
+		}
+
+		// Right
+		if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_D ) == GLFW_PRESS){ //Right
+			//Go right
+			movementDir += mRight;
+			mTargetModel->mRotationAngleZ+=0.2*tiltspeed;
+			//Limit Right roll
+			if(mTargetModel->mRotationAngleZ > maxZTilt) 
+				mTargetModel->mRotationAngleZ = maxZTilt;
+
+			//right
+			turn++;
+			//mHorizontalAngle++;
+		}
 	}
-	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_D ) == GLFW_PRESS){//Right
+
+	//===========================================================================
+	// Right
+	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_D ) == GLFW_PRESS){ 
 		movementDir += mRight;
-		mTargetModel->mRotationAngleZ = tiltspeed;
-		mTargetModel->mRotationAngleY = -tiltspeed;
-		turn++;
+
 	}
-	if(turn == 0){
-		mTargetModel->mRotationAngleZ = 0.0f;
-		mTargetModel->mRotationAngleY = 0.0f;
+	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_A ) == GLFW_PRESS){ 
+		movementDir -= mRight;
+		//-------------------------------------------
 	}
-	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_SPACE ) == GLFW_PRESS)//Up
+
+
+	//Move up Move down
+	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_SPACE ) == GLFW_PRESS){ //Up
 		movementDir += tempUp;
+		mTargetModel->mRotationAngleX-=0.2*tiltspeed;
+			//Limit Right roll
+			if(mTargetModel->mRotationAngleX < -maxXTilt) 
+				mTargetModel->mRotationAngleX = -maxXTilt;
+		verticalTilt--;
+	}
 	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_RIGHT_SHIFT ) == GLFW_PRESS ||
-		glfwGetKey(EventManager::GetWindow(), GLFW_KEY_LEFT_SHIFT ) == GLFW_PRESS)//Down
+		glfwGetKey(EventManager::GetWindow(), GLFW_KEY_LEFT_SHIFT ) == GLFW_PRESS){ //Down
 		movementDir -= tempUp;
+		mTargetModel->mRotationAngleX+=0.2*tiltspeed;
+			//Limit Right roll
+			if(mTargetModel->mRotationAngleX > maxXTilt) 
+				mTargetModel->mRotationAngleX = maxXTilt;
+		verticalTilt++;
+
+	}
+
+	//mTargetModel->mRotationAngleZ
+	//*
+	if(turn == 0){
+		//Correct roll - 
+		if(mTargetModel->mRotationAngleZ < normalTiltZ)
+			mTargetModel->mRotationAngleZ += 0.2*tiltspeed;
+
+		//Correct roll +
+		if(mTargetModel->mRotationAngleZ > -normalTiltZ)
+			mTargetModel->mRotationAngleZ -= 0.2*tiltspeed;
+		//mTargetModel->mRotationAngleZ = 0.0f;
+		//mTargetModel->mRotationAngleY = 0.0f;
+	}
+
+	if(verticalTilt == 0){
+		//Correct roll - 
+		if(mTargetModel->mRotationAngleX < normalTiltX)
+			mTargetModel->mRotationAngleX += 0.2*tiltspeed;
+
+		//Correct roll +
+		if(mTargetModel->mRotationAngleX > -normalTiltX)
+			mTargetModel->mRotationAngleX -= 0.2*tiltspeed;
+		//mTargetModel->mRotationAngleZ = 0.0f;
+		//mTargetModel->mRotationAngleY = 0.0f;
+	}
+	//*/
+
+	
 	
 	//distance -------------------------------------------------------
 	float dist = dt*mTargetModel->GetSpeed();
@@ -214,12 +293,26 @@ void ThirdPersonCamera::UpdateTargetPosition(float dt){
 		pos = pos + movementDir;
 	mTargetModel->SetPosition(pos);
 	//*///////////////////////////////////////////////////////////////
-}
-glm::mat4 ThirdPersonCamera::GetViewMatrix() const
-{
-    return glm::lookAt(mPosition, mPosition + mLookAt, mUp);
+
+
+	
+	//////////////////////////////////////////////////
+
+	// LOOK AT
+
+	mLookAt = glm::vec3(
+		cos(mVerticalAngle) * sin(mHorizontalAngle), 
+		sin(mVerticalAngle),
+		cos(mVerticalAngle) * cos(mHorizontalAngle)
+	);
+	mRight = glm::normalize(glm::cross(mLookAt, vec3(0.0f, 1.0f, 0.0f)));
+    mUp = glm::cross(mRight, mLookAt);
 }
 
+//////////////////////////////////////////////////////////
+
+
+//####$%^%$#@!$%^&*%$#@$%^&*(^%$#@$%^&*(&^%$#$%^&*()*&^%$#%^&*(#$%^&*^%$#%^&*(^%$
 //create dev class with debug funcs
 	/*Dump Vector to console
 	//dev::showVector(glm::vec3 v);

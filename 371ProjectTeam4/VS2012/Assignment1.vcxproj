@@ -117,6 +117,7 @@
     <ClCompile Include="..\Source\Models\BillBoard.cpp" />
     <ClCompile Include="..\Source\Models\CubeModel.cpp" />
     <ClCompile Include="..\Source\Models\GroupModel.cpp" />
+    <ClCompile Include="..\Source\Models\LightModel.cpp" />
     <ClCompile Include="..\Source\Models\Model.cpp" />
     <ClCompile Include="..\Source\Models\particle.cpp" />
     <ClCompile Include="..\Source\Models\particleEmitter.cpp" />
@@ -143,6 +144,7 @@
     <ClInclude Include="..\Source\Models\BillBoard.h" />
     <ClInclude Include="..\Source\Models\CubeModel.h" />
     <ClInclude Include="..\Source\Models\GroupModel.h" />
+    <ClInclude Include="..\Source\Models\LightModel.h" />
     <ClInclude Include="..\Source\Models\particleEmitter.h" />
     <ClInclude Include="..\Source\Models\Model.h" />
     <ClInclude Include="..\Source\Models\particle.h" />

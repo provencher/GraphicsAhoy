@@ -104,17 +104,25 @@ World* World::GetInstance()
     return instance;
 }
 
+void jordanworld(){
+
+	/*
+	[Cube]
+name     = "Cube"
+scaling  = 5.0 1.0 1.0
+position = 0.0 1.0 0.0
+rotation = 0.0 0.0 1.0 180
+boundpath = "Path2"
+pathspeed = 3.0
+
+	*/
+}
+
 //=================================================
 void World::LoadScene(const char * scene_path){
 	
 	
-	if(1){ //Ground ===============================
-		Model* m = new CubeModel(vec3(0.6,0.6,0.6));
-		m->SetScaling(vec3(1,200,200));
-		m->SetPosition(vec3(0,-0.5f,0));
-		m->SetRotation(vec3(0,0,1), 90.0f);
-		mModel.push_back(m);
-	}	
+
 	
 	
 	//Load Objects from File =====================
@@ -167,19 +175,6 @@ void World::LoadScene(const char * scene_path){
 	input.close();
 
 
-
-	////////////////////////////////////////////////////
-	Model* m = new RazorbackModel();
-	m->SetPosition(vec3(-5,5,-5));
-	mModel.push_back(m);
-
-
-
-	////////////////////////////////////////////////////
-
-
-
-
 	// Set PATH vertex buffers
 	for (vector<Path*>::iterator it = mPath.begin(); it < mPath.end(); ++it){
 		// Draw model
@@ -191,34 +186,91 @@ void World::LoadScene(const char * scene_path){
 		// Draw model
 		(*it)->CreateVertexBuffer();
 	}
-    
-    LoadCameras();
-}
-void World::LoadCameras()
-{
-    // Setup Camera ----------------------------------------
-    mCamera.push_back(new StaticCamera(
-		vec3(3.0f, 5.0f, 5.0f),  
-		vec3(0.0f, 0.0f, 0.0f), 
-		vec3(0.0f, 1.0f, 0.0f)));//1
-    mCamera.push_back(new StaticCamera(
-		vec3(3.0f, 30.0f, 5.0f), 
-		vec3(0.0f, 0.0f, 0.0f), 
-		vec3(0.0f, 1.0f, 0.0f)));//2
-    mCamera.push_back(new StaticCamera(
-		vec3(0.5f,  0.5f, 5.0f), 
-		vec3(0.0f, 0.5f, 0.0f), 
-		vec3(0.0f, 1.0f, 0.0f)));//3
-    
-	// Create Character -----------------------------------
+
+
+	//####################################################################################
+	////////////////////////////////////////////////////
+	Model* m = new RazorbackModel();
+	m->SetPosition(vec3(-5,5,-5));
+	mModel.push_back(m);
+
+
+	GroupModel* world = new GroupModel();
+
+	if(1){ //Ground ===============================
+		Model* m = new CubeModel(vec3(0.6,0.6,0.6));
+		m->SetScaling(vec3(1,200,200));
+		m->SetPosition(vec3(0,-0.5f,0));
+		m->SetRotation(vec3(0,0,1), 90.0f);
+		Model* ground = m;
+		m = nullptr;
+
+		if(1){
+			//world->AddChild("Ground", m);
+			//ground
+		}
+
+		
+	//Billboard
+	//============================================
+	for(int i=0; i< 5; i++){
+		float randf = rand() % 10+5;
+		if(1){
+			BillBoard* shape = new BillBoard();
+			
+			int x = 1.0f;
+			shape->SetPosition(vec3(randf,randf,randf));
+			shape->SetScaling(vec3(x,x,x));
+			ground->AddChild(shape);
+		}
+	}
+
+		world->AddChild("Ground", ground);
+	}	
+	//(rand() % 10 + 50)/10;
+
+	mModel.push_back(world);
+
+
+
+
+	if(1){
+		//Big Plane
+		GroupModel* character = new PlaneModel();
+		//character->SetRotation(vec3(1,0,0), 90);//change thirs person to accomidate 
+		float scale = 5;
+		character->SetScaling(vec3(scale, scale, scale));
+		character->SetPosition(vec3(20, 20, 0));
+		character->SetRotation(vec3(0, 1, 0),  0);
+		character->SetSpeed(14.0f);	//Should move to camera
+		mModel.push_back(character);
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
 	////////////////////////////////////////////////////////
+
+	// PLAYER
 
 	// Third Person Cube Character -------------------------
     GroupModel* character = new PlaneModel();
 	//character->SetRotation(vec3(1,0,0), 90);//change thirs person to accomidate 
 	float scale = 0.5f;
 	character->SetScaling(vec3(scale, scale, scale));
-	character->SetPosition(vec3(10.0f, 0.5f, 0.0f));
+	character->SetPosition(vec3(0.0f, 1, -90.0f));
+	character->SetRotation(vec3(0, 1, 0),  90);
 	character->SetSpeed(14.0f);	//Should move to camera
     mModel.push_back(character);
 
@@ -255,6 +307,37 @@ void World::LoadCameras()
 
 
 
+
+
+
+
+    
+    LoadCameras();
+	mCurrentCamera = 0;
+}
+void World::LoadCameras()
+{
+    
+    // Setup Camera ----------------------------------------
+    mCamera.push_back(new StaticCamera(
+		vec3(3.0f, 5.0f, 5.0f),  
+		vec3(0.0f, 0.0f, 0.0f), 
+		vec3(0.0f, 1.0f, 0.0f)));//1
+    mCamera.push_back(new StaticCamera(
+		vec3(3.0f, 30.0f, 5.0f), 
+		vec3(0.0f, 0.0f, 0.0f), 
+		vec3(0.0f, 1.0f, 0.0f)));//2
+    mCamera.push_back(new StaticCamera(
+		vec3(0.5f,  0.5f, 5.0f), 
+		vec3(0.0f, 0.5f, 0.0f), 
+		vec3(0.0f, 1.0f, 0.0f)));//3
+    
+	// Create Character -----------------------------------
+	////////////////////////////////////////////////////////
+
+
+
+
     // BSpline Camera --------------------------------------
     BSpline* spline = FindSpline("\"RollerCoaster\"");
     if (spline == nullptr)
@@ -263,8 +346,6 @@ void World::LoadCameras()
     if (spline != nullptr)
         mCamera.push_back(new BSplineCamera(spline , 5.0f)); //5
     
-    
-    mCurrentCamera = 3;
 }
 Camera* World::GetCamera(){
 	//? may require checking if nullptr

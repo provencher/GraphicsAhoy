@@ -41,7 +41,15 @@ void Particle::Update(float dt) {
 		if(mTime == 0.0f){
 			mOriginalScale = GetScaling();
 		} else {
-			SetScaling(mOriginalScale*((mLifespan-mTime)/mLifespan));
+			float maxLength = 1;
+			vec3 newScaling = vec3(
+					((mLifespan-mTime)/mLifespan)*mOriginalScale.x,
+					((mLifespan-mTime)/mLifespan)*mOriginalScale.y,
+					//mOriginalScale.x+(mTime/mLifespan)*maxLength
+					((mLifespan-mTime)/mLifespan)*mOriginalScale.z
+					);
+
+			SetScaling(newScaling);//mOriginalScale*((mLifespan-mTime)/mLifespan));
 		}
 		mTime += dt;
 

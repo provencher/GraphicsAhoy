@@ -50,7 +50,9 @@ void ParticleEmitter::SpawnParticle(){
 	float rotationSpeed = 0;
 
 	Particle* p = new Particle(speed, particleDir, life, 0);
-	Model* m = new CubeModel(mColor, vec3(0.4f, 0.3f, 0.001f));
+	vec3 size = vec3(0.5f, 0.3f, 0.2f);
+	vec3 pos =  vec3(0,0,-0.1f);
+	Model* m = new CubeModel(mColor, size, pos);
 
 	//BillBoard* m = new BillBoard();
 	//World* w = World::GetInstance();

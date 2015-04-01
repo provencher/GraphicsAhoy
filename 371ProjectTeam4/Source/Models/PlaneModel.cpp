@@ -11,6 +11,7 @@
 #include "CubeModel.h"
 #include "SphereModel.h"
 #include "TorrentModel.h"
+#include "LightModel.h";
 #include "../Renderer.h"
 #include "particleEmitter.h"
 
@@ -224,6 +225,8 @@ PlaneModel::PlaneModel(vec3 size) : GroupModel(){
 		AddChild(pe);
 	}
 
+
+	Model* lightModel = new LightModel();
 
 	//--------------------------------------------------
 	/* Rear rotating spheres
