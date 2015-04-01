@@ -1,4 +1,4 @@
-
+#include "../Texture.h"
 #include "../Renderer.h"
 #include "CubeModelGround.h"
 
@@ -9,7 +9,7 @@ CubeModelGround::CubeModelGround(vec3 size) : CubeModel()
 {
 
 	// Load the texture using any two methods
-	Texture = BitmapLoader("../Source/Textures/tiles1.bmp");
+	Texture = loadBMP_custom("../Source/Textures/tiles1.bmp");
 
 	// Get a handle for our "myTextureSampler" uniform
 	TextureID = glGetUniformLocation(Renderer::GetShaderProgramID(), "mySamplerTexture");
@@ -233,28 +233,6 @@ void CubeModelGround::Draw()
 	glDisable(GL_TEXTURE_2D);
 }
 
-void CubeModelGround::Load(ci_istringstream& iss)
-{
-	ci_string line;
-
-	// Parse model line by line
-	while (std::getline(iss, line))
-	{
-		// Splitting line into tokens
-		ci_istringstream strstr(line);
-		std::istream_iterator<ci_string, char, ci_char_traits> it(strstr);
-		std::istream_iterator<ci_string, char, ci_char_traits> end;
-		std::vector<ci_string> token(it, end);
-
-		if (ParseLine(token) == false)
-		{
-			fprintf(stderr, "Error loading scene file... token:  %s!", token[0]);
-			getchar();
-			exit(-1);
-		}
-	}
-}
-
 bool CubeModelGround::ParseLine(const std::vector<ci_string> &token)
 {
 	if (token.empty())
@@ -268,14 +246,16 @@ bool CubeModelGround::ParseLine(const std::vector<ci_string> &token)
 			assert(token.size() > 2);
 			assert(token[1] == "=");
 
-			Texture = BitmapLoader(token[2].c_str());
+			Texture = loadBMP_custom(token[2].c_str());
 			return true;
 		}
 		return Model::ParseLine(token);
 	}
 }
 
-GLuint CubeModelGround::BitmapLoader(ci_string file_path)
+// OpenGL Tutorial 6
+// Taken from www.opengl-tutorial.org
+GLuint CubeModelGround::loadBMP_custom(ci_string file_path)
 {
 	unsigned char header[54];
 	unsigned int dataPos;
@@ -291,10 +271,10 @@ GLuint CubeModelGround::BitmapLoader(ci_string file_path)
 		printf("Image %s could not be loaded", file_path);
 
 	if (fread(header, 1, 54, file) != 54)
-		return BitmapLoader("../Source/Textures/tiles1.bmp");
+		return loadBMP_custom(file_path);
 
 	if (header[0] != 'B' || header[1] != 'M')
-		return BitmapLoader("../Source/Textures/tiles1.bmp");
+		return loadBMP_custom(file_path);
 
 	dataPos = *(int*)&(header[0x0A]);
 	imageSize = *(int*)&(header[0x22]);
@@ -307,13 +287,10 @@ GLuint CubeModelGround::BitmapLoader(ci_string file_path)
 		dataPos = 54;
 
 	data = new unsigned char[imageSize];
-
 	fread(data, 1, imageSize, file);
-
 	fclose(file);
 
 	GLuint textureID;
-
 	glGenTextures(1, &textureID);
 
 	glBindTexture(GL_TEXTURE_2D, textureID);

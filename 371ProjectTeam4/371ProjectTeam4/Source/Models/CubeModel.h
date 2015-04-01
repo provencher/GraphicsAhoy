@@ -22,7 +22,6 @@ public:
 	virtual void Update(float dt);
 	virtual void Draw();
 
-	void Load(ci_istringstream& iss);
 protected:
 	virtual bool ParseLine(const std::vector<ci_string> &token);
 
@@ -39,9 +38,9 @@ private:
 	unsigned int mVertexBufferID;
 	unsigned int uvbuffer;
 
-	GLuint BitmapLoader(ci_string file_path);
+	// Load a .BMP filepath using our custom loader
+	GLuint loadBMP_custom(ci_string file_path);
+
 	GLuint TextureID;
 	GLuint Texture;
-
-
 };

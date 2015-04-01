@@ -17,7 +17,7 @@ using namespace glm;
 CubeModel::CubeModel(vec3 size) : Model()
 {
 	// Load the texture using any two methods
-	Texture = BitmapLoader("../Source/Textures/ice.bmp");
+	Texture = loadBMP_custom("../Source/Textures/img1.bmp");
 
 	// Get a handle for our "myTextureSampler" uniform
 	TextureID = glGetUniformLocation(Renderer::GetShaderProgramID(), "mySamplerTexture");
@@ -91,7 +91,7 @@ CubeModel::CubeModel(vec3 size) : Model()
 
 		0.0f, 0.1f,
 		0.1f, 0.1f,
-		0.1f, 0.1f,
+		0.1f, 0.0f,
 
 		0.1f, 0.1f, // bottom
 		0.0f, 0.0f,
@@ -105,8 +105,8 @@ CubeModel::CubeModel(vec3 size) : Model()
 		0.1f, 0.0f,
 		0.1f, 0.1f,
 
-		0.1f, 0.0f,
 		0.0f, 0.1f,
+		0.0f, 0.0f,
 		0.1f, 0.1f,
 
 		0.0f, 0.0f, //right
@@ -138,14 +138,6 @@ CubeModel::CubeModel(vec3 size) : Model()
 	glGenBuffers(1, &uvbuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(g_uv_buffer_data), g_uv_buffer_data, GL_STATIC_DRAW);
-
-
-
-	// Set up shader constant defaults
-	//ka = 0.2f;
-	//kd = 0.8f;
-	//ks = 0.2f;
-	//n = 50.0f;
 
 }
 
@@ -236,29 +228,6 @@ void CubeModel::Draw()
 	glDisableVertexAttribArray(0);
 }
 
-
-void CubeModel::Load(ci_istringstream& iss)
-{
-	ci_string line;
-
-	// Parse model line by line
-	while (std::getline(iss, line))
-	{
-		// Splitting line into tokens
-		ci_istringstream strstr(line);
-		std::istream_iterator<ci_string, char, ci_char_traits> it(strstr);
-		std::istream_iterator<ci_string, char, ci_char_traits> end;
-		std::vector<ci_string> token(it, end);
-
-		if (ParseLine(token) == false)
-		{
-			fprintf(stderr, "Error loading scene file... token:  %s!", token[0]);
-			getchar();
-			exit(-1);
-		}
-	}
-}
-
 bool CubeModel::ParseLine(const std::vector<ci_string> &token)
 {
 	if (token.empty())
@@ -272,14 +241,16 @@ bool CubeModel::ParseLine(const std::vector<ci_string> &token)
 			assert(token.size() > 2);
 			assert(token[1] == "=");
 
-			Texture = BitmapLoader(token[2].c_str());
+			Texture = loadBMP_custom(token[2].c_str());
 			return true;
 		}
 		return Model::ParseLine(token);
 	}
 }
 
-GLuint CubeModel::BitmapLoader(ci_string file_path)
+// OpenGL Tutorial 6
+// Taken from www.opengl-tutorial.org
+GLuint CubeModel::loadBMP_custom(ci_string file_path)
 {
 	unsigned char header[54];
 	unsigned int dataPos;
@@ -295,12 +266,10 @@ GLuint CubeModel::BitmapLoader(ci_string file_path)
 		printf("Image %s could not be loaded", file_path);
 
 	if (fread(header, 1, 54, file) != 54)
-		//return BitmapLoader("../Source/Textures/ice.bmp");
-		return BitmapLoader(file_path);
+		return loadBMP_custom(file_path);
 
 	if (header[0] != 'B' || header[1] != 'M')
-		//return BitmapLoader("../Source/Textures/ice.bmp");
-		return BitmapLoader(file_path);
+		return loadBMP_custom(file_path);
 
 	dataPos = *(int*)&(header[0x0A]);
 	imageSize = *(int*)&(header[0x22]);
@@ -313,13 +282,10 @@ GLuint CubeModel::BitmapLoader(ci_string file_path)
 		dataPos = 54;
 
 	data = new unsigned char[imageSize];
-
 	fread(data, 1, imageSize, file);
-
 	fclose(file);
 
 	GLuint textureID;
-
 	glGenTextures(1, &textureID);
 
 	glBindTexture(GL_TEXTURE_2D, textureID);

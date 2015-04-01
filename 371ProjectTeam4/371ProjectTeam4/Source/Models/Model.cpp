@@ -97,25 +97,29 @@ bool Model::ParseLine(const std::vector<ci_string> &token){
 
             float speed = static_cast<float>(atof(token[2].c_str()));
             SetSpeed(speed);
-		} else if (token[0] == "boundpath"){
+		}
+		else if (token[0] == "boundpath"){
 			assert(token.size() > 2);
 			assert(token[1] == "=");
 
 			ci_string pathName = token[2];
-            World* w = World::GetInstance();
-            mPath = w->FindPath(pathName);
+			World* w = World::GetInstance();
+			mPath = w->FindPath(pathName);
 
 			if (mPath == nullptr){
 				mSpline = w->FindSpline(pathName);
 			}
-			
+
 			if (mPath != nullptr){
 				mPosition = mPath->GetWaypoint(0);
-			} else if (mSpline){
+			}
+			else if (mSpline){
 				mPosition = mSpline->GetPosition(mSplineParameterT);
 			}
-		} else {
-			return false;
+			else
+			{
+				return false;
+			}
 		}
 	}
 

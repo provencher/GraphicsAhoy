@@ -41,6 +41,15 @@ public:
 
 	void Bind(unsigned int unit = 0) const;
 	void BindAsRenderTarget();
+
+	// OpenGL Tutorial 6
+	// Taken from www.opengl-tutorial.org
+	// Load a .BMP file using our custom loader
+	// GLuint loadBMP_custom(const char * imagepath);
+
+	// Load a .DDS file using GLFW's own loader
+	GLuint loadDDS(const char * imagepath);
+
 protected:
 private:
 	static std::map<std::string, TextureData*> s_resourceMap;
