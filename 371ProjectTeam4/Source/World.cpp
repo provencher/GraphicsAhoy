@@ -104,18 +104,13 @@ World* World::GetInstance()
     return instance;
 }
 
-void jordanworld(){
 
-	/*
-	[Cube]
-name     = "Cube"
-scaling  = 5.0 1.0 1.0
-position = 0.0 1.0 0.0
-rotation = 0.0 0.0 1.0 180
-boundpath = "Path2"
-pathspeed = 3.0
+///=====================================================
+string LightNameBuilder(string name, int index){
 
-	*/
+	std::ostringstream ss;
+	ss << "allLights[" << index << "]." << name;
+	return ss.str();
 }
 
 //=================================================
@@ -281,7 +276,7 @@ void World::LoadScene(const char * scene_path){
 	character->SetScaling(vec3(scale, scale, scale));
 	character->SetPosition(vec3(0.0f, 1, -90.0f));
 	character->SetRotation(vec3(0, 1, 0),  90);
-	character->SetSpeed(14.0f);	//Should move to camera
+	character->SetSpeed(25.0f);	//Should move to camera
     mModel.push_back(character);
 
 
@@ -403,14 +398,6 @@ void World::Update(float dt)
 	}
 }
 
-string LightNameBuilder(string name, int index){
-
-	std::ostringstream ss;
-	ss << "allLights[" << index << "]." << name;
-	return ss.str();
-}
-
-
 void World::Draw()
 {
 	Renderer::BeginFrame();
@@ -476,7 +463,7 @@ void World::Draw()
 	//Look for WorldTransform in the Vertex Shader
 	GLuint WorldMatrixLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "WorldTransform");	
 	mat4 WorldMatrix = mModel[0]->GetWorldMatrix();
-	glUniformMatrix4fv(WorldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+	//glUniformMatrix4fv(WorldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
 
 	// This looks for the MVP Uniform variable in the Vertex Program
 	GLuint VPMatrixLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "ViewProjectionTransform");	
@@ -555,3 +542,43 @@ Model* World::FindModelByIndex(unsigned int index)
 {
     return mModel.size() > 0 ? mModel[index % mModel.size()] : nullptr;
 }
+
+
+
+int World::AddLight(vec4 pos, vec3 color){
+	//*
+	// setup lights
+	Light l;
+
+
+	l.position = pos;
+	l.intensities = color; 
+	/*
+	l.attenuation = 0.5f;
+	l.ambientCoefficient = 0.0f; //no ambient light
+	l.coneAngle = 5.0f;
+	l.coneDirection = glm::vec3(0, -1, 0);
+	//*/
+
+
+	gLights->push_back(l);
+	return gLights->size()-1;
+}
+
+void World::UpdateLight(int index, glm::vec4 pos, glm::vec3 color){
+	
+	
+	(*gLights)[index].position = pos;
+	(*gLights)[index].intensities = color;
+
+	(*gLights)[index].attenuation = 0.1f;
+	(*gLights)[index].ambientCoefficient = 0.0f; //no ambient light
+	(*gLights)[index].coneAngle = 1.0f;
+	//(*gLights)[index].coneDirection = glm::vec3(0, -1, 0);
+}
+
+
+void World::RemoveLight(int index){
+	gLights->erase(gLights->begin()+index); // NOTE gLights should be map, issue will arise when deleting corrupting indexes that follow
+}
+

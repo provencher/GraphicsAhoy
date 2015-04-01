@@ -48,42 +48,56 @@ PlaneModel::PlaneModel(vec3 size) : GroupModel(){
 	//*/
 	//Torrent Model ----------------------------------------
 	GroupModel* torrentLayer = new GroupModel();
-	float siz = 1.4;
-	vec3 torrentSize = vec3(0.5,0.5,1.4f);
+	
+	
 	//
 	if(1){
-		GroupModel* g = new GroupModel();
 		
+			vec3 torrentSize = vec3(0.5,0.5,1.4f);
+			vec3 boxsize = vec3(0.3f, 0.3f, 0.5f);
 		//left gun
 		if(1){
-			GroupModel* m = new TorrentModel();
-			m->SetPosition(vec3(-1.7f,0.2f,0.5f));
-			m->SetRotation(vec3(0.0f,0.0f,1.0f), 0.0f);
-			m->SetScaling(torrentSize);		
-			m->SetRotationSpeed(2*360.0f);
-			torrentLayer->AddChild(m);
-		}
-		if(1){
-			Model* m = new CubeModel(vec3(0.4f));
-			m->SetPosition(vec3(-1.7f,0.2f,0.0f));
-			m->SetScaling(vec3(0.3f, 0.3f, 0.5f));
-			torrentLayer->AddChild(m);
+			GroupModel* g = new GroupModel();
+			if(1){
+				GroupModel* m = new TorrentModel();
+				m->SetPosition(vec3(0,0,0.5f));
+				m->SetRotation(vec3(0.0f,0.0f,1.0f), 0.0f);
+				m->SetScaling(torrentSize);		
+				m->SetRotationSpeed(2*360.0f);
+				g->AddChild(m);
+			}
+			if(1){
+				Model* m = new CubeModel(vec3(0.4f));
+				m->SetPosition(vec3(0,0,0.0f));
+				m->SetScaling(boxsize);
+				g->AddChild(m);
+			}
+			//g->SetScaling(vec3(2));
+			g->SetPosition(vec3(-1.7f,0.2f,0.0f));
+			torrentLayer->AddChild(g);
+
 		}
 
 		//right gun
 		if(1){
-			GroupModel* m = new TorrentModel();
-			m->SetPosition(vec3(1.7f,0.2f,0.5f));
-			m->SetRotation(vec3(0.0f,0.0f,1.0f), 0.0f);
-			m->SetRotationSpeed(-2*360.0f);
-			m->SetScaling(torrentSize);
-			torrentLayer->AddChild(m);
-		}
-		if(1){
-			Model* m = new CubeModel(vec3(0.4f));
-			m->SetPosition(vec3(1.7f,0.2f,0.0f));
-			m->SetScaling(vec3(0.3f, 0.3f, 0.5f));
-			torrentLayer->AddChild(m);
+			GroupModel* g = new GroupModel();
+			if(1){
+				GroupModel* m = new TorrentModel();
+				m->SetPosition(vec3(0,0,0.5f));
+				m->SetRotation(vec3(0.0f,0.0f,1.0f), 0.0f);
+				m->SetScaling(torrentSize);		
+				m->SetRotationSpeed(2*360.0f);
+				g->AddChild(m);
+			}
+			if(1){
+				Model* m = new CubeModel(vec3(0.4f));
+				m->SetPosition(vec3(0,0,0.0f));
+				m->SetScaling(boxsize);
+				g->AddChild(m);
+			}
+			//g->SetScaling(vec3(2));
+			g->SetPosition(vec3(1.7f,0.2f,0.0f));
+			torrentLayer->AddChild(g);
 		}
 	
 		torrentLayer->SetPosition(vec3(0,-0.2f,0.2));
@@ -123,6 +137,7 @@ PlaneModel::PlaneModel(vec3 size) : GroupModel(){
 	if(1){
 		vec3 thrusterColor = vec3(0.4,0.4,0.4);
 		GroupModel* group = new GroupModel();
+		
 		if(1){//thruster1
 			CubeModel* model= new CubeModel(thrusterColor);
 			model->SetScaling(vec3(0.7f, 0.3f, 2));
@@ -225,8 +240,16 @@ PlaneModel::PlaneModel(vec3 size) : GroupModel(){
 		AddChild(pe);
 	}
 
+	
 
-	Model* lightModel = new LightModel();
+
+
+
+	//Light ---------------------------------------------
+	vec4 tempPos = vec4(0,0,0,1);
+	vec3 lame = vec3(tempPos.x, tempPos.y, tempPos.z);
+	Model* lightModel = new LightModel(lame, vec3(1,0,0));
+	AddChild(lightModel);
 
 	//--------------------------------------------------
 	/* Rear rotating spheres
@@ -252,7 +275,7 @@ PlaneModel::PlaneModel(vec3 size) : GroupModel(){
 	}
 	//*/
 
-
+	//tempPos
 
 	
 	//--------------------------------------------------
@@ -313,6 +336,8 @@ PlaneModel::~PlaneModel(){
 
 void PlaneModel::Update(float dt){
 	GroupModel::Update(dt);
+
+	
 }
 
 void PlaneModel::Draw(){

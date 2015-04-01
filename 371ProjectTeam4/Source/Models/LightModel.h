@@ -13,33 +13,46 @@
 #include "../Path.h"
 #include "../BSpline.h"
 #include "../light.h"
+#include "../World.h"
 
 class LightModel : public Model {
 public:
-	LightModel(glm::vec3 size = glm::vec3(1.0f, 1.0f, 1.0f));
+	LightModel(glm::vec3 pos, glm::vec3 color = glm::vec3(1.0f, 1.0f, 1.0f));
 	~LightModel();
 	void Update(float dt);
 	void Draw();
 
 
+	void SetIsDirectional(int w);
+	void SetIntensities(glm::vec3 color);
+	void SetAttenuation(float c);
+	void SetAmbientCoefficient(float c);
+	void SetConeAngle(float ang);
+	void SetConeDirection(glm::vec3 dir);
+
+
+	int GetIsDirectional()		{return directional;}
+	glm::vec3 GetIntensities()	{return intensities;}
+	float GetAttenuation()		{return attenuation;}
+	float GetAmbientCoefficient(){return ambientCoefficient;}
+	float GetConeAngle()		{return coneAngle;}
+	glm::vec3 GetConeDirection(){return coneDirection;}
+
 protected:
-	
+	virtual bool ParseLine(const std::vector<ci_string> &token);
 
 private:
 
-	//Model vars
-	// The vertex format could be different for different types of models
-	struct Vertex {
-		glm::vec3 position;
-		glm::vec3 normal;
-		glm::vec3 color;
-	};
-	unsigned int mVertexArrayID;
-	unsigned int mVertexBufferID;
-	float rotationSpeed;
-
-
-	std::vector<Path*> mPath;
-    std::vector<BSpline*> mSpline;
+	World* mWorld;
+	int mLightIndex;
+	glm::vec3 mLastColor;
 	std::vector<Light*> mLight;
+
+	
+	int directional;
+	glm::vec3 intensities;
+	float attenuation;
+	float ambientCoefficient;
+	float coneAngle;
+	glm::vec3 coneDirection;
 };

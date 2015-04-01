@@ -3,80 +3,56 @@
 
 #include "LightModel.h"
 #include "../Renderer.h"
-#include "../World.h"
+
 #include <vector>
 #include <GL/glew.h>// Include GLEW - OpenGL Extension Wrangler
-
+#include <GLFW/glfw3.h>
 using namespace glm;
 
-LightModel::LightModel(vec3 size) : Model()
+LightModel::LightModel(glm::vec3 pos, glm::vec3 color) : Model()
 {
-	// Create Vertex Buffer for all the verices of the Layer
-	vec3 halfSize = size * 0.5f;
+	mLastColor = color;
 
-	//initialize rotation speed;
-	rotationSpeed = 0.0f;
-
-	World* w = World::GetInstance();
+	mPosition = pos;
 	
-	/*
-	// setup lights
-	Light spotlight;
-	spotlight.position = glm::vec4(0, 5, 0, 1);
-	spotlight.intensities = glm::vec3(0, 1, 2); //strong white light
-	spotlight.attenuation = 0.1f;
-	spotlight.ambientCoefficient = 0.0f; //no ambient light
-	spotlight.coneAngle = 5.0f;
-	spotlight.coneDirection = glm::vec3(0, -1, 0);
+	//Lights
+	World* w = World::GetInstance();
+	mLightIndex = w->AddLight(glm::vec4(mPosition, 0), color);
 
-	Light directionalLight;
-	directionalLight.position = glm::vec4(5, 20, 0.6, 0); //w == 0 indications a directional light
-	directionalLight.intensities = glm::vec3(1, 1, 1); 
-	directionalLight.ambientCoefficient = 0.2f;
-
-	Light light3;
-	light3.position = glm::vec4(-5, 5, 15, 0); //w == 0 indications a directional light
-	light3.intensities = glm::vec3(0.5, 0.5, 0.5); //weak yellowish light
-	light3.ambientCoefficient = 0.06f;
-
-	w->gLights
-	*/
-
+	directional = 1;
+	intensities = vec3(0);
+	attenuation = 0.5f;
+	ambientCoefficient = 0.5f;
+	coneAngle = 0.5f;
+	coneDirection = vec3(0,-1,0);
 }
 
 LightModel::~LightModel()
 {
+	//REMEMBERT
+
 
 }
-
 
 void LightModel::Update(float dt)
 {
-	// If you are curious, un-comment this line to have spinning Layers!
-	// That will only work if your world transform is correct...
-
-	if(rotationSpeed != 0.0f){
-		mRotationAngleInDegrees += rotationSpeed * dt;
-	}
+	
 	Model::Update(dt);
+
+	
+	World* w = World::GetInstance();
+	vec3 pos = vec3(GetWorldMatrix()*vec4(mPosition,1));
+	w->UpdateLight(mLightIndex, glm::vec4(pos,1), mLastColor);
 }
 
 void LightModel::Draw(){
-	DrawChildren();
 	
-	
-	/*
-	// Draw paths
-	if(mPath.size() > 0)
-		for (vector<Path*>::iterator it = mPath.begin(); it < mPath.end(); ++it)
-			(*it)->Draw();
-	
-	/*
-	// Draw B-Spline Lines (using the same shader for Path Lines)
-	if(mSpline.size() > 0)
-		for (vector<BSpline*>::iterator it = mSpline.begin(); it < mSpline.end(); ++it)
-			(*it)->Draw();
-	*/
 }
 
-
+bool LightModel::ParseLine(const std::vector<ci_string> &token){
+	if (token.empty()){
+		return true;
+	} else {
+		return LightModel::ParseLine(token);
+	}
+}

@@ -185,12 +185,14 @@ void ThirdPersonCamera::UpdateTargeModel(float dt){
     if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_W ) == GLFW_PRESS){ //Forward
 		movementDir += direction;
 		//mTargetModel->mSpeed += 0.5f;
+		//mTargetModel->SetSpeed(mTargetModel->GetSpeed()+0.5); // acceleration
 	} 
 
 	// Down
 	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_S ) == GLFW_PRESS){ //Back
 		//Point down -------------------------------
 		movementDir -= direction;
+		//mTargetModel->SetSpeed(mTargetModel->GetSpeed()-0.5);
 	} 
 
 	//===========================================================================

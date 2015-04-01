@@ -227,9 +227,7 @@ Model*	Model::Parent(){
 //----------------------------------------
 void	Model::AddChild(Model* m){
 	m->SetParent(this);
-	mChildren.push_back(m);
-	//child[key] = m;
-	//
+	mChildren.push_back(m); // remove this
 	std::string str = to_string(child.size());
 	child[str.c_str()] = m;
 }	
@@ -239,7 +237,7 @@ void Model::AddChild(ci_string key, Model* m){
 	m->SetParent(this);
 	child[key] = m;
 	
-	mChildren.push_back(m);
+	mChildren.push_back(m); // remove this
 }	
 
 Model*	Model::RemoveChild(ci_string key){ 
@@ -272,7 +270,7 @@ void	Model::DrawChildren(){
 }
 //----------------------------------------
 void	Model::SetParent(Model* m){
-	mParent = m;
+	this->mParent = m;
 }
 
 

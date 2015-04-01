@@ -11,7 +11,6 @@
 
 #include "ParsingHelper.h"
 #include <vector>
-#include "light.h"
 #include <GLM/glm.hpp>
 
 class Camera;
@@ -39,6 +38,15 @@ public:
     Model* FindModelByIndex(unsigned int index);	
 		
 	glm::vec3 camPos;
+
+	inline void SetLightPostion();
+	/*
+	glm::vec4 position;
+		glm::vec3 intensities; //a.k.a. the color of the light
+	*/
+	int AddLight(glm::vec4 pos, glm::vec3 color);
+	void UpdateLight(int index, glm::vec4 pos, glm::vec3 color);
+	void RemoveLight(int index);
 
 	struct Light {
 		glm::vec4 position;

@@ -28,7 +28,7 @@ public:
     std::vector<Particle*> GetParticles();
 
 protected:
-
+	glm::vec3 mLastColor;
 	std::vector<Particle*> mParticles;
 	bool mEmitting;
 	bool mAlive;

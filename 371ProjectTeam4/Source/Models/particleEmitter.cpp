@@ -15,7 +15,7 @@
 ParticleEmitter::ParticleEmitter(){
 	Init(vec3(0,0,-1));
 
-	mColor = vec3(0.1f,0.7f,1.0f);
+	mColor = vec3(0.9f,0.7f,0.0f);
 }
 
 ParticleEmitter::ParticleEmitter(vec3 dir){
@@ -52,8 +52,10 @@ void ParticleEmitter::SpawnParticle(){
 	Particle* p = new Particle(speed, particleDir, life, 0);
 	vec3 size = vec3(0.5f, 0.3f, 0.2f);
 	vec3 pos =  vec3(0,0,-0.1f);
-	Model* m = new CubeModel(mColor, size, pos);
 
+
+	
+	Model* m = new CubeModel(mColor, size, pos);
 	//BillBoard* m = new BillBoard();
 	//World* w = World::GetInstance();
 	//m->SetLookAtCamera(w->GetCamera());
