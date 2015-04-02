@@ -104,6 +104,8 @@
     <None Include="..\Source\Shaders\BlueColor.fragmentshader" />
     <None Include="..\Source\Shaders\PathLines.fragmentshader" />
     <None Include="..\Source\Shaders\PathLines.vertexshader" />
+    <None Include="..\Source\Shaders\shadow.fragmentshader" />
+    <None Include="..\Source\Shaders\shadow.vertexshader" />
     <None Include="..\Source\Shaders\SolidColor.vertexshader" />
     <None Include="..\Source\Shaders\SolidColor.fragmentshader" />
   </ItemGroup>
@@ -111,10 +113,18 @@
     <ClCompile Include="..\Source\BSpline.cpp" />
     <ClCompile Include="..\Source\BSplineCamera.cpp" />
     <ClCompile Include="..\Source\Camera.cpp" />
+    <ClCompile Include="..\Source\light.cpp" />
+    <ClCompile Include="..\Source\Mesh.cpp" />
+    <ClCompile Include="..\Source\meshLoader.cpp" />
+    <ClCompile Include="..\Source\Models\BillBoard.cpp" />
     <ClCompile Include="..\Source\Models\CubeModel.cpp" />
     <ClCompile Include="..\Source\Models\GroupModel.cpp" />
+    <ClCompile Include="..\Source\Models\LightModel.cpp" />
     <ClCompile Include="..\Source\Models\Model.cpp" />
+    <ClCompile Include="..\Source\Models\particle.cpp" />
+    <ClCompile Include="..\Source\Models\particleEmitter.cpp" />
     <ClCompile Include="..\Source\Models\PlaneModel.cpp" />
+    <ClCompile Include="..\Source\Models\RazorbackModel.cpp" />
     <ClCompile Include="..\Source\Models\SphereModel.cpp" />
     <ClCompile Include="..\Source\Models\TorrentModel.cpp" />
     <ClCompile Include="..\Source\Path.cpp" />
@@ -129,11 +139,19 @@
     <ClInclude Include="..\Source\BSpline.h" />
     <ClInclude Include="..\Source\BSplineCamera.h" />
     <ClInclude Include="..\Source\Camera.h" />
+    <ClInclude Include="..\Source\light.h" />
     <ClInclude Include="..\Source\math2.h" />
+    <ClInclude Include="..\Source\Mesh.h" />
+    <ClInclude Include="..\Source\meshLoader.h" />
+    <ClInclude Include="..\Source\Models\BillBoard.h" />
     <ClInclude Include="..\Source\Models\CubeModel.h" />
     <ClInclude Include="..\Source\Models\GroupModel.h" />
+    <ClInclude Include="..\Source\Models\LightModel.h" />
+    <ClInclude Include="..\Source\Models\particleEmitter.h" />
     <ClInclude Include="..\Source\Models\Model.h" />
+    <ClInclude Include="..\Source\Models\particle.h" />
     <ClInclude Include="..\Source\Models\PlaneModel.h" />
+    <ClInclude Include="..\Source\Models\RazorbackModel.h" />
     <ClInclude Include="..\Source\Models\SphereModel.h" />
     <ClInclude Include="..\Source\Models\TorrentModel.h" />
     <ClInclude Include="..\Source\ParsingHelper.h" />
@@ -143,6 +161,13 @@
     <ClInclude Include="..\Source\Renderer.h" />
     <ClInclude Include="..\Source\ThirdPersonCamera.h" />
     <ClInclude Include="..\Source\World.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\Scenes\Obj\XA-20_Razorback_Strike_Fighter\Eject_Seat.png" />
+    <Image Include="..\Scenes\Obj\XA-20_Razorback_Strike_Fighter\Glass_Cockpit.png" />
+    <Image Include="..\Scenes\Obj\XA-20_Razorback_Strike_Fighter\Pilot_usa.png" />
+    <Image Include="..\Scenes\Obj\XA-20_Razorback_Strike_Fighter\XA-20_Razorback_Strike_Fighter_N.png" />
+    <Image Include="..\Scenes\Obj\XA-20_Razorback_Strike_Fighter\XA-20_Razorback_Strike_Fighter_P01.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
