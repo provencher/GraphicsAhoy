@@ -41,8 +41,7 @@ void LightModel::Update(float dt)
 
 	
 	World* w = World::GetInstance();
-	vec3 pos = vec3(GetWorldMatrix()*vec4(mPosition,1));
-	w->UpdateLight(mLightIndex, glm::vec4(pos,1), mLastColor);
+	w->UpdateLight(mLightIndex, GetWorldMatrix()*vec4(mPosition,GetIsDirectional()), mLastColor);
 }
 
 void LightModel::Draw(){

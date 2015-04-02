@@ -17,19 +17,18 @@
 
 class LightModel : public Model {
 public:
-	LightModel(glm::vec3 pos, glm::vec3 color = glm::vec3(1.0f, 1.0f, 1.0f));
+	LightModel(glm::vec3 pos= glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 color = glm::vec3(1.0f, 1.0f, 1.0f));
 	~LightModel();
 	void Update(float dt);
 	void Draw();
 
 
-	void SetIsDirectional(int w);
-	void SetIntensities(glm::vec3 color);
-	void SetAttenuation(float c);
-	void SetAmbientCoefficient(float c);
-	void SetConeAngle(float ang);
-	void SetConeDirection(glm::vec3 dir);
-
+	void SetIsDirectional(bool w){directional = (int)directional;}
+	void SetIntensities(glm::vec3 color){intensities = color;}
+	void SetAttenuation(float c){attenuation = c;}
+	void SetAmbientCoefficient(float c){ambientCoefficient = c;}
+	void SetConeAngle(float ang){coneAngle = ang;}
+	void SetConeDirection(glm::vec3 dir){coneDirection = dir;}
 
 	int GetIsDirectional()		{return directional;}
 	glm::vec3 GetIntensities()	{return intensities;}

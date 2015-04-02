@@ -565,16 +565,27 @@ int World::AddLight(vec4 pos, vec3 color){
 	return gLights->size()-1;
 }
 
+
+
 void World::UpdateLight(int index, glm::vec4 pos, glm::vec3 color){
 	
 	
+	int directional;
+	glm::vec3 intensities;
+	float attenuation;
+	float ambientCoefficient;
+	float coneAngle;
+	glm::vec3 coneDirection;
+
 	(*gLights)[index].position = pos;
 	(*gLights)[index].intensities = color;
 
 	(*gLights)[index].attenuation = 0.1f;
 	(*gLights)[index].ambientCoefficient = 0.0f; //no ambient light
 	(*gLights)[index].coneAngle = 1.0f;
-	//(*gLights)[index].coneDirection = glm::vec3(0, -1, 0);
+	(*gLights)[index].coneDirection = glm::vec3(0, -1, 0);
+
+
 }
 
 

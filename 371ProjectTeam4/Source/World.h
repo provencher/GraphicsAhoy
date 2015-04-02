@@ -46,6 +46,7 @@ public:
 	*/
 	int AddLight(glm::vec4 pos, glm::vec3 color);
 	void UpdateLight(int index, glm::vec4 pos, glm::vec3 color);
+
 	void RemoveLight(int index);
 
 	struct Light {
