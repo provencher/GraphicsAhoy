@@ -1,9 +1,44 @@
-﻿Build started 2015-04-01 8:59:55 PM.
+﻿Build started 2015-04-01 11:22:09 PM.
      1>Project "C:\MAMP\htdocs\ROOT\Dropbox\school\Concordia\Winter 2015\Computer Graphics\Project\GraphicsAhoy\371ProjectTeam4\VS2012\Assignment1.vcxproj" on node 2 (Build target(s)).
-     1>Link:
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /I"../ThirdParty/glew-1.10.0/include" /I"../ThirdParty/glfw-3.0.4/include" /I../ThirdParty/glm /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"C:\MAMP\htdocs\ROOT\Dropbox\school\Concordia\Winter 2015\Computer Graphics\Project\GraphicsAhoy\371ProjectTeam4\VS2012\/../Build/Debug/" /Fd"C:\MAMP\htdocs\ROOT\Dropbox\school\Concordia\Winter 2015\Computer Graphics\Project\GraphicsAhoy\371ProjectTeam4\VS2012\/../Build/Debug/vc110.pdb" /Gd /TP /analyze- /errorReport:prompt ..\Source\Models\PlaneModel.cpp ..\Source\World.cpp
+         World.cpp
+     1>c:\mamp\htdocs\root\dropbox\school\concordia\winter 2015\computer graphics\project\graphicsahoy\371projectteam4\source\world.cpp(25): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+     1>c:\mamp\htdocs\root\dropbox\school\concordia\winter 2015\computer graphics\project\graphicsahoy\371projectteam4\source\world.cpp(226): warning C4244: 'initializing' : conversion from 'float' to 'int', possible loss of data
+     1>c:\mamp\htdocs\root\dropbox\school\concordia\winter 2015\computer graphics\project\graphicsahoy\371projectteam4\source\world.cpp(297): warning C4244: 'initializing' : conversion from 'int' to 'float', possible loss of data
+     1>c:\mamp\htdocs\root\dropbox\school\concordia\winter 2015\computer graphics\project\graphicsahoy\371projectteam4\source\world.cpp(301): warning C4244: 'initializing' : conversion from 'float' to 'int', possible loss of data
+     1>c:\mamp\htdocs\root\dropbox\school\concordia\winter 2015\computer graphics\project\graphicsahoy\371projectteam4\source\world.cpp(429): warning C4018: '<' : signed/unsigned mismatch
+         PlaneModel.cpp
+     1>c:\mamp\htdocs\root\dropbox\school\concordia\winter 2015\computer graphics\project\graphicsahoy\371projectteam4\source\models\planemodel.cpp(14): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+         Generating Code...
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\MAMP\htdocs\ROOT\Dropbox\school\Concordia\Winter 2015\Computer Graphics\Project\GraphicsAhoy\371ProjectTeam4\VS2012\/../Bin/371ProjectTeam4-Debug.exe" /INCREMENTAL /NOLOGO /LIBPATH:"../ThirdParty/glew-1.10.0/lib/Release/Win32" /LIBPATH:"../ThirdParty/glfw-3.0.4/lib/Win32/lib-msvc110" opengl32.lib glew32s.lib glfw3.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\MAMP\htdocs\ROOT\Dropbox\school\Concordia\Winter 2015\Computer Graphics\Project\GraphicsAhoy\371ProjectTeam4\VS2012\/../Bin/371ProjectTeam4-Debug.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\MAMP\htdocs\ROOT\Dropbox\school\Concordia\Winter 2015\Computer Graphics\Project\GraphicsAhoy\371ProjectTeam4\VS2012\/../Bin/371ProjectTeam4-Debug.lib" /MACHINE:X86 "C:\MAMP\htdocs\ROOT\Dropbox\school\Concordia\Winter 2015\Computer Graphics\Project\GraphicsAhoy\371ProjectTeam4\VS2012\/../Build/Debug/BSpline.obj"
+         "C:\MAMP\htdocs\ROOT\Dropbox\school\Concordia\Winter 2015\Computer Graphics\Project\GraphicsAhoy\371ProjectTeam4\VS2012\/../Build/Debug/BSplineCamera.obj"
+         "C:\MAMP\htdocs\ROOT\Dropbox\school\Concordia\Winter 2015\Computer Graphics\Project\GraphicsAhoy\371ProjectTeam4\VS2012\/../Build/Debug/Camera.obj"
+         "C:\MAMP\htdocs\ROOT\Dropbox\school\Concordia\Winter 2015\Computer Graphics\Project\GraphicsAhoy\371ProjectTeam4\VS2012\/../Build/Debug/light.obj"
+         "C:\MAMP\htdocs\ROOT\Dropbox\school\Concordia\Winter 2015\Computer Graphics\Project\GraphicsAhoy\371ProjectTeam4\VS2012\/../Build/Debug/Mesh.obj"
+         "C:\MAMP\htdocs\ROOT\Dropbox\school\Concordia\Winter 2015\Computer Graphics\Project\GraphicsAhoy\371ProjectTeam4\VS2012\/../Build/Debug/meshLoader.obj"
+         "C:\MAMP\htdocs\ROOT\Dropbox\school\Concordia\Winter 2015\Computer Graphics\Project\GraphicsAhoy\371ProjectTeam4\VS2012\/../Build/Debug/BillBoard.obj"
+         "C:\MAMP\htdocs\ROOT\Dropbox\school\Concordia\Winter 2015\Computer Graphics\Project\GraphicsAhoy\371ProjectTeam4\VS2012\/../Build/Debug/CubeModel.obj"
+         "C:\MAMP\htdocs\ROOT\Dropbox\school\Concordia\Winter 2015\Computer Graphics\Project\GraphicsAhoy\371ProjectTeam4\VS2012\/../Build/Debug/GroupModel.obj"
+         "C:\MAMP\htdocs\ROOT\Dropbox\school\Concordia\Winter 2015\Computer Graphics\Project\GraphicsAhoy\371ProjectTeam4\VS2012\/../Build/Debug/LightModel.obj"
+         "C:\MAMP\htdocs\ROOT\Dropbox\school\Concordia\Winter 2015\Computer Graphics\Project\GraphicsAhoy\371ProjectTeam4\VS2012\/../Build/Debug/Model.obj"
+         "C:\MAMP\htdocs\ROOT\Dropbox\school\Concordia\Winter 2015\Computer Graphics\Project\GraphicsAhoy\371ProjectTeam4\VS2012\/../Build/Debug/particle.obj"
+         "C:\MAMP\htdocs\ROOT\Dropbox\school\Concordia\Winter 2015\Computer Graphics\Project\GraphicsAhoy\371ProjectTeam4\VS2012\/../Build/Debug/particleEmitter.obj"
+         "C:\MAMP\htdocs\ROOT\Dropbox\school\Concordia\Winter 2015\Computer Graphics\Project\GraphicsAhoy\371ProjectTeam4\VS2012\/../Build/Debug/PlaneModel.obj"
+         "C:\MAMP\htdocs\ROOT\Dropbox\school\Concordia\Winter 2015\Computer Graphics\Project\GraphicsAhoy\371ProjectTeam4\VS2012\/../Build/Debug/RazorbackModel.obj"
+         "C:\MAMP\htdocs\ROOT\Dropbox\school\Concordia\Winter 2015\Computer Graphics\Project\GraphicsAhoy\371ProjectTeam4\VS2012\/../Build/Debug/SphereModel.obj"
+         "C:\MAMP\htdocs\ROOT\Dropbox\school\Concordia\Winter 2015\Computer Graphics\Project\GraphicsAhoy\371ProjectTeam4\VS2012\/../Build/Debug/TorrentModel.obj"
+         "C:\MAMP\htdocs\ROOT\Dropbox\school\Concordia\Winter 2015\Computer Graphics\Project\GraphicsAhoy\371ProjectTeam4\VS2012\/../Build/Debug/Path.obj"
+         "C:\MAMP\htdocs\ROOT\Dropbox\school\Concordia\Winter 2015\Computer Graphics\Project\GraphicsAhoy\371ProjectTeam4\VS2012\/../Build/Debug/StaticCamera.obj"
+         "C:\MAMP\htdocs\ROOT\Dropbox\school\Concordia\Winter 2015\Computer Graphics\Project\GraphicsAhoy\371ProjectTeam4\VS2012\/../Build/Debug/EventManager.obj"
+         "C:\MAMP\htdocs\ROOT\Dropbox\school\Concordia\Winter 2015\Computer Graphics\Project\GraphicsAhoy\371ProjectTeam4\VS2012\/../Build/Debug/main.obj"
+         "C:\MAMP\htdocs\ROOT\Dropbox\school\Concordia\Winter 2015\Computer Graphics\Project\GraphicsAhoy\371ProjectTeam4\VS2012\/../Build/Debug/Renderer.obj"
+         "C:\MAMP\htdocs\ROOT\Dropbox\school\Concordia\Winter 2015\Computer Graphics\Project\GraphicsAhoy\371ProjectTeam4\VS2012\/../Build/Debug/ThirdPersonCamera.obj"
+         "C:\MAMP\htdocs\ROOT\Dropbox\school\Concordia\Winter 2015\Computer Graphics\Project\GraphicsAhoy\371ProjectTeam4\VS2012\/../Build/Debug/World.obj"
          Assignment1.vcxproj -> C:\MAMP\htdocs\ROOT\Dropbox\school\Concordia\Winter 2015\Computer Graphics\Project\GraphicsAhoy\371ProjectTeam4\VS2012\/../Bin/371ProjectTeam4-Debug.exe
      1>Done Building Project "C:\MAMP\htdocs\ROOT\Dropbox\school\Concordia\Winter 2015\Computer Graphics\Project\GraphicsAhoy\371ProjectTeam4\VS2012\Assignment1.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:00.10
+Time Elapsed 00:00:07.09

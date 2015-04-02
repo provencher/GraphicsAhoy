@@ -58,11 +58,12 @@ public:		//------------------------------------------
 	void	SetParent(Model* m);
 	void	AddChild(Model* m);	
 	Model*	RemoveChild(Model* m);
-	int		GetChildCount() const { return mChildren.size(); }
+	int		GetChildCount() const { return child.size(); }
 	void	UpdateChildren(float dt);
 	void	DrawChildren();
 	bool	HasParent();
 	Model*	Parent();
+	int		mNthChild;
 	glm::vec4 materialConst;
 
 	std::map <ci_string, Model*> child;
@@ -85,8 +86,6 @@ protected: //------------------------------------------
 	glm::vec3 mRotationAxis;
 	float     mRotationAngleInDegrees;
 
-	
-	std::vector<Model*> mChildren; // to be discountinued
 	
 
 

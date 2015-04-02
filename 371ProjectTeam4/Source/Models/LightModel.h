@@ -17,10 +17,12 @@
 
 class LightModel : public Model {
 public:
-	LightModel(glm::vec3 pos= glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 color = glm::vec3(1.0f, 1.0f, 1.0f));
+	LightModel(glm::vec3 pos, glm::vec3 color = glm::vec3(1.0f, 1.0f, 1.0f));
 	~LightModel();
 	void Update(float dt);
 	void Draw();
+
+	
 
 
 	void SetIsDirectional(bool w){directional = (int)directional;}
@@ -47,7 +49,8 @@ private:
 	glm::vec3 mLastColor;
 	std::vector<Light*> mLight;
 
-	
+	glm::vec3 mColorDeviation;
+
 	int directional;
 	glm::vec3 intensities;
 	float attenuation;

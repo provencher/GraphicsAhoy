@@ -32,7 +32,7 @@ Model::Model() : mName("UNNAMED"), mPosition(0.0f, 0.0f, 0.0f), mScaling(1.0f, 1
 	mRotationAngleX = 0;
 	mRotationAngleY = 0;
 	mRotationAngleZ = 0;
-
+	mNthChild = 0;
 }
 Model::~Model()
 {
@@ -227,8 +227,8 @@ Model*	Model::Parent(){
 //----------------------------------------
 void	Model::AddChild(Model* m){
 	m->SetParent(this);
-	mChildren.push_back(m); // remove this
-	std::string str = to_string(child.size());
+	std::string str = to_string(mNthChild++);
+	m->SetName(str.c_str());
 	child[str.c_str()] = m;
 }	
 
@@ -236,8 +236,7 @@ void Model::AddChild(ci_string key, Model* m){
 	m->SetName(key);
 	m->SetParent(this);
 	child[key] = m;
-	
-	mChildren.push_back(m); // remove this
+	mNthChild++;
 }	
 
 Model*	Model::RemoveChild(ci_string key){ 
@@ -255,16 +254,18 @@ Model*	Model::RemoveChild(Model* m){
 void	Model::UpdateChildren(float dt){
 	int count = GetChildCount();
 	if (count > 0){
-		for(int i=0; i<count; i++){
-			mChildren[i]->Update(dt);
+		typedef std::map<ci_string, Model*>::iterator it_type;
+		for(it_type iterator = child.begin(); iterator != child.end(); iterator++) {
+			iterator->second->Update(dt);
 		}
 	}
 }
 void	Model::DrawChildren(){
 	int count = GetChildCount();
 	if (count > 0){
-		for(int i=0; i<count; i++){
-			mChildren[i]->Draw();
+		typedef std::map<ci_string, Model*>::iterator it_type;
+		for(it_type iterator = child.begin(); iterator != child.end(); iterator++) {
+			iterator->second->Draw();
 		}
 	}
 }

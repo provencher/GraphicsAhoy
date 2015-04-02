@@ -12,6 +12,8 @@
 #include "Billboard.h"
 #include "../World.h"
 
+
+//Quick and Dirty Particle Emitter
 ParticleEmitter::ParticleEmitter(){
 	Init(vec3(0,0,-1));
 
@@ -50,26 +52,21 @@ void ParticleEmitter::SpawnParticle(){
 	float rotationSpeed = 0;
 
 	Particle* p = new Particle(speed, particleDir, life, 0);
-	vec3 size = vec3(0.5f, 0.3f, 0.2f);
+	vec3 size = vec3(0.5f, 0.3f, 0.3f);
 	vec3 pos =  vec3(0,0,-0.1f);
 
 
 	
 	Model* m = new CubeModel(mColor, size, pos);
-	//BillBoard* m = new BillBoard();
-	//World* w = World::GetInstance();
-	//m->SetLookAtCamera(w->GetCamera());
-
-
-	//note: add SetTarget to spawn particles relative to
-	//= (inverse(GetWorldTransform())*target->GetWorldTransform()) *positionToSpawn
-
 	p->SetRotationSpeed(180);
 	p->SetPosition(0.0f*mDirection);
 	p->AddChild(m);
 	p->SetParent(this);
-	//AddChild("test", p);
 	mParticles.push_back(p);
+
+	//note: add SetTarget to spawn particles relative to world
+	//= (inverse(GetWorldTransform())*target->GetWorldTransform()) *positionToSpawn
+
 }
 
 void ParticleEmitter::Update(float dt) {
