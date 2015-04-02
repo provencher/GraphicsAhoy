@@ -11,7 +11,10 @@
 
 #include "ParsingHelper.h"
 #include <vector>
+#include <glm/gtc/type_ptr.hpp>
 #include <GLM/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/vector_angle.hpp>
 
 class Camera;
 class Model;
@@ -60,6 +63,12 @@ public:
 	std::vector<Light>* gLights;
 	Camera* GetCamera();
 
+	glm::mat4 depthProjectionMatrix;
+	glm::mat4 lightVP;
+	glm::mat4 depthMVP;
+
+	glm::mat4 biasMatrix;
+
 private:
     static World* instance;
 
@@ -69,6 +78,12 @@ private:
 	std::vector<Camera*> mCamera;
 	unsigned int mCurrentCamera;
 	
+
+	glm::mat4 projMat = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.0f);
+
+
+	int width;
+	int height;
 
 	// Material Coefficients
 	float ka;

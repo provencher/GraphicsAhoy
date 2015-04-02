@@ -27,6 +27,7 @@
 #include "BSpline.h"
 
 #include <GLFW/glfw3.h>
+
 #include "EventManager.h"
 
 #include <string>
@@ -71,6 +72,22 @@ World::World()
 	gLights->push_back(spotlight);
 	gLights->push_back(directionalLight);
 	gLights->push_back(light3);
+
+
+
+	glfwGetWindowSize(EventManager::GetWindow(), &width, &height);
+
+	const float arr[16] = {
+		0.5, 0.0, 0.0, 0.0,
+		0.0, 0.5, 0.0, 0.0,
+		0.0, 0.0, 0.5, 0.0,
+		0.5, 0.5, 0.5, 1.0 };
+
+	biasMatrix = glm::make_mat4(arr);
+
+	// Compute the MVP matrix from the light's point of view
+	depthProjectionMatrix = glm::ortho<float>(-10, 10, -10, 10, -10, 20);
+
 }
 World::~World()
 {
