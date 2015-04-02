@@ -1,8 +1,7 @@
 
 
 #include <GLM/glm.hpp>
-#include <stdlib.h>     /* srand, rand */
-#include <time.h>       /* time */
+#include <time.h>       
 #include <iostream>
 
 #include "ParticleEmitter.h"
@@ -64,31 +63,30 @@ void ParticleEmitter::SpawnParticle(){
 	p->SetParent(this);
 	mParticles.push_back(p);
 
-	//note: add SetTarget to spawn particles relative to world
-	//= (inverse(GetWorldTransform())*target->GetWorldTransform()) *positionToSpawn
+	/*note: add SetTarget to spawn particles relative to another element
+	//convert between the two model spaces
+	//= (inverse(target->GetWorldTransform())*emitter->GetWorldTransform())*positionToSpawn
+	//vec3 pos = vec3(GetWorldMatrix()*vec4(mPosition,1)); //model to world space
+	//*/
 
 }
 
 void ParticleEmitter::Update(float dt) {
-	if(!mParticles.empty()){
-	//	std::cout << "parrticle exists\n";
-	}
-	//UpdateChildren(dt);
+	UpdateChildren(dt);
 	
-
 	for (std::vector<Particle*>::iterator it = mParticles.begin(); it < mParticles.end();){
         if (*it != nullptr){
             (*it)->Update(dt);
 
             if (!(*it)->IsAlive()) {
-                delete *it;
                 it = mParticles.erase(it);
             } else 
                 it++;
         }
     }
 
-	if(1||rand() % 100 > 20){
+	//Spawn Particles
+	if(1 || rand() % 100 > 20){
 		SpawnParticle();
 	}
 }

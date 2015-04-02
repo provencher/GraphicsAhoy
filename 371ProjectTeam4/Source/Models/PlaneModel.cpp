@@ -246,13 +246,13 @@ PlaneModel::PlaneModel(vec3 size) : GroupModel(){
 	vec3 lame = vec3(tempPos.x, tempPos.y, tempPos.z);
 	Model* lightModel = new LightModel(lame, 2.0f*vec3(1,0.6f,0.4f));
 	AddChild(lightModel);
-	lightModel->SetPosition(vec3(0,0,-2));
+	lightModel->SetPosition(vec3(0,0.2f,-2.5f));
 
 
 
 	//--------------------------------------------------
-	/* Rear rotating spheres
-	if(true){
+	/* 2 rotating offset spheres
+	if(1){
 		GroupModel* propeller = new GroupModel();
 		float bladeLength = 0.6f;
 		int blades = 2;

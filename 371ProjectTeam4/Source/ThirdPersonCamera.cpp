@@ -110,15 +110,11 @@ void ThirdPersonCamera::Update(float dt)
 	/*idea
 	mat4 Model transform = new transformModel()->SetRotation;
 	transform = model
-	
 	//*/
+
 	//lock camera above ground
-	//if(mPosition.y <= 0.1f)	mPosition.y = 0.1f;
-	//*///////////////////////////////////////////////////////////////
-   
-
-
-	
+	if(mPosition.y <= 0.1f)	
+		mPosition.y = 0.1f;
 
 }
 void ThirdPersonCamera::updateCameraLookAt(){
@@ -274,6 +270,8 @@ void ThirdPersonCamera::UpdateTargeModel(float dt){
 	glm::vec3 pos = mTargetModel->GetPosition();
 	if(glm::length(movementDir) > 0)
 		pos = pos + movementDir;
+
+	if(pos.y < 1.5f) pos.y = 1.5f;
 	mTargetModel->SetPosition(pos);
 	//*///////////////////////////////////////////////////////////////
 

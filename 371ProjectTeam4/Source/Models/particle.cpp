@@ -1,11 +1,8 @@
 
 
 #include <GLM/glm.hpp>
-#include <stdlib.h>     /* srand, rand */
-#include <time.h>       /* time */
+#include <time.h>
 #include <iostream>
-
-
 #include "Particle.h"
 
 
@@ -17,8 +14,6 @@ Particle::Particle(float speed, vec3 dir, float life, float rotationSpeed){
     mRotationSpeed = rotationSpeed;
 	mAlive = true;
 	mType = "Particle";
-
-
 }
 Particle::~Particle(){
     
@@ -45,11 +40,11 @@ void Particle::Update(float dt) {
 			vec3 newScaling = vec3(
 					((mLifespan-mTime)/mLifespan)*mOriginalScale.x,
 					((mLifespan-mTime)/mLifespan)*mOriginalScale.y,
-					//mOriginalScale.x+(mTime/mLifespan)*maxLength
+					//mOriginalScale.x+(mTime/mLifespan)*maxLength //make longer with time
 					((mLifespan-mTime)/mLifespan)*mOriginalScale.z
 					);
 
-			SetScaling(newScaling);//mOriginalScale*((mLifespan-mTime)/mLifespan));
+			SetScaling(newScaling);//mOriginalScale*((mLifespan-mTime)/mLifespan)); 
 		}
 		mTime += dt;
 

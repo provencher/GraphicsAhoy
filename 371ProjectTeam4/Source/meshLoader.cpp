@@ -1,5 +1,5 @@
-
-
+//Created Jordan Rutty
+//Thanks to OpenGl Tutorial for help
 
 #include "MeshLoader.h"
 #include "Renderer.h"
@@ -11,7 +11,8 @@
 
 using namespace glm;
 
-
+// Work in progress
+// Error is passing array to Open GL
 
 MeshLoader::MeshLoader(){
 	vec3 color = vec3(0.7f);
@@ -198,6 +199,7 @@ void MeshLoader::LoadMesh(const char * path, vec3 color){
 	//*/
 }
 
+//this function from opengl tutorial
 bool MeshLoader::LoadObj(	const char * path, 	
 						std::vector<glm::vec3> & out_vertices, 	
 						std::vector<glm::vec2> & out_uvs,	

@@ -1,15 +1,27 @@
-﻿Build started 2015-04-01 11:22:09 PM.
+﻿Build started 2015-04-02 10:44:43 AM.
      1>Project "C:\MAMP\htdocs\ROOT\Dropbox\school\Concordia\Winter 2015\Computer Graphics\Project\GraphicsAhoy\371ProjectTeam4\VS2012\Assignment1.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /I"../ThirdParty/glew-1.10.0/include" /I"../ThirdParty/glfw-3.0.4/include" /I../ThirdParty/glm /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"C:\MAMP\htdocs\ROOT\Dropbox\school\Concordia\Winter 2015\Computer Graphics\Project\GraphicsAhoy\371ProjectTeam4\VS2012\/../Build/Debug/" /Fd"C:\MAMP\htdocs\ROOT\Dropbox\school\Concordia\Winter 2015\Computer Graphics\Project\GraphicsAhoy\371ProjectTeam4\VS2012\/../Build/Debug/vc110.pdb" /Gd /TP /analyze- /errorReport:prompt ..\Source\Models\PlaneModel.cpp ..\Source\World.cpp
-         World.cpp
-     1>c:\mamp\htdocs\root\dropbox\school\concordia\winter 2015\computer graphics\project\graphicsahoy\371projectteam4\source\world.cpp(25): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-     1>c:\mamp\htdocs\root\dropbox\school\concordia\winter 2015\computer graphics\project\graphicsahoy\371projectteam4\source\world.cpp(226): warning C4244: 'initializing' : conversion from 'float' to 'int', possible loss of data
-     1>c:\mamp\htdocs\root\dropbox\school\concordia\winter 2015\computer graphics\project\graphicsahoy\371projectteam4\source\world.cpp(297): warning C4244: 'initializing' : conversion from 'int' to 'float', possible loss of data
-     1>c:\mamp\htdocs\root\dropbox\school\concordia\winter 2015\computer graphics\project\graphicsahoy\371projectteam4\source\world.cpp(301): warning C4244: 'initializing' : conversion from 'float' to 'int', possible loss of data
-     1>c:\mamp\htdocs\root\dropbox\school\concordia\winter 2015\computer graphics\project\graphicsahoy\371projectteam4\source\world.cpp(429): warning C4018: '<' : signed/unsigned mismatch
-         PlaneModel.cpp
-     1>c:\mamp\htdocs\root\dropbox\school\concordia\winter 2015\computer graphics\project\graphicsahoy\371projectteam4\source\models\planemodel.cpp(14): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /I"../ThirdParty/glew-1.10.0/include" /I"../ThirdParty/glfw-3.0.4/include" /I../ThirdParty/glm /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"C:\MAMP\htdocs\ROOT\Dropbox\school\Concordia\Winter 2015\Computer Graphics\Project\GraphicsAhoy\371ProjectTeam4\VS2012\/../Build/Debug/" /Fd"C:\MAMP\htdocs\ROOT\Dropbox\school\Concordia\Winter 2015\Computer Graphics\Project\GraphicsAhoy\371ProjectTeam4\VS2012\/../Build/Debug/vc110.pdb" /Gd /TP /analyze- /errorReport:prompt ..\Source\Models\BillBoard.cpp ..\Source\Models\RazorbackModel.cpp ..\Source\Models\particle.cpp ..\Source\Models\particleEmitter.cpp ..\Source\meshLoader.cpp
+         meshLoader.cpp
+     1>c:\mamp\htdocs\root\dropbox\school\concordia\winter 2015\computer graphics\project\graphicsahoy\371projectteam4\source\meshloader.cpp(214): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\stdio.h(218) : see declaration of 'fopen'
+     1>c:\mamp\htdocs\root\dropbox\school\concordia\winter 2015\computer graphics\project\graphicsahoy\371projectteam4\source\meshloader.cpp(223): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\stdio.h(237) : see declaration of 'fscanf'
+     1>c:\mamp\htdocs\root\dropbox\school\concordia\winter 2015\computer graphics\project\graphicsahoy\371projectteam4\source\meshloader.cpp(230): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\stdio.h(237) : see declaration of 'fscanf'
+     1>c:\mamp\htdocs\root\dropbox\school\concordia\winter 2015\computer graphics\project\graphicsahoy\371projectteam4\source\meshloader.cpp(235): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\stdio.h(237) : see declaration of 'fscanf'
+     1>c:\mamp\htdocs\root\dropbox\school\concordia\winter 2015\computer graphics\project\graphicsahoy\371projectteam4\source\meshloader.cpp(240): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\stdio.h(237) : see declaration of 'fscanf'
+     1>c:\mamp\htdocs\root\dropbox\school\concordia\winter 2015\computer graphics\project\graphicsahoy\371projectteam4\source\meshloader.cpp(246): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\stdio.h(237) : see declaration of 'fscanf'
+         particleEmitter.cpp
+     1>c:\mamp\htdocs\root\dropbox\school\concordia\winter 2015\computer graphics\project\graphicsahoy\371projectteam4\source\models\particleemitter.cpp(31): warning C4305: 'argument' : truncation from 'double' to 'const float'
+     1>c:\mamp\htdocs\root\dropbox\school\concordia\winter 2015\computer graphics\project\graphicsahoy\371projectteam4\source\models\particleemitter.cpp(47): warning C4244: 'initializing' : conversion from 'int' to 'float', possible loss of data
+         particle.cpp
+         RazorbackModel.cpp
+         BillBoard.cpp
+         GLM: rotate function taking degrees as a parameter is deprecated. #define GLM_FORCE_RADIANS before including GLM headers to remove this message.
          Generating Code...
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\MAMP\htdocs\ROOT\Dropbox\school\Concordia\Winter 2015\Computer Graphics\Project\GraphicsAhoy\371ProjectTeam4\VS2012\/../Bin/371ProjectTeam4-Debug.exe" /INCREMENTAL /NOLOGO /LIBPATH:"../ThirdParty/glew-1.10.0/lib/Release/Win32" /LIBPATH:"../ThirdParty/glfw-3.0.4/lib/Win32/lib-msvc110" opengl32.lib glew32s.lib glfw3.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\MAMP\htdocs\ROOT\Dropbox\school\Concordia\Winter 2015\Computer Graphics\Project\GraphicsAhoy\371ProjectTeam4\VS2012\/../Bin/371ProjectTeam4-Debug.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\MAMP\htdocs\ROOT\Dropbox\school\Concordia\Winter 2015\Computer Graphics\Project\GraphicsAhoy\371ProjectTeam4\VS2012\/../Bin/371ProjectTeam4-Debug.lib" /MACHINE:X86 "C:\MAMP\htdocs\ROOT\Dropbox\school\Concordia\Winter 2015\Computer Graphics\Project\GraphicsAhoy\371ProjectTeam4\VS2012\/../Build/Debug/BSpline.obj"
@@ -41,4 +53,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:07.09
+Time Elapsed 00:00:05.71

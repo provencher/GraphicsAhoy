@@ -10,9 +10,6 @@
 #include "RazorbackModel.h"
 #include "CubeModel.h"
 #include "../Renderer.h"
-
-
-// Include GLEW - OpenGL Extension Wrangler
 #include <GL/glew.h>
 
 using namespace glm;
@@ -20,8 +17,7 @@ using namespace glm;
 RazorbackModel::RazorbackModel(vec3 color, vec3 size) : Model()
 {
 	mMeshLoader = new MeshLoader();
-	/*// Create Vertex Buffer for all the verices of the Cube
-	
+	/*// azis locator for model
 	float thi = 0.05f;
 	AddChild(new CubeModel(vec3(1, 0, 0), vec3(1,	thi, thi), vec3(0.5f, 0, 0)));
 	AddChild(new CubeModel(vec3(0, 1, 0), vec3(thi, 1,	 thi), vec3(0, 0.5f, 0)));

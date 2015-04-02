@@ -120,15 +120,9 @@ glm::mat4 BillBoard::GetWorldMatrix(){
 
 
 	if(mLookAtCamera != nullptr){
-		//vec3 campos = mLookAtCamera->getCamPos;
-		//vec3 pos = GetPosition();
-		//mLookAt = campos - pos;
-		
-		//find camera
-		//World* w = World::GetInstance();
-		//mLookAtCamera = w->GetCamera();
+		//Please dont mind the mess, jsut hacking things together 
 
-
+		//------------------------------------------------------------
 		vec3 lookAt = normalize(mLookAtCamera->getCamPos()-mPosition);
 		float A = asin(lookAt.y)/3.14159265358979323846f*180;
 		float B = atan(-lookAt.z/lookAt.x)/3.14159265358979323846f*180;
@@ -158,26 +152,12 @@ glm::mat4 BillBoard::GetWorldMatrix(){
 
 		//mat4 rotate = glm::rotate(mat4(1.0f), B, vec3(0,1,0));
 
-
+		//------------------------------------------------------------
 		mat4 s = glm::scale(mat4(1.0f), mScaling);
-		//worldMatrix = t * (-r*-r2) * s;
-		//worldMatrix = t * r * s;
 		worldMatrix = t * r2 * s;
 		//worldMatrix = inverse(glm::lookAt(mPosition, mPosition + lookAt, vec3(0,1,0))) * t * r * s;
-		
-
-
-
-
-		/* Multiple rotation
-
-		mHorizontalAngle/pif*180)
-		*/
-		
 		//mPosition
 		//mat4 camw  = glm::lookAt(mLookAtCamera->GetPosition(), mLookAtCamera->GetPosition() + mLookAtCamera->GetLookAt(), mLookAtCamera->GetUp());
-		
-		
 		//worldMatrix = t * r * s;
 		/*
 		mRight = glm::normalize(glm::cross(mLookAt, vec3(0.0f, 1.0f, 0.0f)));
