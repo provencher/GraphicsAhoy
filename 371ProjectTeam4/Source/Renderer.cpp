@@ -87,7 +87,7 @@ void Renderer::Initialize()
 		shaderPathPrefix + "shadow.fragmentshader")
 		);
 	sCurrentShader = 0;
-	Renderer::BindFrame();
+	BindFrame();
 }
 
 void Renderer::Shutdown()

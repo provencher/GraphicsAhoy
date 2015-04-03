@@ -60,8 +60,8 @@ World::World()
 	spotlight.coneDirection = glm::vec3(0, -1, 0);
 
 	Light directionalLight;
-	directionalLight.position = glm::vec4(5, 20, 0.6, 0); //w == 0 indications a directional light
-	directionalLight.intensities = glm::vec3(0.5, 0.5, 0.5); 
+	directionalLight.position = glm::vec4(3.0f, 30.0f, 5.0f, 0.0f); //w == 0 indications a directional light
+	directionalLight.intensities = glm::vec3(0.7, 0.7, 0.7); 
 	directionalLight.ambientCoefficient = 0.2f;
 
 	Light light3;
@@ -350,9 +350,9 @@ void World::LoadCameras()
 	////////////////////////////////////////////////////////
 
 	//Setup Alt Camera
-	glm::vec3 pos = mCamera[1]->GetPosition();
-	glm::vec3 look = mCamera[1]->GetLookAt();
-	glm::vec3 up = mCamera[1]->GetUp();
+	glm::vec3 pos = mCamera[2]->GetPosition();
+	glm::vec3 look = mCamera[2]->GetLookAt();
+	glm::vec3 up = mCamera[2]->GetUp();
 	altCamera = new StaticCamera(pos, look, up);
 
 
@@ -552,7 +552,8 @@ void World::RenderScene(){
 
 	// Send the view projection constants to the shader
 	VPMatrixLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "ViewProjectionTransform");
-	glUniformMatrix4fv(VPMatrixLocation, 1, GL_FALSE, &VP[0][0]);
+	mat4 ViewPorj = projMat * GetCamera()->GetViewMatrix();
+	glUniformMatrix4fv(VPMatrixLocation, 1, GL_FALSE, &ViewPorj[0][0]);
 
 	for (vector<Path*>::iterator it = mPath.begin(); it < mPath.end(); ++it){
 		// Draw model
