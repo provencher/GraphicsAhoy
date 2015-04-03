@@ -31,6 +31,7 @@ public:
 
 	void Update(float dt);
 	void Draw();
+	void RenderScene();
 	void DrawShadow();
 
 	void LoadScene(const char * scene_path);
@@ -67,7 +68,6 @@ public:
 	glm::mat4 depthProjectionMatrix;
 	glm::mat4 lightVP;
 	glm::mat4 depthMVP;
-
 	glm::mat4 biasMatrix;
 
 private:

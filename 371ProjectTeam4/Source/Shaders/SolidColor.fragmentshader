@@ -6,11 +6,13 @@ out vec3 color;
 in vec4 v_color;
 in vec3 normal; // You will need this when you do per-fragment lighting
 in vec4 worldPosition;
+in vec4 shadowMapCoords0;
 
 // Light and Material Uniform Variables
 uniform vec4 materialCoefficients; // x: ambient   y: diffuse   z: specular   w: specular exponent
 
 uniform vec3 worldCamPos;
+uniform sampler2DShadow R_shadowMap;
 
 #define MAX_LIGHTS 10
 uniform int numLights;

@@ -439,8 +439,6 @@ void World::DrawShadow(){
 
 
 
-
-
 	//Draw All models
 	for (vector<Model*>::iterator it = mModel.begin(); it < mModel.end(); ++it){
 		(*it)->Draw();
@@ -451,11 +449,9 @@ void World::DrawShadow(){
 
 }
 
-void World::Draw()
-{
-	Renderer::BeginFrame();
-	
-	
+void World::RenderScene(){
+
+
 	// Set shader to use
 	glUseProgram(Renderer::GetShaderProgramID());
 
@@ -466,10 +462,38 @@ void World::Draw()
 	GLuint CamPos = glGetUniformLocation(Renderer::GetShaderProgramID(), "worldCamPos");
 	glUniform3fv(CamPos, 1, &camPos[0]);
 
+
+	// This looks for the MVP Uniform variable in the Vertex Program
+	GLuint VPMatrixLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "ViewProjectionTransform");
+	mat4 VP = mCamera[mCurrentCamera]->GetViewProjectionMatrix();
+	glUniformMatrix4fv(VPMatrixLocation, 1, GL_FALSE, &VP[0][0]);
+
+	//WorldCamView
+	GLuint CamView = glGetUniformLocation(Renderer::GetShaderProgramID(), "CameraView");
+	mat4 camView = GetCamera()->GetViewMatrix();
+	glUniformMatrix4fv(CamView, 1, GL_FALSE, &camView[0][0]);
+
+	//Projection
+	GLuint Proj = glGetUniformLocation(Renderer::GetShaderProgramID(), "Projection");	
+	glUniformMatrix4fv(Proj, 1, GL_FALSE, &projMat[0][0]);
+
+	//Light MVP	
+	GLuint LightView = glGetUniformLocation(Renderer::GetShaderProgramID(), "LightView");
+	mat4 lightView = altCamera->GetViewMatrix();
+	glUniformMatrix4fv(LightView, 1, GL_FALSE, &lightView[0][0]);
+
+	//Light Projection
+	GLuint LightProj = glGetUniformLocation(Renderer::GetShaderProgramID(), "LightProj");
+	mat4 lightProj = biasMatrix * depthProjectionMatrix;
+	glUniformMatrix4fv(LightProj, 1, GL_FALSE, &lightProj[0][0]);
+
+
 	//Lights
 	GLuint NumLights = glGetUniformLocation(Renderer::GetShaderProgramID(), "numLights");
 	int numberOfLights = (int)gLights->size();
 	glUniform1i(NumLights, numberOfLights);
+
+
 
 	vector<GLuint> gluints;
 	string uniformName;
@@ -513,16 +537,6 @@ void World::Draw()
 		glUniform3fv(gluints[5], 1, &temp[0]);
 
 	}
-	
-	//Look for WorldTransform in the Vertex Shader
-	GLuint WorldMatrixLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "WorldTransform");	
-	mat4 WorldMatrix = mModel[0]->GetWorldMatrix();
-	//glUniformMatrix4fv(WorldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
-
-	// This looks for the MVP Uniform variable in the Vertex Program
-	GLuint VPMatrixLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "ViewProjectionTransform");	
-	mat4 VP = mCamera[mCurrentCamera]->GetViewProjectionMatrix();
-	glUniformMatrix4fv(VPMatrixLocation, 1, GL_FALSE, &VP[0][0]);
 
 
 
@@ -539,7 +553,7 @@ void World::Draw()
 	}
 
 	// Draw Path Lines
-	
+
 	// Set Shader for path lines
 	unsigned int prevShader = Renderer::GetCurrentShader();
 	Renderer::SetShader(SHADER_PATH_LINES);
@@ -554,14 +568,51 @@ void World::Draw()
 		(*it)->Draw();
 	}
 
-    // Draw B-Spline Lines (using the same shader for Path Lines)
-    for (vector<BSpline*>::iterator it = mSpline.begin(); it < mSpline.end(); ++it){
+	// Draw B-Spline Lines (using the same shader for Path Lines)
+	for (vector<BSpline*>::iterator it = mSpline.begin(); it < mSpline.end(); ++it){
 		// Draw model
 		(*it)->Draw();
 	}
 
 	// Restore previous shader
-	Renderer::SetShader((ShaderType) prevShader);
+	Renderer::SetShader((ShaderType)prevShader);
+}
+
+void World::Draw()
+{
+	Renderer::BeginFrame();
+
+	for (size_t i = 0; i < gLights->size(); ++i){
+		
+		glBindFramebuffer(GL_FRAMEBUFFER, 1);
+		// Clear the screen
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		altCamera->SetPosition((glm::vec3)(*gLights)[i].position);
+	
+
+		//glCullFace(GL_FRONT);
+		DrawShadow();
+		//glCullFace(GL_BACK);
+
+	}
+
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glViewport(0, 0, width, height);
+	// Clear the screen
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	Renderer::SetShader(SHADER_SOLID_COLOR);
+	glUseProgram(Renderer::GetShaderProgramID());
+
+	GLuint shadowMapHandle = glGetUniformLocation(Renderer::GetShaderProgramID(), "R_shadowMap");
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, 1);
+	glUniform1i(shadowMapHandle, 0);
+
+	
+	RenderScene();
 
 	Renderer::EndFrame();
 }

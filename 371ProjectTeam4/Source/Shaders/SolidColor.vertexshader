@@ -10,6 +10,15 @@ uniform mat4 ViewProjectionTransform;
 uniform mat4 WorldTransform;
 uniform vec3 lightPosition;
 
+
+uniform mat4 LightView;
+uniform mat4 LightProj;
+
+uniform mat4 CameraView;
+uniform mat4 Projection;
+
+out vec4 shadowMapCoords0;
+
 // Outputs to fragment shader
 out vec3 normal;  // You will need this when you do per-fragment lighting
 out vec4 v_color;
@@ -18,8 +27,8 @@ out vec4 worldPosition;
 void main()
 {
 	// Output position of the vertex, in clip space : MVP * position
-	worldPosition = WorldTransform * vec4(vertexPosition_modelspace,1);
-	gl_Position =  ViewProjectionTransform * worldPosition;
+	gl_Position = Projection * CameraView * WorldTransform * vec4(vertexPosition_modelspace,1);
+	shadowMapCoords0 = LightProj * LightView * WorldTransform * vec4(vertexPosition_modelspace,1);
 
 	//olNormal = vertexNormal_modelspace	
 	normal = normalize((WorldTransform * vec4(vertexNormal_modelspace, 0.0)).xyz);
