@@ -13,24 +13,19 @@
 
 
 //Quick and Dirty Particle Emitter
-ParticleEmitter::ParticleEmitter(){
-	Init(vec3(0,0,-1));
+ParticleEmitter::ParticleEmitter(vec3 dir){
+	Init(dir);
 
 	mColor = vec3(0.9f,0.7f,0.0f);
 }
 
-ParticleEmitter::ParticleEmitter(vec3 dir){
-	Init(dir);
-}
 
 void ParticleEmitter::Init(vec3 dir){
 	mEmitting = false;
 	mDirection = dir;
 
-	if(0){
-		Model* m = new CubeModel(vec3(1), vec3(0.4));
-		AddChild(m);
-	}
+	//AddChild(new CubeModel(vec3(1), vec3(0.4)));
+	
 
 	SpawnParticle();
 	mHost = this;
@@ -59,9 +54,9 @@ void ParticleEmitter::SpawnParticle(){
 	Model* m = new CubeModel(mColor, size, pos);
 	p->SetRotationSpeed(180);
 	p->SetPosition(0.0f*mDirection);
-	p->AddChild(m);
-	p->SetParent(this);
-	mParticles.push_back(p);
+	p->AddChild("model", m);	//
+	p->SetParent(this);			//draw model relative to emitter
+	mParticles.push_back(p);	//add to special list
 
 	/*note: add SetTarget to spawn particles relative to another element
 	//convert between the two model spaces

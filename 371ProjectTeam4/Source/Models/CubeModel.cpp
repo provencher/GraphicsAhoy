@@ -20,6 +20,7 @@ CubeModel::CubeModel(vec3 color, vec3 size, vec3 pos) : Model()
 	// Create Vertex Buffer for all the verices of the Cube
 	LoadMesh(color, size);
 	SetPosition(pos);
+	mType = "CubeModel";	//allow to tell the type of object for more specific functions
 }
 
 
@@ -109,7 +110,10 @@ void CubeModel::DestroyMesh(){
     glDeleteVertexArrays(1, &mVertexArrayID);
 }
 
-
+void CubeModel::SetColor(vec3 col){
+	DestroyMesh();
+	LoadMesh(col, mScaling);
+}
 //void CubeModel::SetSideColor(char side, glm::vec3 col){}
 //void CubeModel::SetColor(glm::vec3 col){}
 

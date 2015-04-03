@@ -10,8 +10,8 @@ using namespace glm;
 class ParticleEmitter: public GroupModel
 {
 public:
-    ParticleEmitter();
-	ParticleEmitter(vec3 dir);
+    ParticleEmitter(vec3 dir=vec3(0,1,0));
+	
     void Init(vec3 dir);
 
     ~ParticleEmitter();

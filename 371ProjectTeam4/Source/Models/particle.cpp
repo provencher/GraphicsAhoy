@@ -3,6 +3,7 @@
 #include <GLM/glm.hpp>
 #include <iostream>
 #include "Particle.h"
+#include "CubeModel.h"
 
 
 Particle::Particle(float speed, vec3 dir, float life, float rotationSpeed){
@@ -37,13 +38,14 @@ void Particle::Update(float dt) {
 		} else {
 			float maxLength = 1;
 			vec3 newScaling = vec3(
-					((mLifespan-mTime)/mLifespan)*mOriginalScale.x,
-					((mLifespan-mTime)/mLifespan)*mOriginalScale.y,
-					//mOriginalScale.x+(mTime/mLifespan)*maxLength //make longer with time
-					((mLifespan-mTime)/mLifespan)*mOriginalScale.z
-					);
-
+				((mLifespan-mTime)/mLifespan)*mOriginalScale.x,
+				((mLifespan-mTime)/mLifespan)*mOriginalScale.y,
+				//mOriginalScale.x+(mTime/mLifespan)*maxLength //make longer with time
+				((mLifespan-mTime)/mLifespan)*mOriginalScale.z
+			);
 			SetScaling(newScaling);//mOriginalScale*((mLifespan-mTime)/mLifespan)); 
+
+			
 		}
 		mTime += dt;
 

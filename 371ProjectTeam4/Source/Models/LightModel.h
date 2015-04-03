@@ -17,10 +17,10 @@
 
 class LightModel : public Model {
 public:
-	LightModel(glm::vec3 pos, glm::vec3 color = glm::vec3(1.0f, 1.0f, 1.0f));
+	LightModel(glm::vec3 pos=glm::vec3(0), glm::vec3 color = glm::vec3(1));
 	~LightModel();
 	void Update(float dt);
-	void Draw();
+	void Draw(){}
 
 	
 
@@ -52,10 +52,9 @@ private:
 
 	glm::vec3 mColorDeviation;
 
-	int directional;
-	glm::vec3 intensities;
-	float attenuation;
-	float ambientCoefficient;
-	float coneAngle;
-	glm::vec3 coneDirection;
+	int mDir;
+	float mAttenuation;
+	float mAmbientCoefficient;
+	float mConeAngle;
+	glm::vec3 mConeDirection;
 };
