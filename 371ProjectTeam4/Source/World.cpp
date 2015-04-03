@@ -459,7 +459,7 @@ void World::DrawShadow(){
 	Renderer::SetShader(SHADER_SHADOW);
 	glUseProgram(Renderer::GetShaderProgramID());
 
-
+	
 
 	// This looks for the MVP Uniform variable in the Vertex Program
 	GLuint ViewLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "LightVM");
@@ -497,7 +497,7 @@ void World::RenderScene(){
 	Renderer::SetShader(SHADER_SOLID_COLOR);
 	glUseProgram(Renderer::GetShaderProgramID());
 
-
+	
 
 	//Material Attributes uniform
 	GLuint MaterialID = glGetUniformLocation(Renderer::GetShaderProgramID(), "materialCoefficients");
