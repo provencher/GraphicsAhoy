@@ -20,6 +20,7 @@
 #include "Models/GroupModel.h"
 #include "Models/PlaneModel.h"
 #include "Models/CubeModel.h"
+#include "Models/Craters.h"
 #include "Models/Terrain.h"
 #include "Models/SphereModel.h"
 #include "Models/Billboard.h"
@@ -200,12 +201,21 @@ void World::LoadScene(const char * scene_path){
 		vec3 plateSize = vec3(vec3(200,1,200));
 
 
-		/*Model* groundPlate = new CubeModel(vec3(0.6f));
+		/*
+		Model* groundPlate = new CubeModel(vec3(0.6f));
 		groundPlate->SetScaling(plateSize);
 		groundPlate->SetPosition(vec3(0,-0.5f,0));
 		m->SetRotation(vec3(0,0,1), 90.0f);
-		ground->AddChild(groundPlate);*/
+		ground->AddChild(groundPlate);
+		*/
 	
+		//To-do: create a pile of craters?------------------------------
+		//Testing a crater
+		/*Model* craters = new Craters();
+		craters->SetScaling(vec3(1.0, 1.0, 1.0));
+		craters->SetPosition(vec3(10, 0.5, 10));
+		ground->AddChild(craters);
+*/
 
 		//Billboard
 		//============================================

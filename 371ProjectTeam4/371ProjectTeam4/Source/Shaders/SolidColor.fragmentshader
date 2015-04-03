@@ -10,6 +10,12 @@ in vec4 worldPosition;
 in vec2 UV; // for textures
 uniform sampler2D mySamplerTexture;  //for textures
 
+//FOG----------------------------------
+in float fogVisibility;
+const vec4 SkyColour = vec4(0.3f, 0.3f, 0.3f, 0.0f);
+//-------------------------------------
+
+
 // Light and Material Uniform Variables
 uniform vec4 materialCoefficients; // x: ambient   y: diffuse   z: specular   w: specular exponent
 uniform vec3 worldCamPos;
@@ -82,7 +88,12 @@ void main() {
     
     //final color (after gamma correction)
     vec3 gamma = vec3(1.0/2.2);
-    color = linearColor*surfaceColor.rgb;
-	//color = linearColor;
+	color = linearColor*surfaceColor.rgb;
+
+
+	//FOG-------------------------------not perfect, looks funny
+	//color = mix(SkyColour.xyz, color, fogVisibility );
+
+
 }
 
