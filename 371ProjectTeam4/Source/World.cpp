@@ -76,6 +76,7 @@ World::World()
 
 
 	glfwGetWindowSize(EventManager::GetWindow(), &width, &height);
+	
 
 	const float arr[16] = {
 		0.5, 0.0, 0.0, 0.0,
@@ -123,13 +124,7 @@ World* World::GetInstance()
 }
 
 
-///=====================================================
-string LightNameBuilder(string name, int index){
 
-	std::ostringstream ss;
-	ss << "allLights[" << index << "]." << name;
-	return ss.str();
-}
 
 //=================================================
 void World::LoadScene(const char * scene_path){
@@ -411,6 +406,53 @@ void World::Update(float dt)
 	}
 }
 
+
+
+void World::Draw()
+{
+	Renderer::BeginFrame();
+
+	for (size_t i = 0; i < gLights->size(); ++i){
+
+		glBindFramebuffer(GL_FRAMEBUFFER, 1);
+		// Clear the screen
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		altCamera->SetPosition((glm::vec3)(*gLights)[i].position);
+
+		//GetCamera()->SetPosition(altCamera->GetPosition());
+
+		//glCullFace(GL_FRONT);
+		DrawShadow();
+		//glCullFace(GL_BACK);
+
+	}
+
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	
+	glViewport(0, 0, width, height);
+	// Clear the screen
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	//Renderer::SetShader(SHADER_SOLID_COLOR);
+	//glUseProgram(Renderer::GetShaderProgramID());
+	//std::cout << "ShaderID: " << (int)Renderer::GetShaderProgramID() << endl;
+	GLuint shadowMapHandle = glGetUniformLocation(Renderer::GetShaderProgramID(), "R_shadowMap");
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, 1);
+	glUniform1i(shadowMapHandle, 0);
+
+
+	RenderScene();
+
+
+	DrawPath();
+
+	Renderer::EndFrame();
+}
+
+
 void World::DrawShadow(){
 	//Set Shaders to shadows
 	unsigned int prevShader = Renderer::GetCurrentShader();
@@ -440,11 +482,22 @@ void World::DrawShadow(){
 
 }
 
+
+///=====================================================
+string LightNameBuilder(string name, int index){
+
+	std::ostringstream ss;
+	ss << "allLights[" << index << "]." << name;
+	return ss.str();
+}
+
 void World::RenderScene(){
-
-
-	// Set shader to use
+	// Set Shader for path lines
+	unsigned int prevShader = Renderer::GetCurrentShader();
+	Renderer::SetShader(SHADER_SOLID_COLOR);
 	glUseProgram(Renderer::GetShaderProgramID());
+
+
 
 	//Material Attributes uniform
 	GLuint MaterialID = glGetUniformLocation(Renderer::GetShaderProgramID(), "materialCoefficients");
@@ -543,6 +596,14 @@ void World::RenderScene(){
 		(*it)->Draw();
 	}
 
+	// Restore previous shader
+	Renderer::SetShader((ShaderType)prevShader);
+
+	
+}
+
+void World::DrawPath()
+{
 	// Draw Path Lines
 
 	// Set Shader for path lines
@@ -551,7 +612,7 @@ void World::RenderScene(){
 	glUseProgram(Renderer::GetShaderProgramID());
 
 	// Send the view projection constants to the shader
-	VPMatrixLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "ViewProjectionTransform");
+	GLuint VPMatrixLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "ViewProjectionTransform");
 	mat4 ViewPorj = projMat * GetCamera()->GetViewMatrix();
 	glUniformMatrix4fv(VPMatrixLocation, 1, GL_FALSE, &ViewPorj[0][0]);
 
@@ -568,47 +629,10 @@ void World::RenderScene(){
 
 	// Restore previous shader
 	Renderer::SetShader((ShaderType)prevShader);
+
 }
 
-void World::Draw()
-{
-	Renderer::BeginFrame();
 
-	for (size_t i = 0; i < gLights->size(); ++i){
-		
-		glBindFramebuffer(GL_FRAMEBUFFER, 1);
-		// Clear the screen
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		altCamera->SetPosition((glm::vec3)(*gLights)[i].position);
-		
-		//GetCamera()->SetPosition(altCamera->GetPosition());
-
-		//glCullFace(GL_FRONT);
-		DrawShadow();
-		//glCullFace(GL_BACK);
-
-	}
-
-
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glViewport(0, 0, width, height);
-	// Clear the screen
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	Renderer::SetShader(SHADER_SOLID_COLOR);
-	glUseProgram(Renderer::GetShaderProgramID());
-
-	GLuint shadowMapHandle = glGetUniformLocation(Renderer::GetShaderProgramID(), "R_shadowMap");
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, 1);
-	glUniform1i(shadowMapHandle, 0);
-
-	
-	RenderScene();
-
-	Renderer::EndFrame();
-}
 
 //=================================================
 Path* World::FindPath(ci_string pathName)
