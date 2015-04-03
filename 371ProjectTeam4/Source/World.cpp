@@ -183,17 +183,22 @@ void World::LoadScene(const char * scene_path){
 	}
 
 
+
+
+
 	//####################################################################################
+	
+	// Create World
+
 	////////////////////////////////////////////////////
 	Model* m = new RazorbackModel();
-	m->SetPosition(vec3(-5,5,-5));
+	m->SetPosition(vec3(0.0f, 1, -80.0f));
 	mModel.push_back(m);
 
 
 	GroupModel* world = new GroupModel();
 
 	if(1){ //Ground ===============================
-		
 		GroupModel* ground = new GroupModel();
 		vec3 plateSize = vec3(vec3(200,1,200));
 
@@ -227,6 +232,9 @@ void World::LoadScene(const char * scene_path){
 			shape->SetPosition(randPos);
 			shape->SetScaling(randSize);
 			ground->AddChild(shape);
+
+			ground->AddChild("dog",shape);
+			
 		}
 
 		world->AddChild("Ground", ground);
@@ -566,17 +574,28 @@ int World::AddLight(vec4 pos, vec3 color){
 }
 
 void World::UpdateLight(int index, glm::vec4 pos, glm::vec3 color){
-	
-	
 	(*gLights)[index].position = pos;
 	(*gLights)[index].intensities = color;
-
 	(*gLights)[index].attenuation = 0.1f;
 	(*gLights)[index].ambientCoefficient = 0.0f; //no ambient light
-	(*gLights)[index].coneAngle = 1.0f;
-	//(*gLights)[index].coneDirection = glm::vec3(0, -1, 0);
 }
 
+
+void World::UpdateLight(int index, glm::vec4 pos, glm::vec3 color, float attenuation, float ambientCoefficient){
+	(*gLights)[index].position = pos;
+	(*gLights)[index].intensities = color;
+	(*gLights)[index].attenuation = attenuation;
+	(*gLights)[index].ambientCoefficient = ambientCoefficient;
+}
+
+void World::UpdateLight(int index, glm::vec4 pos, glm::vec3 color, float attenuation, float ambientCoefficient, float coneAngle, glm::vec3 coneDirection){
+	(*gLights)[index].position = pos;
+	(*gLights)[index].intensities = color;
+	(*gLights)[index].attenuation = attenuation;
+	(*gLights)[index].ambientCoefficient = ambientCoefficient; 
+	(*gLights)[index].coneAngle = coneAngle;
+	(*gLights)[index].coneDirection = coneDirection;
+}
 
 void World::RemoveLight(int index){
 	gLights->erase(gLights->begin()+index); // NOTE gLights should be map, issue will arise when deleting corrupting indexes that follow

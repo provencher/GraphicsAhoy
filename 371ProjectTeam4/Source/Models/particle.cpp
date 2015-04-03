@@ -1,7 +1,6 @@
 
 
 #include <GLM/glm.hpp>
-#include <time.h>
 #include <iostream>
 #include "Particle.h"
 

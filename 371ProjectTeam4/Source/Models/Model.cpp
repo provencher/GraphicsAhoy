@@ -34,8 +34,9 @@ Model::Model() : mName("UNNAMED"), mPosition(0.0f, 0.0f, 0.0f), mScaling(1.0f, 1
 	mRotationAngleZ = 0;
 	mNthChild = 0;
 }
-Model::~Model()
-{
+Model::~Model(){
+	DeleteAllChildren();
+	
 }
 
 //Init----------------------------------------
@@ -244,16 +245,15 @@ Model*	Model::RemoveChild(ci_string key){
 	child.erase(key);			//remove
 	return old;					//return
 }
-Model*	Model::RemoveChild(Model* m){ 
-	//child[key] = m;
 
-	return nullptr;
-	//child.erase()
+
+void Model::DeleteAllChildren(){
+	//will clear the array but may still have memory leak
+	child.clear();
 }
 //----------------------------------------
 void	Model::UpdateChildren(float dt){
-	int count = GetChildCount();
-	if (count > 0){
+	if (GetChildCount() > 0){
 		typedef std::map<ci_string, Model*>::iterator it_type;
 		for(it_type iterator = child.begin(); iterator != child.end(); iterator++) {
 			iterator->second->Update(dt);

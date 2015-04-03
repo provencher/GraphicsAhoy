@@ -27,8 +27,11 @@ PlaneModel::PlaneModel(vec3 size) : GroupModel(){
 
 
 
-	
+	//Color of Jet
 	vec3 color =  vec3(1,0,0);
+
+
+
 	if(1){//body
 		SphereModel* model = new SphereModel(color);
 		model->SetScaling(vec3(0.8f, 0.5f, 2.5f));
@@ -94,7 +97,6 @@ PlaneModel::PlaneModel(vec3 size) : GroupModel(){
 			//g->SetScaling(vec3(2));
 			g->SetPosition(vec3(-1.7f,0.2f,0.0f));
 			torrentLayer->AddChild(g);
-
 		}
 
 		//right gun
@@ -244,9 +246,12 @@ PlaneModel::PlaneModel(vec3 size) : GroupModel(){
 	//Light ---------------------------------------------
 	vec4 tempPos = vec4(0,0,0,1);
 	vec3 lame = vec3(tempPos.x, tempPos.y, tempPos.z);
-	Model* lightModel = new LightModel(lame, 2.0f*vec3(1,0.6f,0.4f));
+	LightModel* lightModel = new LightModel(lame, 2.0f*vec3(1,0.6f,0.4f));
 	AddChild(lightModel);
 	lightModel->SetPosition(vec3(0,0.2f,-2.5f));
+	lightModel->SetIsDirectional(1);
+	lightModel->SetAttenuation(0.1f);
+	lightModel->SetAmbientCoefficient(0.0f);
 
 
 

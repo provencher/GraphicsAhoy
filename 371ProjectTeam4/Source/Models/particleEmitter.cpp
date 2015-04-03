@@ -72,13 +72,14 @@ void ParticleEmitter::SpawnParticle(){
 }
 
 void ParticleEmitter::Update(float dt) {
-	UpdateChildren(dt);
+	UpdateChildren(dt); // preserve nesting
 	
 	for (std::vector<Particle*>::iterator it = mParticles.begin(); it < mParticles.end();){
         if (*it != nullptr){
             (*it)->Update(dt);
 
             if (!(*it)->IsAlive()) {
+				delete (*it);
                 it = mParticles.erase(it);
             } else 
                 it++;
@@ -86,13 +87,13 @@ void ParticleEmitter::Update(float dt) {
     }
 
 	//Spawn Particles
-	if(1 || rand() % 100 > 20){
+	if(1 || rand() % 100 > 20){ // spawn every frame
 		SpawnParticle();
 	}
 }
 
 void ParticleEmitter::Draw() {
-	DrawChildren();
+	DrawChildren(); // preserve nesting
 	
 	for (std::vector<Particle*>::iterator it = mParticles.begin(); it < mParticles.end();){
         if (*it != nullptr){
