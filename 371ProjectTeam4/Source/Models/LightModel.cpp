@@ -15,7 +15,7 @@ LightModel::LightModel(glm::vec3 pos, glm::vec3 color) : Model(){
 	
 	//Lights
 	World* w = World::GetInstance();
-	mLightIndex = w->AddLight(glm::vec4(mPosition, 0), color);
+	//mLightIndex = w->AddLight(glm::vec4(mPosition, 0), color);
 
 	directional = 1;
 	intensities = vec3(0);
@@ -33,7 +33,7 @@ void LightModel::Update(float dt){
 	
 	World* w = World::GetInstance();
 	vec3 pos = vec3(GetWorldMatrix()*vec4(mPosition,1));
-	w->UpdateLight(mLightIndex, glm::vec4(pos,1), mLastColor);
+	//w->UpdateLight(mLightIndex, glm::vec4(pos,1), mLastColor);
 }
 
 void LightModel::Draw(){}

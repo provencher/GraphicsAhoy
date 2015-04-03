@@ -145,8 +145,7 @@ void Renderer::BindFrame()
 
 	// Depth texture. Slower than a depth buffer, but you can sample it later in your shader
 	GLuint depthTexture;
-	glGenTextures(1, &depthTexture);
-	std::cout << (int)depthTexture;
+	glGenTextures(1, &depthTexture);	
 	glBindTexture(GL_TEXTURE_2D, depthTexture);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT16, 1024, 1024, 0, GL_DEPTH_COMPONENT, GL_FLOAT, 0);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);

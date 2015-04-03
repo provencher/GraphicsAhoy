@@ -61,7 +61,7 @@ World::World()
 
 	Light directionalLight;
 	directionalLight.position = glm::vec4(5, 20, 0.6, 0); //w == 0 indications a directional light
-	directionalLight.intensities = glm::vec3(1, 1, 1); 
+	directionalLight.intensities = glm::vec3(0.5, 0.5, 0.5); 
 	directionalLight.ambientCoefficient = 0.2f;
 
 	Light light3;
@@ -69,9 +69,9 @@ World::World()
 	light3.intensities = glm::vec3(0.5, 0.5, 0.5); //weak yellowish light
 	light3.ambientCoefficient = 0.06f;
 
-	gLights->push_back(spotlight);
+	//gLights->push_back(spotlight);
 	gLights->push_back(directionalLight);
-	gLights->push_back(light3);
+	//gLights->push_back(light3);
 
 
 
@@ -325,15 +325,6 @@ void World::LoadScene(const char * scene_path){
 		}
 	}
 
-
-
-
-
-
-
-
-
-
     
     LoadCameras();
 	mCurrentCamera = 0;
@@ -359,9 +350,9 @@ void World::LoadCameras()
 	////////////////////////////////////////////////////////
 
 	//Setup Alt Camera
-	glm::vec3 pos = mCamera[0]->GetPosition();
-	glm::vec3 look = mCamera[0]->GetLookAt();
-	glm::vec3 up = mCamera[0]->GetUp();
+	glm::vec3 pos = mCamera[1]->GetPosition();
+	glm::vec3 look = mCamera[1]->GetLookAt();
+	glm::vec3 up = mCamera[1]->GetUp();
 	altCamera = new StaticCamera(pos, look, up);
 
 
@@ -589,7 +580,8 @@ void World::Draw()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		altCamera->SetPosition((glm::vec3)(*gLights)[i].position);
-	
+		
+		//GetCamera()->SetPosition(altCamera->GetPosition());
 
 		//glCullFace(GL_FRONT);
 		DrawShadow();
