@@ -28,15 +28,15 @@ public:
 
 
 	//getters
-	glm::vec3 GetPosition(){return mPosition;}
-    glm::vec3 GetLookAt(){return mLookAt;}
-    glm::vec3 GetRight(){return mRight;}
-    glm::vec3 GetUp(){return mUp;}
+	virtual glm::vec3 GetPosition(){return mPosition;}
+	virtual glm::vec3 GetLookAt(){ return mLookAt; }
+	virtual glm::vec3 GetRight(){ return mRight; }
+	virtual glm::vec3 GetUp(){ return mUp; }
 	//setters
-	void SetPosition(glm::vec3 p){mPosition=p;}
-	void SetLookAt(glm::vec3 at){mLookAt = at;}
-	void SetRight(glm::vec3 right){mRight = right;}
-	void SetUp(glm::vec3 up ){mUp = up;}
+	virtual void SetPosition(glm::vec3 p){ mPosition = p; }
+	virtual void SetLookAt(glm::vec3 at){ mLookAt = at; }
+	virtual void SetRight(glm::vec3 right){ mRight = right; }
+	virtual void SetUp(glm::vec3 up){ mUp = up; }
 
 protected:
 	glm::vec3 mPosition;

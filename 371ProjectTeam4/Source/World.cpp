@@ -275,7 +275,6 @@ void World::LoadScene(const char * scene_path){
 
 
 
-
 	
 
 	////////////////////////////////////////////////////////
@@ -327,37 +326,38 @@ void World::LoadScene(const char * scene_path){
 void World::LoadCameras()
 {
     
-    // Setup Camera ----------------------------------------
-    mCamera.push_back(new StaticCamera(
-		vec3(3.0f, 5.0f, 5.0f),  
-		vec3(0.0f, 0.0f, 0.0f), 
+	// Setup Camera ----------------------------------------
+	mCamera.push_back(new StaticCamera(
+		vec3(3.0f, 5.0f, 5.0f),
+		vec3(0.0f, 0.0f, 0.0f),
 		vec3(0.0f, 1.0f, 0.0f)));//1
-    mCamera.push_back(new StaticCamera(
-		vec3(3.0f, 30.0f, 5.0f), 
-		vec3(0.0f, 0.0f, 0.0f), 
+	mCamera.push_back(new StaticCamera(
+		vec3(3.0f, 30.0f, 5.0f),
+		vec3(0.0f, 0.0f, 0.0f),
 		vec3(0.0f, 1.0f, 0.0f)));//2
-    mCamera.push_back(new StaticCamera(
-		vec3(0.5f,  0.5f, 5.0f), 
-		vec3(0.0f, 0.5f, 0.0f), 
+	mCamera.push_back(new StaticCamera(
+		vec3(0.5f, 0.5f, 5.0f),
+		vec3(0.0f, 0.5f, 0.0f),
 		vec3(0.0f, 1.0f, 0.0f)));//3
-    
+
 	// Create Character -----------------------------------
 	////////////////////////////////////////////////////////
 
 	//Setup Alt Camera
-	glm::vec3 pos = mCamera[2]->GetPosition();
-	glm::vec3 look = mCamera[2]->GetLookAt();
-	glm::vec3 up = mCamera[2]->GetUp();
+	glm::vec3 pos = mCamera[1]->GetPosition();
+	glm::vec3 look = mCamera[1]->GetLookAt();
+	glm::vec3 up = mCamera[1]->GetUp();
 	altCamera = new StaticCamera(pos, look, up);
 
 
-    // BSpline Camera --------------------------------------
-    BSpline* spline = FindSpline("\"RollerCoaster\"");
-    if (spline == nullptr)
-        spline = FindSplineByIndex(0);
- 
-    if (spline != nullptr)
-        mCamera.push_back(new BSplineCamera(spline , 5.0f)); //5
+	// BSpline Camera --------------------------------------
+	BSpline* spline = FindSpline("\"RollerCoaster\"");
+	if (spline == nullptr)
+		spline = FindSplineByIndex(0);
+
+	if (spline != nullptr)
+		mCamera.push_back(new BSplineCamera(spline, 5.0f)); //5
+
     
 }
 Camera* World::GetCamera(){
@@ -528,8 +528,8 @@ void World::RenderScene(){
 
 	//Light Projection
 	GLuint LightProj = glGetUniformLocation(Renderer::GetShaderProgramID(), "LightProj");
-	mat4 lightProj = biasMatrix * depthProjectionMatrix;
-	glUniformMatrix4fv(LightProj, 1, GL_FALSE, &lightProj[0][0]);
+	mat4 lightProject = biasMatrix * depthProjectionMatrix;
+	glUniformMatrix4fv(LightProj, 1, GL_FALSE, &lightProject[0][0]);
 
 
 	//Lights

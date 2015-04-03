@@ -137,7 +137,7 @@ void Renderer::BindFrame()
 	// The framebuffer, which regroups 0, 1, or more textures, and 0 or 1 depth buffer.
 	GLuint FramebufferName = 0;
 	glGenFramebuffers(1, &FramebufferName);
-	std::cout << "FramebufferName: " << (int)FramebufferName << endl;
+	//std::cout << "FramebufferName: " << (int)FramebufferName << endl;
 	
 	//std::cout << (int)FramebufferName;
 	glBindFramebuffer(GL_FRAMEBUFFER, FramebufferName);
@@ -145,7 +145,7 @@ void Renderer::BindFrame()
 	// Depth texture. Slower than a depth buffer, but you can sample it later in your shader
 	GLuint depthTexture;
 	glGenTextures(1, &depthTexture);
-	std::cout << "DepthTex: " << (int)depthTexture << endl;
+	//std::cout << "DepthTex: " << (int)depthTexture << endl;
 	glBindTexture(GL_TEXTURE_2D, depthTexture);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT16, 1024, 1024, 0, GL_DEPTH_COMPONENT, GL_FLOAT, 0);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
