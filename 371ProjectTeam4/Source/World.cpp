@@ -60,7 +60,7 @@ World::World()
 	spotlight.coneDirection = glm::vec3(0, -1, 0);
 
 	Light directionalLight;
-	directionalLight.position = glm::vec4(3.0f, 30.0f, 5.0f, 0.0f); //w == 0 indications a directional light
+	directionalLight.position = glm::vec4(3.0f, 20.0f, 5.0f, 0.0f); //w == 0 indications a directional light
 	directionalLight.intensities = glm::vec3(0.7, 0.7, 0.7); 
 	directionalLight.ambientCoefficient = 0.2f;
 
@@ -292,6 +292,7 @@ void World::LoadScene(const char * scene_path){
     mModel.push_back(character);
 
 
+
 	
 	// Create Camera -----------------------------------------
 	ThirdPersonCamera* newCam = new ThirdPersonCamera(character);
@@ -325,7 +326,7 @@ void World::LoadScene(const char * scene_path){
 }
 void World::LoadCameras()
 {
-    
+
 	// Setup Camera ----------------------------------------
 	mCamera.push_back(new StaticCamera(
 		vec3(3.0f, 5.0f, 5.0f),
@@ -348,6 +349,8 @@ void World::LoadCameras()
 	glm::vec3 look = mCamera[1]->GetLookAt();
 	glm::vec3 up = mCamera[1]->GetUp();
 	altCamera = new StaticCamera(pos, look, up);
+
+    
 
 
 	// BSpline Camera --------------------------------------
