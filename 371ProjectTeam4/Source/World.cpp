@@ -87,6 +87,7 @@ World::World()
 
 	// Compute the MVP matrix from the light's point of view
 	depthProjectionMatrix = glm::ortho<float>(-10, 10, -10, 10, -10, 20);
+	
 
 }
 World::~World()
@@ -357,7 +358,11 @@ void World::LoadCameras()
 	// Create Character -----------------------------------
 	////////////////////////////////////////////////////////
 
-
+	//Setup Alt Camera
+	glm::vec3 pos = mCamera[0]->GetPosition();
+	glm::vec3 look = mCamera[0]->GetLookAt();
+	glm::vec3 up = mCamera[0]->GetUp();
+	altCamera = new StaticCamera(pos, look, up);
 
 
     // BSpline Camera --------------------------------------
@@ -415,9 +420,41 @@ void World::Update(float dt)
 	}
 }
 
+void World::DrawShadow(){
+	//Set Shaders to shadows
+	unsigned int prevShader = Renderer::GetCurrentShader();
+	Renderer::SetShader(SHADER_SHADOW);
+	glUseProgram(Renderer::GetShaderProgramID());
+
+
+
+	// This looks for the MVP Uniform variable in the Vertex Program
+	GLuint ViewLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "LightVM");
+	mat4 lightView = altCamera->GetViewMatrix();
+	glUniformMatrix4fv(ViewLocation, 1, GL_FALSE, &lightView[0][0]);
+
+	//ProjMat
+	GLuint Projection = glGetUniformLocation(Renderer::GetShaderProgramID(), "Projection");
+	glUniformMatrix4fv(Projection, 1, GL_FALSE, &depthProjectionMatrix[0][0]);
+
+
+
+
+
+	//Draw All models
+	for (vector<Model*>::iterator it = mModel.begin(); it < mModel.end(); ++it){
+		(*it)->Draw();
+	}
+
+	// Restore previous shader
+	Renderer::SetShader((ShaderType)prevShader);
+
+}
+
 void World::Draw()
 {
 	Renderer::BeginFrame();
+	
 	
 	// Set shader to use
 	glUseProgram(Renderer::GetShaderProgramID());
@@ -486,6 +523,10 @@ void World::Draw()
 	GLuint VPMatrixLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "ViewProjectionTransform");	
 	mat4 VP = mCamera[mCurrentCamera]->GetViewProjectionMatrix();
 	glUniformMatrix4fv(VPMatrixLocation, 1, GL_FALSE, &VP[0][0]);
+
+
+
+
 
 	// Draw models
 	vec4 matC;

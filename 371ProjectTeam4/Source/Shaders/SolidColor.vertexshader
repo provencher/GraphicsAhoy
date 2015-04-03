@@ -26,4 +26,3 @@ void main()
 	v_color = vec4(vertexColor, 1.0f);	
 			
 }
-

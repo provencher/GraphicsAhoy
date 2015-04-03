@@ -31,6 +31,7 @@ public:
 
 	void Update(float dt);
 	void Draw();
+	void DrawShadow();
 
 	void LoadScene(const char * scene_path);
     void LoadCameras();
@@ -81,7 +82,7 @@ private:
 
 	glm::mat4 projMat = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.0f);
 
-
+	Camera* altCamera;
 	int width;
 	int height;
 

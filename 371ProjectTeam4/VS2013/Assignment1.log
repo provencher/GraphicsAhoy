@@ -1,9 +1,17 @@
-﻿Build started 4/2/2015 7:49:38 PM.
+﻿Build started 4/2/2015 8:46:10 PM.
      1>Project "C:\Users\Eric\Documents\GitHub\GraphicsAhoy\371ProjectTeam4\VS2013\Assignment1.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"../ThirdParty/glew-1.10.0/include" /I"../ThirdParty/glfw-3.0.4/include" /I../ThirdParty/glm /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"C:\Users\Eric\Documents\GitHub\GraphicsAhoy\371ProjectTeam4\VS2013\/../Build/Debug/" /Fd"C:\Users\Eric\Documents\GitHub\GraphicsAhoy\371ProjectTeam4\VS2013\/../Build/Debug/vc120.pdb" /Gd /TP /analyze- /errorReport:prompt ..\Source\Renderer.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"../ThirdParty/glew-1.10.0/include" /I"../ThirdParty/glfw-3.0.4/include" /I../ThirdParty/glm /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"C:\Users\Eric\Documents\GitHub\GraphicsAhoy\371ProjectTeam4\VS2013\/../Build/Debug/" /Fd"C:\Users\Eric\Documents\GitHub\GraphicsAhoy\371ProjectTeam4\VS2013\/../Build/Debug/vc120.pdb" /Gd /TP /analyze- /errorReport:prompt ..\Source\Renderer.cpp ..\Source\World.cpp
+         World.cpp
+     1>c:\users\eric\documents\github\graphicsahoy\371projectteam4\source\world.cpp(25): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+     1>c:\users\eric\documents\github\graphicsahoy\371projectteam4\source\world.cpp(244): warning C4244: 'initializing' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\eric\documents\github\graphicsahoy\371projectteam4\source\world.cpp(315): warning C4244: 'initializing' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\eric\documents\github\graphicsahoy\371projectteam4\source\world.cpp(319): warning C4244: 'initializing' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\eric\documents\github\graphicsahoy\371projectteam4\source\world.cpp(483): warning C4018: '<' : signed/unsigned mismatch
+         GLM: perspective function taking degrees as a parameter is deprecated. #define GLM_FORCE_RADIANS before including GLM headers to remove this message.
          Renderer.cpp
      1>c:\users\eric\documents\github\graphicsahoy\371projectteam4\source\renderer.cpp(130): warning C4018: '<' : signed/unsigned mismatch
+         Generating Code...
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Eric\Documents\GitHub\GraphicsAhoy\371ProjectTeam4\VS2013\/../Bin/371ProjectTeam4-Debug.exe" /INCREMENTAL /NOLOGO /LIBPATH:"../ThirdParty/glew-1.10.0/lib/Release/Win32" /LIBPATH:"../ThirdParty/glfw-3.0.4/lib/Win32/lib-msvc110" opengl32.lib glew32s.lib glfw3.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Eric\Documents\GitHub\GraphicsAhoy\371ProjectTeam4\VS2013\/../Bin/371ProjectTeam4-Debug.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Eric\Documents\GitHub\GraphicsAhoy\371ProjectTeam4\VS2013\/../Bin/371ProjectTeam4-Debug.lib" /MACHINE:X86 C:\Users\Eric\Documents\GitHub\GraphicsAhoy\371ProjectTeam4\VS2013\/../Build/Debug/BSpline.obj
          C:\Users\Eric\Documents\GitHub\GraphicsAhoy\371ProjectTeam4\VS2013\/../Build/Debug/BSplineCamera.obj
@@ -34,4 +42,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:00.98
+Time Elapsed 00:00:01.88
