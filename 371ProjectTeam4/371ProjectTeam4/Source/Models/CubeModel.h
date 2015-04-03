@@ -9,19 +9,23 @@
 
 #pragma once
 
-// Include GLEW - OpenGL Extension Wrangler
-#include <GL/glew.h>
 #include "Model.h"
 
 class CubeModel : public Model
 {
 public:
-	CubeModel(glm::vec3 size = glm::vec3(1.0f, 1.0f, 1.0f));
+	//events
+	CubeModel(glm::vec3 color = glm::vec3(0,0,0), glm::vec3 size = glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3 pos = glm::vec3(0.0f, 0.0f, 0.0f));
 	virtual ~CubeModel();
-
 	virtual void Update(float dt);
 	virtual void Draw();
-
+	//meshes
+	void LoadMesh(glm::vec3 size, glm::vec3 color);
+	void DestroyMesh();
+	//colors
+	//void SetSideColor(char side, glm::vec3 col);
+	//void SetColor(vec3 col);
+	
 protected:
 	virtual bool ParseLine(const std::vector<ci_string> &token);
 
@@ -36,11 +40,4 @@ private:
 
 	unsigned int mVertexArrayID;
 	unsigned int mVertexBufferID;
-	unsigned int uvbuffer;
-
-	// Load a .BMP filepath using our custom loader
-	GLuint loadBMP_custom(ci_string file_path);
-
-	GLuint TextureID;
-	GLuint Texture;
 };

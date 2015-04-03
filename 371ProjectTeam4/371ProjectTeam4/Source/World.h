@@ -11,12 +11,7 @@
 
 #include "ParsingHelper.h"
 #include <vector>
-#include "Texture.h"
 #include <GLM/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtx/vector_angle.hpp>
-
-#include <map>
 
 class Camera;
 class Model;
@@ -33,9 +28,6 @@ public:
 
 	void Update(float dt);
 	void Draw();
-	void DrawObjects();
-	void DrawPathLines();
-	void DrawShadow();
 
 	void LoadScene(const char * scene_path);
     void LoadCameras();
@@ -47,6 +39,15 @@ public:
 		
 	glm::vec3 camPos;
 
+	inline void SetLightPostion();
+	/*
+	glm::vec4 position;
+		glm::vec3 intensities; //a.k.a. the color of the light
+	*/
+	int AddLight(glm::vec4 pos, glm::vec3 color);
+	void UpdateLight(int index, glm::vec4 pos, glm::vec3 color);
+	void RemoveLight(int index);
+
 	struct Light {
 		glm::vec4 position;
 		glm::vec3 intensities; //a.k.a. the color of the light
@@ -54,15 +55,10 @@ public:
 		float ambientCoefficient;
 		float coneAngle;
 		glm::vec3 coneDirection;
-		//glm::mat4 m_shadowInfo;
 	};
 
 	std::vector<Light>* gLights;
-	inline void SetTexture(const std::string& name, Texture* value) { m_textureMap[name] = value; }
-	inline Texture* GetTexture(std::string name) { return m_textureMap[name]; }
-
-	glm::mat4 lightVP;
-	
+	Camera* GetCamera();
 
 private:
     static World* instance;
@@ -72,17 +68,11 @@ private:
     std::vector<BSpline*> mSpline;
 	std::vector<Camera*> mCamera;
 	unsigned int mCurrentCamera;
-	Camera* GetCamera();
-	Camera* altCamera;
-
-	std::map<std::string, unsigned int> m_samplerMap;
-	std::map<std::string, Texture*> m_textureMap;
 	
 
 	// Material Coefficients
 	float ka;
 	float kd;
 	float ks;
-	float n;	
-
+	float n;
 };

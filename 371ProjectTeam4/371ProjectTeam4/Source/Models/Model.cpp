@@ -17,19 +17,22 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/common.hpp>
 
+
 using namespace std;
 using namespace glm;
+//###############################################################
 
 //Construct Destruct
 Model::Model() : mName("UNNAMED"), mPosition(0.0f, 0.0f, 0.0f), mScaling(1.0f, 1.0f, 1.0f), mRotationAxis(0.0f, 1.0f, 0.0f), mRotationAngleInDegrees(0.0f), mPath(nullptr), mSpeed(0.0f), mTargetWaypoint(1), mSpline(nullptr), mSplineParameterT(0.0f)
 {
 	mParent = nullptr;
-	// Material Coefficients
-	ka = 0.39f;
-	kd = 0.46f;
-	ks = 0.82f;
-	n = 75.0f;
+	materialConst = vec4(0.2f, 0.8f, 0.2f, 50.0f);
+	transform = mat4(1.0f);
 
+	mRotationAngleX = 0;
+	mRotationAngleY = 0;
+	mRotationAngleZ = 0;
+	mNthChild = 0;
 }
 Model::~Model()
 {
@@ -97,29 +100,25 @@ bool Model::ParseLine(const std::vector<ci_string> &token){
 
             float speed = static_cast<float>(atof(token[2].c_str()));
             SetSpeed(speed);
-		}
-		else if (token[0] == "boundpath"){
+		} else if (token[0] == "boundpath"){
 			assert(token.size() > 2);
 			assert(token[1] == "=");
 
 			ci_string pathName = token[2];
-			World* w = World::GetInstance();
-			mPath = w->FindPath(pathName);
+            World* w = World::GetInstance();
+            mPath = w->FindPath(pathName);
 
 			if (mPath == nullptr){
-				mSpline = w->FindSpline(pathName);
+				SetSpline(w->FindSpline(pathName));
 			}
-
+			
 			if (mPath != nullptr){
 				mPosition = mPath->GetWaypoint(0);
-			}
-			else if (mSpline){
+			} else if (mSpline){
 				mPosition = mSpline->GetPosition(mSplineParameterT);
 			}
-			else
-			{
-				return false;
-			}
+		} else {
+			return false;
 		}
 	}
 
@@ -175,12 +174,9 @@ void Model::Update(float dt){
 		
 		mPosition = mSpline->GetPosition(mSplineParameterT);
 }
-
 //Draw------------------------------------------
-void Model::Draw(){
-	
+void Model::Draw(){}
 
-}
 
 
 glm::mat4 Model::GetWorldMatrix(){
@@ -188,8 +184,12 @@ glm::mat4 Model::GetWorldMatrix(){
 
 	mat4 t = glm::translate(mat4(1.0f), mPosition);
 	mat4 r = glm::rotate(mat4(1.0f), mRotationAngleInDegrees, mRotationAxis);
+	mat4 rx = glm::rotate(mat4(1.0f), mRotationAngleX, vec3(1,0,0));
+	mat4 ry = glm::rotate(mat4(1.0f), mRotationAngleY, vec3(0,1,0));
+	mat4 rz = glm::rotate(mat4(1.0f), mRotationAngleZ, vec3(0,0,1));
+
 	mat4 s = glm::scale(mat4(1.0f), mScaling);
-	worldMatrix = t * r * s;
+	worldMatrix = t * (r * rz * ry * rx)* s * transform;
 	
 	if(HasParent()){//relative to parent
 		return Parent()->GetWorldMatrix() * worldMatrix;
@@ -198,9 +198,7 @@ glm::mat4 Model::GetWorldMatrix(){
 }
 
 //#########################################################
-
 //						Orientation
-
 /////#####################################################
 void Model::SetPosition(glm::vec3 position){
 	mPosition = position;
@@ -214,54 +212,87 @@ void Model::SetRotation(glm::vec3 axis, float angleDegrees){
 }
 
 
+
 //#########################################################
-
 //						Children
-
 /////#####################################################
-bool Model::HasParent(){
+bool	Model::HasParent(){
 	if (mParent != nullptr)
 		return true;
 	return false;
 }
-Model* Model::Parent(){
+Model*	Model::Parent(){
 	return mParent;
 }
 //----------------------------------------
 void	Model::AddChild(Model* m){
 	m->SetParent(this);
-	mChildren.push_back(m);
+	std::string str = to_string(mNthChild++);
+	m->SetName(str.c_str());
+	child[str.c_str()] = m;
 }	
-Model*	Model::RemoveChild(Model* m){ return nullptr;}
+
+void Model::AddChild(ci_string key, Model* m){
+	m->SetName(key);
+	m->SetParent(this);
+	child[key] = m;
+	mNthChild++;
+}	
+
+Model*	Model::RemoveChild(ci_string key){ 
+	Model* old = child[key];	//keep track of pointer
+	child.erase(key);			//remove
+	return old;					//return
+}
+Model*	Model::RemoveChild(Model* m){ 
+	//child[key] = m;
+
+	return nullptr;
+	//child.erase()
+}
 //----------------------------------------
 void	Model::UpdateChildren(float dt){
 	int count = GetChildCount();
 	if (count > 0){
-		for(int i=0; i<count; i++){
-			mChildren[i]->Update(dt);
+		typedef std::map<ci_string, Model*>::iterator it_type;
+		for(it_type iterator = child.begin(); iterator != child.end(); iterator++) {
+			iterator->second->Update(dt);
 		}
 	}
 }
 void	Model::DrawChildren(){
 	int count = GetChildCount();
 	if (count > 0){
-		for(int i=0; i<count; i++){
-			mChildren[i]->Draw();
+		typedef std::map<ci_string, Model*>::iterator it_type;
+		for(it_type iterator = child.begin(); iterator != child.end(); iterator++) {
+			iterator->second->Draw();
 		}
 	}
 }
 //----------------------------------------
-void Model::SetParent(Model* m){
-	mParent = m;
+void	Model::SetParent(Model* m){
+	this->mParent = m;
 }
+
+
 
 
 
 //Physics ------------------------------------------------
-void Model::SetSpeed(float spd){
+void	Model::SetSplineParameterT(float t){
+	mSplineParameterT = t;
+}
+void	Model::SetSpline(BSpline* sp){
+	mSpline = sp;
+}
+
+BSpline*	Model::GetSpline(){
+	return mSpline;
+}
+void	Model::SetSpeed(float spd){
     mSpeed = spd;
 }
-float Model::GetSpeed(){return mSpeed;}
+float	Model::GetSpeed(){return mSpeed;}
 //force
 //acceleration
 

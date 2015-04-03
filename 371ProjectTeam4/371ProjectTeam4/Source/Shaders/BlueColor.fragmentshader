@@ -9,5 +9,5 @@ in vec3 normal; // You will need this when you do per-fragment lighting
 void main()
 {
 	// set the fragment color to the interpolated vertex color
-	color = vec3(1.0f, 1.0f, 1.0f);
+	color = vec3(0.0f, 0.0f, 1.0f);
 }

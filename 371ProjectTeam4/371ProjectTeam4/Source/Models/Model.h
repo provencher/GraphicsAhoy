@@ -14,7 +14,7 @@
 #include <vector>
 #include <unordered_map>
 #include <GLM/glm.hpp>
-
+#include <map>
 class Path;
 class BSpline;
 //////////////////////////////////////////////////////////////////////////
@@ -25,14 +25,17 @@ class Model{
 public:		//------------------------------------------
 	Model();
 	//Events------------------------------------
-	void				Load(ci_istringstream& iss);
-	virtual	bool		ParseLine(const std::vector<ci_string> &token) = 0;
+	void		 Load(ci_istringstream& iss);
+	virtual	bool ParseLine(const std::vector<ci_string> &token) = 0;
 	virtual void Update(float dt) = 0;
 	virtual void Draw() = 0;
 	virtual ~Model();
 	//Identity----------------------------------
-	virtual	glm::mat4	GetWorldMatrix();
-	ci_string GetName(){ return mName; }
+	virtual		glm::mat4	GetWorldMatrix();
+	ci_string	GetName(){ return mName; }
+	void		SetName(ci_string name){ mName=name; }
+	ci_string	mType; //model, sphere, cube, plane,
+	ci_string	mShaderName; //name used to draw object
 	//T ------------------------------------------
 	void		SetPosition(glm::vec3 position);
 	glm::vec3	GetPosition()		const	{ return mPosition; }
@@ -48,20 +51,29 @@ public:		//------------------------------------------
     //--------------------------------------------
 	float		GetSpeed();
 	void		SetSpeed(float spd);
+	void		SetSpline(BSpline* sp);
+	BSpline*	GetSpline();
+	void		SetSplineParameterT(float t);
 	// Children --------------------------------
 	void	SetParent(Model* m);
 	void	AddChild(Model* m);	
 	Model*	RemoveChild(Model* m);
-	int		GetChildCount() const { return mChildren.size(); }
-	void UpdateChildren(float dt);
-	void DrawChildren();
-	bool HasParent();
-	Model* Parent();
+	int		GetChildCount() const { return child.size(); }
+	void	UpdateChildren(float dt);
+	void	DrawChildren();
+	bool	HasParent();
+	Model*	Parent();
+	int		mNthChild;
+	glm::vec4 materialConst;
 
-	virtual glm::vec4 getMaterials(){ return glm::vec4(ka, kd, ks, n); }
+	std::map <ci_string, Model*> child;
 
-	
-
+	void	  AddChild(ci_string key, Model* m);
+	Model*	  RemoveChild(ci_string key);
+	glm::mat4 transform;
+	float     mRotationAngleX;
+	float     mRotationAngleY;
+	float     mRotationAngleZ;
 protected: //------------------------------------------
 	//Children 
 	Model* mParent;
@@ -73,8 +85,9 @@ protected: //------------------------------------------
 	glm::vec3 mScaling;
 	glm::vec3 mRotationAxis;
 	float     mRotationAngleInDegrees;
+
 	
-	std::vector<Model*> mChildren;
+
 
 	//Paths =======================================
     float mSpeed;
@@ -85,10 +98,6 @@ protected: //------------------------------------------
 	BSpline* mSpline;
 	float mSplineParameterT;
 
-	// Material Coefficients
-	float ka;
-	float kd;
-	float ks;
-	float n;
+	
     
 };

@@ -7,6 +7,9 @@
 // Copyright (c) 2014-2015 Concordia University. All rights reserved.
 //
 
+#include "Renderer.h"
+
+
 #include <stdio.h>
 #include <string>
 #include <iostream>
@@ -20,8 +23,6 @@ using namespace std;
 #include "Renderer.h"
 #include "EventManager.h"
 
-
-
 #include <GLFW/glfw3.h>
 
 
@@ -29,11 +30,9 @@ using namespace std;
 #define fscanf_s fscanf
 #endif
 
-static Texture* g_tempTarget = new Texture();
+
 std::vector<unsigned int> Renderer::sShaderProgramID;
 unsigned int Renderer::sCurrentShader;
-
-
 
 GLFWwindow* Renderer::spWindow = nullptr;
 
@@ -51,8 +50,6 @@ void Renderer::Initialize()
 		getchar();
 		exit(-1);
 	}
-	
-	
 
 	// Black background
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
@@ -78,14 +75,6 @@ void Renderer::Initialize()
                             shaderPathPrefix + "SolidColor.fragmentshader")
                                );
 	sShaderProgramID.push_back(
-		LoadShaders(shaderPathPrefix + "shadow.vertexshader",
-		shaderPathPrefix + "shadow.fragmentshader")
-		);
-	sShaderProgramID.push_back(
-		LoadShaders(shaderPathPrefix + "light.vertexshader",
-		shaderPathPrefix + "light.fragmentshader")
-		);
-	sShaderProgramID.push_back(
                 LoadShaders(shaderPathPrefix + "PathLines.vertexshader",
                             shaderPathPrefix + "PathLines.fragmentshader")
                                );
@@ -96,7 +85,7 @@ void Renderer::Initialize()
 	sShaderProgramID.push_back(
 				LoadShaders(shaderPathPrefix + "Texture.vertexshader",
 							shaderPathPrefix + "Texture.fragmentshader")
-								);
+							   );
 	sCurrentShader = 0;
 
 }
@@ -117,32 +106,15 @@ void Renderer::Shutdown()
 
 void Renderer::BeginFrame()
 {
-	
-	
-	BindAsRenderTarget();
-	//g_tempTarget->BindAsRenderTarget();
 	// Clear the screen
-	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	//glViewport(0, 0, 1024, 768);	
-	//glViewport(0, 0, w_width, w_height);
+
 }
 
 void Renderer::EndFrame()
 {
 	// Swap buffers
 	glfwSwapBuffers(spWindow);
-}
-
-void Renderer::BindAsRenderTarget(){
-	glBindTexture(GL_TEXTURE_2D, 0);
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	//Store window size variables
-	int width;
-	int height;
-	glfwGetWindowSize(spWindow, &width, &height);
-	glViewport(0, 0, width, height);
-	//glViewport(0, 0, w_width, w_height);
 }
 
 void Renderer::SetShader(ShaderType type)

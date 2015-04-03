@@ -8,11 +8,10 @@
 //
 
 #pragma once
-//#include "HashTable.h"
+
 #include "Model.h"
 #include "../Path.h"
 #include "../BSpline.h"
-//#include "HashTable.h"
 
 class GroupModel : public Model {
 public:
@@ -41,5 +40,6 @@ private:
 
 
 	std::vector<Path*> mPath;
-    std::vector<BSpline*> mSpline;	
+    std::vector<BSpline*> mSpline;
+	
 };
