@@ -47,8 +47,12 @@ public:
 		glm::vec3 intensities; //a.k.a. the color of the light
 	*/
 	int AddLight(glm::vec4 pos, glm::vec3 color);
-	void UpdateLight(int index, glm::vec4 pos, glm::vec3 color);
 	void RemoveLight(int index);
+	void UpdateLight(int index, glm::vec4 pos, glm::vec3 color);
+	void UpdateLight(int index, glm::vec4 pos, glm::vec3 color, float attenuation, float ambientCoefficient);
+	void UpdateLight(int index, glm::vec4 pos, glm::vec3 color, float attenuation, float ambientCoefficient, float coneAngle, glm::vec3 coneDirection);
+	
+	
 
 	struct Light {
 		glm::vec4 position;

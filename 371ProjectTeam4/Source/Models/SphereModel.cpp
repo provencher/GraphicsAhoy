@@ -16,6 +16,7 @@ using namespace glm;
 SphereModel::SphereModel(vec3 color, vec3 size) : Model()
 {
     LoadMesh(color, size);
+	mType = "SphereModel";	//allow to tell the type of object for more specific functions
 }
 
 

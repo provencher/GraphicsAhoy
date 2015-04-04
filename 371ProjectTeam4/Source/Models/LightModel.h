@@ -17,27 +17,27 @@
 
 class LightModel : public Model {
 public:
-	LightModel(glm::vec3 pos, glm::vec3 color = glm::vec3(1.0f, 1.0f, 1.0f));
+	LightModel(glm::vec3 pos=glm::vec3(0), glm::vec3 color = glm::vec3(1));
 	~LightModel();
 	void Update(float dt);
-	void Draw();
+	void Draw(){}
 
 	
 
 
-	void SetIsDirectional(bool w){directional = (int)directional;}
-	void SetIntensities(glm::vec3 color){intensities = color;}
-	void SetAttenuation(float c){attenuation = c;}
-	void SetAmbientCoefficient(float c){ambientCoefficient = c;}
-	void SetConeAngle(float ang){coneAngle = ang;}
-	void SetConeDirection(glm::vec3 dir){coneDirection = dir;}
+	void SetIsDirectional(bool w);
+	void SetIntensities(glm::vec3 color);
+	void SetAttenuation(float c);
+	void SetAmbientCoefficient(float c);
+	void SetConeAngle(float ang);
+	void SetConeDirection(glm::vec3 dir);
 
-	int GetIsDirectional()		{return directional;}
-	glm::vec3 GetIntensities()	{return intensities;}
-	float GetAttenuation()		{return attenuation;}
-	float GetAmbientCoefficient(){return ambientCoefficient;}
-	float GetConeAngle()		{return coneAngle;}
-	glm::vec3 GetConeDirection(){return coneDirection;}
+	int GetIsDirectional();
+	glm::vec3 GetIntensities();
+	float GetAttenuation();
+	float GetAmbientCoefficient();
+	float GetConeAngle();
+	glm::vec3 GetConeDirection();
 
 protected:
 	virtual bool ParseLine(const std::vector<ci_string> &token);
@@ -46,15 +46,15 @@ private:
 
 	World* mWorld;
 	int mLightIndex;
+	glm::vec3 mColor;
 	glm::vec3 mLastColor;
 	std::vector<Light*> mLight;
 
 	glm::vec3 mColorDeviation;
 
-	int directional;
-	glm::vec3 intensities;
-	float attenuation;
-	float ambientCoefficient;
-	float coneAngle;
-	glm::vec3 coneDirection;
+	int mDir;
+	float mAttenuation;
+	float mAmbientCoefficient;
+	float mConeAngle;
+	glm::vec3 mConeDirection;
 };

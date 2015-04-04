@@ -56,10 +56,10 @@ public:		//------------------------------------------
 	void		SetSplineParameterT(float t);
 	// Children --------------------------------
 	void	SetParent(Model* m);
-	void	AddChild(Model* m);	
-	Model*	RemoveChild(Model* m);
+	void	AddChild(Model* m);
 	int		GetChildCount() const { return child.size(); }
 	void	UpdateChildren(float dt);
+	void	DeleteAllChildren();
 	void	DrawChildren();
 	bool	HasParent();
 	Model*	Parent();
