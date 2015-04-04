@@ -440,12 +440,11 @@ void World::RenderShadows()
 		// Clear the screen
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		altCamera->SetPosition((glm::vec3)(*gLights)[i].position);
-		vec3 tempLook = GetCamera()->GetLookAt();
-		//tempLook.y -= 0.5;
-		altCamera->SetLookAt(tempLook);
+		altCamera->SetPosition((glm::vec3)(*gLights)[i].position);				
+		altCamera->SetLookAt(GetCamera()->GetLookAt());
+		altCamera->SetUp(GetCamera()->GetUp());
 
-		GetCamera()->SetPosition(altCamera->GetPosition());
+		//GetCamera()->SetPosition(altCamera->GetPosition());
 
 		//glCullFace(GL_FRONT);
 		DrawShadow();
