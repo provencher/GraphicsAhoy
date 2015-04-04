@@ -30,7 +30,7 @@ protected:
 	virtual void updateCameraLookAt();
 
 private:
-
+	void collideChildren(Model* collider, std::map <ci_string, Model*>* children);
     Model* mTargetModel;
     // Cartesian Coordinates
     float mHorizontalAngle;

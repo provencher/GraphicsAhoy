@@ -35,8 +35,10 @@ public:
     Path* FindPath(ci_string pathName);
     BSpline* FindSpline(ci_string pathName);
     BSpline* FindSplineByIndex(unsigned int index);
-    Model* FindModelByIndex(unsigned int index);	
-		
+    Model* FindModelByIndex(unsigned int index);
+
+	std::vector<Model*>* GetModels() { return &mModel; }
+	
 	glm::vec3 camPos;
 
 	inline void SetLightPostion();

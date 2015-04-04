@@ -226,6 +226,7 @@ void World::LoadScene(const char * scene_path){
 			int x = 1.0f;
 			shape->SetPosition(randPos);
 			shape->SetScaling(randSize);
+			shape->CreateDefaultCollisionCube();
 			ground->AddChild(shape);
 		}
 
@@ -276,6 +277,8 @@ void World::LoadScene(const char * scene_path){
 	character->SetScaling(vec3(scale, scale, scale));
 	character->SetPosition(vec3(0.0f, 1, -90.0f));
 	character->SetRotation(vec3(0, 1, 0),  90);
+	character->CreateDefaultCollisionCube();
+	character->ReScaleCollisionCube(vec3(4));
 	character->SetSpeed(25.0f);	//Should move to camera
     mModel.push_back(character);
 
