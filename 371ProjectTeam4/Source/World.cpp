@@ -87,7 +87,7 @@ World::World()
 	biasMatrix = glm::make_mat4(arr);
 
 	// Compute the MVP matrix from the light's point of view
-	depthProjectionMatrix = glm::ortho<float>(-10, 10, -10, 10, -10, 200);
+	depthProjectionMatrix = glm::ortho<float>(-75, 75, -75, 75, -75, 100);
 	
 
 }
@@ -419,7 +419,7 @@ void World::Draw()
 	Renderer::BeginFrame();
 	
 
-	//RenderShadows();
+	RenderShadows();
 	
 
 	RenderScene();
@@ -433,29 +433,29 @@ void World::Draw()
 void World::RenderShadows()
 {
 
-	for (size_t i = 0; i < gLights->size(); ++i){
+	//for (size_t i = 0; i < gLights->size(); ++i){
 
-		glBindFramebuffer(GL_FRAMEBUFFER, 1);
-		// Clear the screen
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glBindFramebuffer(GL_FRAMEBUFFER, 1);
+	// Clear the screen
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
 		
-		altCamera->SetPosition((glm::vec3)(*gLights)[i].position);	
-		//Dynamic light movement
-		altCamera->SetLookAt(GetCamera()->GetLookAt());
-		altCamera->SetUp(GetCamera()->GetUp());
+	altCamera->SetPosition((glm::vec3)(*gLights)[0].position);	
+	//Dynamic light movement
+	//altCamera->SetLookAt(GetCamera()->GetLookAt());
+	//altCamera->SetUp(GetCamera()->GetUp());
 
-		//static light
-		//altCamera->SetLookAt(mCamera[1]->GetLookAt());
-		//altCamera->SetUp(mCamera[1]->GetUp());
+	//static light
+	//altCamera->SetLookAt(mCamera[1]->GetLookAt());
+	//altCamera->SetUp(mCamera[1]->GetUp());
 
-		//GetCamera()->SetPosition(altCamera->GetPosition());
+	//GetCamera()->SetPosition(altCamera->GetPosition());
 
-		//glCullFace(GL_FRONT);
-		DrawShadow();
-		//glCullFace(GL_BACK);
+	glCullFace(GL_FRONT);
+	DrawShadow();
+	glCullFace(GL_BACK);
 
-	}
+	//}
 
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -478,6 +478,7 @@ void World::DrawShadow(){
 	unsigned int prevShader = Renderer::GetCurrentShader();
 	Renderer::SetShader(SHADER_SHADOW);
 	glUseProgram(Renderer::GetShaderProgramID());
+
 
 	
 
