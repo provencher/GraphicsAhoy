@@ -345,7 +345,7 @@ void World::LoadCameras()
 
 	//Setup Alt Camera
 	glm::vec3 pos = mCamera[1]->GetPosition();
-	glm::vec3 look = mCamera[1]->GetLookAt();
+	glm::vec3 look = mCamera[0]->GetLookAt();
 	glm::vec3 up = mCamera[1]->GetUp();
 	altCamera = new StaticCamera(pos, look, up);
 
@@ -398,8 +398,11 @@ void World::Update(float dt)
 	// Update current Camera
 	mCamera[mCurrentCamera]->Update(dt);
 
+
 	//Pull CurrentLookAt vector from camera;	
 	camPos = mCamera[mCurrentCamera]->getCamPos();
+
+	
 
 	//std::cout << "x " << camPos.x << "y " << camPos.y << "z " << camPos.z << endl;
 
@@ -422,6 +425,9 @@ void World::Draw()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		altCamera->SetPosition((glm::vec3)(*gLights)[i].position);
+		vec3 tempLook = GetCamera()->GetLookAt();
+		//tempLook.y -= 0.5;
+		altCamera->SetLookAt(tempLook);
 
 		GetCamera()->SetPosition(altCamera->GetPosition());
 
