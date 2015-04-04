@@ -666,24 +666,34 @@ void World::generateWorldSection(Model* character) {
 	
 	vec3 plateSize = groundScaling;
 
-	vec3 newGroundPos = vec3(groundPos.x + groundScaling.x, 0, groundPos.z + groundScaling.z);
+	Model* groundBase = new GroupModel(); //a new ground point is declared as once the player is a certain distance from the old one it's deleted
 
-	Model* groundPlate = new CubeModel(vec3(0.6f));
+	//buggy
+	//vec3 newGroundPos = vec3(groundScaling.x, groundPos.y, groundScaling.z);
 
-	groundPlate->SetScaling(vec3(200,1,200));
+	Model* groundPlateForward = new CubeModel(vec3(0.6f));
+	Model* groundPlateLeft = new CubeModel(vec3(0.6f));
+	Model* groundPlateRight = new CubeModel(vec3(0.6f));
 
-	groundPlate->SetPosition(newGroundPos);
+	Model* newGround[] = { groundPlateForward, groundPlateLeft, groundPlateRight};
 
-	Model* newGround = new GroupModel();
+	for (Model* plate : newGround) {
 
-	newGround->SetPosition(getGroundModel()->GetPosition() + vec3(0, 0, 50));
+		plate->SetScaling(vec3(200, 1, 200));
 
-	newGround->SetParent(getGroundModel());
+	}
 
-	setGroundModel(newGround);
+	groundBase->SetPosition(groundPos + vec3(0,0,50)); //50 is a magic number, not final version where plates merge seamlessly
+	groundPlateForward->SetPosition(groundBase->GetPosition());
+
+	//newGround->SetPosition(newGroundPos);
+
+	//groundPlateForward->SetParent(groundBase);
+
+	setGroundModel(groundBase);
 
 	//m->SetRotation(vec3(0,0,1), 90.0f);
-	getGroundModel()->AddChild(groundPlate);
+	getGroundModel()->AddChild(groundPlateForward);
 
 	mModel.push_back(getGroundModel());
 
