@@ -668,28 +668,32 @@ void World::generateWorldSection(Model* character) {
 
 	vec3 newGroundPos = vec3(groundPos.x + groundScaling.x, 0, groundPos.z + groundScaling.z);
 
-	Model* newGround = new GroupModel();
-
 	Model* groundPlate = new CubeModel(vec3(0.6f));
 
-	groundPlate->SetScaling(plateSize);
+	groundPlate->SetScaling(vec3(200,1,200));
 
 	groundPlate->SetPosition(newGroundPos);
 
-	//m->SetRotation(vec3(0,0,1), 90.0f);
-	newGround->AddChild(groundPlate);
+	Model* newGround = new GroupModel();
+
+	newGround->SetPosition(getGroundModel()->GetPosition() + vec3(0, 0, 50));
+
+	newGround->SetParent(getGroundModel());
 
 	setGroundModel(newGround);
 
-	mModel.push_back(newGround);
+	//m->SetRotation(vec3(0,0,1), 90.0f);
+	getGroundModel()->AddChild(groundPlate);
+
+	mModel.push_back(getGroundModel());
 
 }
 
 void World::setGroundModel(Model* model) {
-	printf("Ground model set");
-	this->groundModel = model;
+	printf("Ground model set. \n");
+	groundModel = model;
 }
 
 Model* World::getGroundModel() {
-	return this->groundModel;
+	return groundModel;
 }
