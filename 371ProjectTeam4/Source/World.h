@@ -50,6 +50,15 @@ public:
 	void setPrevGroundModel(Model* model);
 	Model* getPrevGroundModel();
 
+	//Used to determine which direction to generate in next
+	Model* getLeftPlate();
+	Model* getRightPlate();
+	Model* getFrontPlate();
+
+	void setLeftPlate(Model* model);
+	void setRightPlate(Model* model);
+	void setFrontPlate(Model* model);
+
 	//Return the player model - i.e. the plane
 	Model* getPlayerModel();
 	glm::vec3 camPos;
@@ -105,6 +114,9 @@ private:
 	//Stores the index of the ground in mModel separarely to store and access it more easily
 	Model* groundModel;
 	Model* prevGroundModel;
+	Model* leftPlate; //left, right, front all store the closest plate for determining next worldgen
+	Model* rightPlate; 
+	Model* frontPlate;
 
 	// Material Coefficients
 	float ka;

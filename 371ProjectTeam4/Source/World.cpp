@@ -419,7 +419,7 @@ void World::Update(float dt)
 		}
 	}
 
-	if (getPlayerModel()->GetPosition().z > getGroundModel()->GetPosition().z) {
+	if (getPlayerModel()->GetPosition().z > getGroundModel()->GetPosition().z - 50) { //offset check by 50 to keep render out of view
 		//TODO TAGS: GROUNDMODEL GENERATE CHARACTER
 		generateWorldSection(getPlayerModel()); 
 
@@ -681,8 +681,18 @@ void World::generateWorldSection(Model* character) {
 	vec3 startPos = character->GetPosition(); //The starting position is determined by the current location of the player
 	vec3 groundPos = getGroundModel()->GetPosition(); //The ground position is centered on the ground model
 	vec3 groundScaling = vec3(200, 1, 200); //Scaling used to determine the length from one end of the model to the other e.g. distance at which to render the new model
-	
+
 	//float yPos = -0.5f; //Copied from setPosition of initial ground declaration - keep things level
+
+	//old models retrieved
+	Model* oldLeft = getLeftPlate();
+	oldLeft = new GroupModel();
+
+	Model* oldRight = getRightPlate();
+	oldRight = new GroupModel();
+
+	Model* oldFront = getFrontPlate();
+	oldFront = new GroupModel();
 
 	vec3 plateSize = groundScaling;
 
@@ -694,13 +704,14 @@ void World::generateWorldSection(Model* character) {
 	Model* groundPlateForward = new CubeModel(vec3(0.6f));
 	Model* groundPlateLeft = new CubeModel(vec3(0.6f));
 	Model* groundPlateRight = new CubeModel(vec3(0.6f));
+	Model* wallLeft = new CubeModel(vec3(0.6f));
+	Model* wallRight = new CubeModel(vec3(0.6f));
 
 	Model* newGround[] = { groundPlateForward, groundPlateLeft, groundPlateRight };
 
+	//each plate has a uniform size
 	for (Model* plate : newGround) {
-
 		plate->SetScaling(plateSize);
-
 	}
 
 	groundBase->SetPosition(groundPos + vec3(0, 0, groundScaling.z / 2));
@@ -711,18 +722,34 @@ void World::generateWorldSection(Model* character) {
 
 	groundPlateRight->SetPosition(groundBase->GetPosition() + vec3(-groundScaling.x / 2, 0, 0));
 
+	wallLeft->SetPosition(groundPlateLeft->GetPosition() + vec3(groundPlateLeft->GetScaling().x / 2, 0,0));
+
+	wallRight->SetPosition(groundPlateRight->GetPosition() + vec3(-groundPlateRight->GetScaling().x / 2, 0, 0));
+
+	wallLeft->SetScaling(vec3(1, 200, 200));
+	wallRight->SetScaling(vec3(1, 200, 200));
+
 	//groundPlateForward->SetParent(groundBase);
 
 	setGroundModel(groundBase);
 
+	//Reference plates are set for the next round of world generation
+	setLeftPlate(groundPlateLeft);
+	setRightPlate(groundPlateRight);
+	setFrontPlate(groundPlateForward);
+
 	//m->SetRotation(vec3(0,0,1), 90.0f);
+	//all plates are children of the ground
 	for (Model* plate : newGround) {
 		groundBase->AddChild(plate);
 	}
+	groundBase->AddChild(wallLeft);
+	groundBase->AddChild(wallRight);
 
 	mModel.push_back(getGroundModel()); //add model and children to the list of renderables
-
+	
 }
+
 
 void World::setGroundModel(Model* model) {
 	groundModel = model;
@@ -738,4 +765,28 @@ void World::setPrevGroundModel(Model* model) {
 
 Model* World::getPrevGroundModel() {
 	return prevGroundModel;
+}
+
+void World::setLeftPlate(Model* model) {
+	leftPlate = model;
+}
+
+void World::setRightPlate(Model* model) {
+	rightPlate = model;
+}
+
+void World::setFrontPlate(Model* model) {
+	frontPlate = model;
+}
+
+Model* World::getLeftPlate() {
+	return leftPlate;
+}
+
+Model* World::getRightPlate() {
+	return rightPlate;
+}
+
+Model* World::getFrontPlate() {
+	return frontPlate;
 }
