@@ -81,7 +81,7 @@ private:
 	unsigned int mCurrentCamera;
 	
 
-	glm::mat4 projMat = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.0f);
+	glm::mat4 projMat = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 200.0f);
 
 	Camera* altCamera;
 	int width;

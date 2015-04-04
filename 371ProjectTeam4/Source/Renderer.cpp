@@ -146,6 +146,9 @@ void Renderer::BindFrame()
 	GLuint depthTexture;
 	glGenTextures(1, &depthTexture);
 	//std::cout << "DepthTex: " << (int)depthTexture << endl;
+
+
+
 	glBindTexture(GL_TEXTURE_2D, depthTexture);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT16, 1024, 1024, 0, GL_DEPTH_COMPONENT, GL_FLOAT, 0);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);

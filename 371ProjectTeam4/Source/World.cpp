@@ -60,16 +60,16 @@ World::World()
 	spotlight.coneDirection = glm::vec3(0, -1, 0);
 
 	Light directionalLight;
-	directionalLight.position = glm::vec4(3.0f, 20.0f, 5.0f, 0.0f); //w == 0 indications a directional light
+	directionalLight.position = glm::vec4(3.0f, 25.0f, 5.0f, 0.0f); //w == 0 indications a directional light
 	directionalLight.intensities = glm::vec3(0.7, 0.7, 0.7); 
 	directionalLight.ambientCoefficient = 0.2f;
 
 	Light light3;
-	light3.position = glm::vec4(-5, 5, 15, 0); //w == 0 indications a directional light
+	light3.position = glm::vec4(-1, 5, -1, 0); //w == 0 indications a directional light
 	light3.intensities = glm::vec3(0.5, 0.5, 0.5); //weak yellowish light
 	light3.ambientCoefficient = 0.06f;
 
-	//gLights->push_back(spotlight);
+	gLights->push_back(spotlight);
 	gLights->push_back(directionalLight);
 	//gLights->push_back(light3);
 
@@ -87,7 +87,7 @@ World::World()
 	biasMatrix = glm::make_mat4(arr);
 
 	// Compute the MVP matrix from the light's point of view
-	depthProjectionMatrix = glm::ortho<float>(-10, 10, -10, 10, -10, 20);
+	depthProjectionMatrix = glm::ortho<float>(-10, 10, -10, 10, -10, 200);
 	
 
 }
@@ -292,7 +292,6 @@ void World::LoadScene(const char * scene_path){
     mModel.push_back(character);
 
 
-
 	
 	// Create Camera -----------------------------------------
 	ThirdPersonCamera* newCam = new ThirdPersonCamera(character);
@@ -349,6 +348,7 @@ void World::LoadCameras()
 	glm::vec3 look = mCamera[1]->GetLookAt();
 	glm::vec3 up = mCamera[1]->GetUp();
 	altCamera = new StaticCamera(pos, look, up);
+
 
     
 
@@ -423,7 +423,7 @@ void World::Draw()
 
 		altCamera->SetPosition((glm::vec3)(*gLights)[i].position);
 
-		//GetCamera()->SetPosition(altCamera->GetPosition());
+		GetCamera()->SetPosition(altCamera->GetPosition());
 
 		//glCullFace(GL_FRONT);
 		DrawShadow();
@@ -521,7 +521,8 @@ void World::RenderScene(){
 	glUniformMatrix4fv(CamView, 1, GL_FALSE, &camView[0][0]);
 
 	//Projection
-	GLuint Proj = glGetUniformLocation(Renderer::GetShaderProgramID(), "Projection");	
+	GLuint Proj = glGetUniformLocation(Renderer::GetShaderProgramID(), "Projection");
+	//projMat = biasMatrix * depthProjectionMatrix;
 	glUniformMatrix4fv(Proj, 1, GL_FALSE, &projMat[0][0]);
 
 	//Light MVP	
