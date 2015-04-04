@@ -714,6 +714,8 @@ void World::generateWorldSection(Model* character) {
 		plate->SetScaling(plateSize);
 	}
 
+
+	//Set all positions dependent on scaling of previous positions
 	groundBase->SetPosition(groundPos + vec3(0, 0, groundScaling.z / 2));
 
 	groundPlateForward->SetPosition(groundBase->GetPosition());
@@ -740,6 +742,34 @@ void World::generateWorldSection(Model* character) {
 
 	//m->SetRotation(vec3(0,0,1), 90.0f);
 	//all plates are children of the ground
+
+	for (int i = 0; i< 50; i++){
+
+		vec3 randSize = vec3(
+			rand() % 10 + 3,
+			rand() % 10 + 3,
+			rand() % 10 + 3
+			);
+		vec3 randPos = vec3(
+			(rand() % (int)plateSize.x) - 0.5f*plateSize.x,
+			randSize.y / 2,
+			(rand() % (int)plateSize.z) - 0.5f*plateSize.z
+			);
+
+
+
+		Model* shape = new CubeModel(vec3(0.8f));
+		int x = 1.0f;
+		shape->SetPosition(randPos);
+		shape->SetScaling(randSize);
+		shape->CreateDefaultCollisionCube();
+		groundBase->AddChild(shape);
+
+		//ground->AddChild("dog", shape);
+
+	}
+
+
 	for (Model* plate : newGround) {
 		groundBase->AddChild(plate);
 	}
