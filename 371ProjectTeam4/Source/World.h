@@ -43,10 +43,10 @@ public:
 	
 	//Continuous world generation functions
 	void generateWorldSection(Model* character);
-	void setIndexOfGroundPlate(int index);
-	int getIndexOfGroundPlate();
 	void setGroundModel(Model* model);
 	Model* getGroundModel();
+	void setPrevGroundModel(Model* model);
+	Model* getPrevGroundModel();
 
 	//Return the player model - i.e. the plane
 	Model* getPlayerModel();
@@ -98,8 +98,8 @@ private:
 	int height;
 
 	//Stores the index of the ground in mModel separarely to store and access it more easily
-	int indexOfGroundPlate;
 	Model* groundModel;
+	Model* prevGroundModel;
 
 	// Material Coefficients
 	float ka;

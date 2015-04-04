@@ -215,7 +215,7 @@ void World::LoadScene(const char * scene_path){
 		GroupModel* ground = new GroupModel();
 		vec3 plateSize = vec3(vec3(200,1,200));
 
-		setGroundModel(ground);
+		
 
 		Model* groundPlate = new CubeModel(vec3(0.6f));
 		groundPlate->SetScaling(plateSize);
@@ -223,7 +223,7 @@ void World::LoadScene(const char * scene_path){
 		//m->SetRotation(vec3(0,0,1), 90.0f);
 		ground->AddChild(groundPlate);
 		
-
+		setGroundModel(groundPlate);
 		//Billboard
 		//============================================
 		for(int i=0; i< 50; i++){
@@ -412,7 +412,7 @@ void World::Update(float dt)
 		//TODO TAGS: GROUNDMODEL GENERATE CHARACTER
 		generateWorldSection(getPlayerModel()); 
 
-		printf("World section genereated.");
+		printf("World section generated.");
 
 	}
 
@@ -654,16 +654,14 @@ Model* World::getPlayerModel() {
 	return this->playerModel;
 }
 
-int World::getIndexOfGroundPlate() {
-	return this->indexOfGroundPlate;
-}
-
 void World::generateWorldSection(Model* character) {
 	//Todo finish generation in function
 	vec3 startPos = character->GetPosition(); //The starting position is determined by the current location of the player
 	vec3 groundPos = getGroundModel()->GetPosition(); //The ground position is centered on the ground model
-	vec3 groundScaling = getGroundModel()->GetScaling(); //Scaling used to determine the length from one end of the model to the other e.g. distance at which to render the new model
-	
+	vec3 groundScaling = vec3(200, 1, 200); //Scaling used to determine the length from one end of the model to the other e.g. distance at which to render the new model
+
+	//float yPos = -0.5f; //Copied from setPosition of initial ground declaration - keep things level
+
 	vec3 plateSize = groundScaling;
 
 	Model* groundBase = new GroupModel(); //a new ground point is declared as once the player is a certain distance from the old one it's deleted
@@ -675,35 +673,47 @@ void World::generateWorldSection(Model* character) {
 	Model* groundPlateLeft = new CubeModel(vec3(0.6f));
 	Model* groundPlateRight = new CubeModel(vec3(0.6f));
 
-	Model* newGround[] = { groundPlateForward, groundPlateLeft, groundPlateRight};
+	Model* newGround[] = { groundPlateForward, groundPlateLeft, groundPlateRight };
 
 	for (Model* plate : newGround) {
 
-		plate->SetScaling(vec3(200, 1, 200));
+		plate->SetScaling(plateSize);
 
 	}
 
-	groundBase->SetPosition(groundPos + vec3(0,0,50)); //50 is a magic number, not final version where plates merge seamlessly
+	groundBase->SetPosition(groundPos + vec3(0, 0, groundScaling.z / 2));
+
 	groundPlateForward->SetPosition(groundBase->GetPosition());
 
-	//newGround->SetPosition(newGroundPos);
+	groundPlateLeft->SetPosition(groundBase->GetPosition() + vec3(groundScaling.x / 2, 0, 0));
+
+	groundPlateRight->SetPosition(groundBase->GetPosition() + vec3(-groundScaling.x / 2, 0, 0));
 
 	//groundPlateForward->SetParent(groundBase);
 
 	setGroundModel(groundBase);
 
 	//m->SetRotation(vec3(0,0,1), 90.0f);
-	getGroundModel()->AddChild(groundPlateForward);
+	for (Model* plate : newGround) {
+		groundBase->AddChild(plate);
+	}
 
-	mModel.push_back(getGroundModel());
+	mModel.push_back(getGroundModel()); //add model and children to the list of renderables
 
 }
 
 void World::setGroundModel(Model* model) {
-	printf("Ground model set. \n");
 	groundModel = model;
 }
 
 Model* World::getGroundModel() {
 	return groundModel;
+}
+
+void World::setPrevGroundModel(Model* model) {
+	prevGroundModel = model;
+}
+
+Model* World::getPrevGroundModel() {
+	return prevGroundModel;
 }
