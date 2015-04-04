@@ -90,10 +90,32 @@ vec3 ApplyLight(Light light, vec3 surfaceColor, vec3 normal, vec3 surfacePos, ve
     vec3 specular = specularCoefficient * materialCoefficients.z * light.intensities;
 		
 
+	float cosTheta = clamp( dot( normal, surfaceToLight ), 0,1 );
+
+	float visibility=1.0;
+
+	// Fixed bias, or...
+	//float bias = 0.005;
+
+	// ...variable bias
+	float bias = 0.005*tan(acos(cosTheta));
+	bias = clamp(bias, 0,0.01);
+
+	// Sample the shadow map 4 times
+	for (int i=0;i<4;i++){
+		// use either :
+		//  - Always the same samples.
+		//    Gives a fixed pattern in the shadow, but no noise
+		int index = i;		
+		
+		// being fully in the shadow will eat up 4*0.2 = 0.8
+		// 0.2 potentially remain, which is quite dark.
+		visibility -= 0.2*(1.0-texture( R_shadowMap, vec3(shadowMapCoords0.xy + poissonDisk[index]/700.0,  (shadowMapCoords0.z-bias)/shadowMapCoords0.w) ));
+	}
 
 	
     //linear color (color before gamma correction)
-    return  (ambient + attenuation*(diffuse + specular));
+    return  (ambient + attenuation*(diffuse + specular))* visibility;
 }
 
 void main() {    
@@ -103,37 +125,9 @@ void main() {
 
     //combine color from all the lights
     vec3 linearColor = vec3(0);
-    for(int i = 0; i < numLights; ++i){
-        
-		if (i == 0){
-			    //float cosTheta = clamp( dot( normal, surfaceToLight ), 0,1 );
-
-			float visibility=1.0;
-
-			// Fixed bias, or...
-			float bias = 0.005;
-
-			// ...variable bias
-			//float bias = 0.005*tan(acos(cosTheta));
-			//bias = clamp(bias, 0,0.01);
-
-			// Sample the shadow map 4 times
-			for (int i=0;i<4;i++){
-				// use either :
-				//  - Always the same samples.
-				//    Gives a fixed pattern in the shadow, but no noise
-				int index = i;		
+    for(int i = 0; i < numLights; ++i){      
 		
-				// being fully in the shadow will eat up 4*0.2 = 0.8
-				// 0.2 potentially remain, which is quite dark.
-				visibility -= 0.2*(1.0-texture( R_shadowMap, vec3(shadowMapCoords0.xy + poissonDisk[index]/700.0,  (shadowMapCoords0.z-bias)/shadowMapCoords0.w) ));
-			}
-
-			//visibility = 1.0;
-			linearColor += (visibility * ApplyLight(allLights[i], surfaceColor.rgb, normal, surfacePos, surfaceToCamera));
-		}else{
-			linearColor += ApplyLight(allLights[i], surfaceColor.rgb, normal, surfacePos, surfaceToCamera);
-		}
+		linearColor += ApplyLight(allLights[i], surfaceColor.rgb, normal, surfacePos, surfaceToCamera);		
 
     }
     

@@ -420,7 +420,7 @@ void World::Draw()
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	
 
-	//RenderShadows();
+	RenderShadows();
 	
 
 	RenderScene();
