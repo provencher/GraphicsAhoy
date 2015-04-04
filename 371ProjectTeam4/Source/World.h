@@ -33,6 +33,7 @@ public:
 	void Draw();
 	void DrawPath(); 
 	void RenderScene();
+	void RenderShadows();
 	void DrawShadow();
 
 	void LoadScene(const char * scene_path);
