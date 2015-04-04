@@ -239,6 +239,10 @@ void Model::AddChild(ci_string key, Model* m){
 	mNthChild++;
 }	
 
+Model* Model::GetChild(ci_string key) {
+	return child[key];
+}
+
 Model*	Model::RemoveChild(ci_string key){ 
 	Model* old = child[key];	//keep track of pointer
 	child.erase(key);			//remove

@@ -215,6 +215,7 @@ void World::LoadScene(const char * scene_path){
 		GroupModel* ground = new GroupModel();
 		vec3 plateSize = vec3(vec3(200,1,200));
 
+		setGroundModel(ground);
 
 		Model* groundPlate = new CubeModel(vec3(0.6f));
 		groundPlate->SetScaling(plateSize);
@@ -256,7 +257,7 @@ void World::LoadScene(const char * scene_path){
 
 
 
-
+	//static model of the player's plane, debug purposes
 	if(0){
 		//Big Plane
 		GroupModel* character = new PlaneModel();
@@ -287,7 +288,7 @@ void World::LoadScene(const char * scene_path){
 
 	// PLAYER
 
-	// Third Person Cube Character -------------------------
+	// Third Person Plane Character -------------------------
     GroupModel* character = new PlaneModel();
 	//character->SetRotation(vec3(1,0,0), 90);//change thirs person to accomidate 
 	float scale = 0.5f;
@@ -296,6 +297,8 @@ void World::LoadScene(const char * scene_path){
 	character->SetRotation(vec3(0, 1, 0),  90);
 	character->SetSpeed(25.0f);	//Should move to camera
     mModel.push_back(character);
+
+	this->playerModel = character;
 
 
 	
@@ -405,6 +408,13 @@ void World::Update(float dt)
 		}
 	}
 
+	if (getPlayerModel()->GetPosition().z > getGroundModel()->GetPosition().z) {
+		//TODO TAGS: GROUNDMODEL GENERATE CHARACTER
+		generateWorldSection(getPlayerModel()); 
+
+		printf("World section genereated.");
+
+	}
 
 	// Update current Camera
 	mCamera[mCurrentCamera]->Update(dt);
@@ -640,3 +650,46 @@ void World::RemoveLight(int index){
 	gLights->erase(gLights->begin()+index); // NOTE gLights should be map, issue will arise when deleting corrupting indexes that follow
 }
 
+Model* World::getPlayerModel() {
+	return this->playerModel;
+}
+
+int World::getIndexOfGroundPlate() {
+	return this->indexOfGroundPlate;
+}
+
+void World::generateWorldSection(Model* character) {
+	//Todo finish generation in function
+	vec3 startPos = character->GetPosition(); //The starting position is determined by the current location of the player
+	vec3 groundPos = getGroundModel()->GetPosition(); //The ground position is centered on the ground model
+	vec3 groundScaling = getGroundModel()->GetScaling(); //Scaling used to determine the length from one end of the model to the other e.g. distance at which to render the new model
+	
+	vec3 plateSize = groundScaling;
+
+	vec3 newGroundPos = vec3(groundPos.x + groundScaling.x, 0, groundPos.z + groundScaling.z);
+
+	Model* newGround = new GroupModel();
+
+	Model* groundPlate = new CubeModel(vec3(0.6f));
+
+	groundPlate->SetScaling(plateSize);
+
+	groundPlate->SetPosition(newGroundPos);
+
+	//m->SetRotation(vec3(0,0,1), 90.0f);
+	newGround->AddChild(groundPlate);
+
+	setGroundModel(newGround);
+
+	mModel.push_back(newGround);
+
+}
+
+void World::setGroundModel(Model* model) {
+	printf("Ground model set");
+	this->groundModel = model;
+}
+
+Model* World::getGroundModel() {
+	return this->groundModel;
+}

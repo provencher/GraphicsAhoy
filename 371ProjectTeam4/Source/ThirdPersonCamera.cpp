@@ -143,7 +143,7 @@ void ThirdPersonCamera::UpdateTargeModel(float dt){
 	// Settings -------------------------------------------------------
 	int turn = 0;				//turn direction - for left + for right
 	int verticalTilt = 0;		//- for up + for down
-	float tiltspeed = 10.0f;	
+	float tiltspeed = 1.5f;	
 
 	//vec3 v3MaxAngles = vec3(0,0,0);
 	float maxZTilt = 45;
@@ -155,13 +155,19 @@ void ThirdPersonCamera::UpdateTargeModel(float dt){
 	float normalTiltX = 0;
 	float normalTiltY = 0;
 	
+	//pi
+	float pif = 3.14159265359f;
+
+	//speed of rotation when turning
+	float rotateSpeed = 0.03f;
+
 	// Movement  -----------------------------------------------------
 	glm::vec3 movementDir = glm::vec3(0,0,0);
-    if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_W ) == GLFW_PRESS){ //Forward
-		movementDir += direction;
-		//mTargetModel->mSpeed += 0.5f;
-		//mTargetModel->SetSpeed(mTargetModel->GetSpeed()+0.5); // acceleration
-	} 
+	//Forward
+	movementDir += mLookAt;
+
+	//mTargetModel->mSpeed += 0.5f;
+	//mTargetModel->SetSpeed(mTargetModel->GetSpeed()+0.5); // acceleration 
 
 	// Down
 	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_S ) == GLFW_PRESS){ //Back
@@ -196,11 +202,14 @@ void ThirdPersonCamera::UpdateTargeModel(float dt){
 
 	//===========================================================================
 	// HOROZONTAL MOVEMENT 
-	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_D ) == GLFW_PRESS){ 
-		movementDir += mRight;
+	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_D ) == GLFW_PRESS){ //right
+		mTargetModel->SetRotation(mTargetModel->GetRotationAxis(), (mHorizontalAngle / pif * 180));
+		mHorizontalAngle -= rotateSpeed;
 	}
-	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_A ) == GLFW_PRESS){ 
-		movementDir -= mRight;
+	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_A ) == GLFW_PRESS){ //left
+		mTargetModel->SetRotation(mTargetModel->GetRotationAxis(), (mHorizontalAngle / pif * 180));
+
+		mHorizontalAngle += rotateSpeed;
 		//-------------------------------------------
 	}
 
@@ -262,7 +271,12 @@ void ThirdPersonCamera::UpdateTargeModel(float dt){
 	//*/
 
 	
-	
+	//Wrap Horizontal angle within [-90, 90] degrees
+	//Controlled model is not meant to be able to backtrack, limiting its range of motion accomplishes this
+	if (mHorizontalAngle > pif / 3)			mHorizontalAngle = pif / 3;
+	else if (mHorizontalAngle < -pif / 3)		mHorizontalAngle = -pif / 3;
+
+
 	//distance -------------------------------------------------------
 	float dist = dt*mTargetModel->GetSpeed();
 	movementDir = glm::normalize(movementDir)*dist;
@@ -288,6 +302,10 @@ void ThirdPersonCamera::UpdateTargeModel(float dt){
 	);
 	mRight = glm::normalize(glm::cross(mLookAt, vec3(0.0f, 1.0f, 0.0f)));
     mUp = glm::cross(mRight, mLookAt);
+
+	//Continuous world generation
+
+	//if (mTargetModel->GetPosition())
 }
 
 //////////////////////////////////////////////////////////

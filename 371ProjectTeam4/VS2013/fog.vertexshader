@@ -1,0 +1,25 @@
+#version 330
+
+uniform struct Matrices {
+	mat4 projection;
+	mat4 modelView;
+	mat 4 normal;
+} matrices;
+
+layout (location = 0) in vec3 position_in;
+layout (location = 1) in vec2 coordinate_in;
+layout (location = 2) in vec3 normal_in;
+
+out vec2 coord_vertex;
+out vec3 normal_vertex;
+out vec4 eye_vertex;
+
+void main() {
+	vec4 eyePos = matrices.modelView * vec4(position_in, 1.0);
+	gl_Position = matrices.projection * eyePos;
+	coord_vertex = coordinate_in;
+	vec4 preNormal = matrices.normal * vec4(normal_in, 0.0);
+	normal_vertex = preNormal.xyz;
+
+	eye_vertex = eyePos;
+}

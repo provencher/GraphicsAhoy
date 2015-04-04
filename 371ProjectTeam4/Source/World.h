@@ -40,6 +40,16 @@ public:
     BSpline* FindSpline(ci_string pathName);
     BSpline* FindSplineByIndex(unsigned int index);
     Model* FindModelByIndex(unsigned int index);	
+	
+	//Continuous world generation functions
+	void generateWorldSection(Model* character);
+	void setIndexOfGroundPlate(int index);
+	int getIndexOfGroundPlate();
+	void setGroundModel(Model* model);
+	Model* getGroundModel();
+
+	//Return the player model - i.e. the plane
+	Model* getPlayerModel();
 		
 	glm::vec3 camPos;
 
@@ -79,12 +89,17 @@ private:
 	std::vector<Camera*> mCamera;
 	unsigned int mCurrentCamera;
 	
+	Model* playerModel;
 
 	glm::mat4 projMat = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.0f);
 
 	Camera* altCamera;
 	int width;
 	int height;
+
+	//Stores the index of the ground in mModel separarely to store and access it more easily
+	int indexOfGroundPlate;
+	Model* groundModel;
 
 	// Material Coefficients
 	float ka;

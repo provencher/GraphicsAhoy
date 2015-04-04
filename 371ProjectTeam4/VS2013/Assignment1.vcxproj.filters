@@ -68,6 +68,12 @@
     <None Include="..\Source\Shaders\shadow.fragmentshader">
       <Filter>Resource Files\Shaders</Filter>
     </None>
+    <None Include="fog.vertexshader">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="fog.fragmentshader">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Source\EventManager.cpp">

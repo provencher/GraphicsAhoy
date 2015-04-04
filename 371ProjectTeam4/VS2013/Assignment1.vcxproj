@@ -108,6 +108,8 @@
     <None Include="..\Source\Shaders\shadow.vertexshader" />
     <None Include="..\Source\Shaders\SolidColor.vertexshader" />
     <None Include="..\Source\Shaders\SolidColor.fragmentshader" />
+    <None Include="fog.fragmentshader" />
+    <None Include="fog.vertexshader" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Source\BSpline.cpp" />
