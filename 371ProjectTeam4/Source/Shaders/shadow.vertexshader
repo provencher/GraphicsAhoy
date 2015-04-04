@@ -1,0 +1,20 @@
+#version 330 core
+
+// Input vertex data, different for all executions of this shader.
+layout(location = 0) in vec3 vertexPosition_modelspace;
+
+
+// Uniform Inputs
+uniform mat4 ViewProjectionTransform;
+uniform mat4 WorldTransform;
+
+uniform mat4 LightVM;
+uniform mat4 Projection;
+
+
+void main()
+{	
+	// Output position of the vertex, in clip space : MVP * position
+	gl_Position = Projection * LightVM * WorldTransform * vec4(vertexPosition_modelspace,1);		
+}
+

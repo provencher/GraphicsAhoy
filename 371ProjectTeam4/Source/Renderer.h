@@ -23,6 +23,7 @@ enum ShaderType
 	SHADER_SOLID_COLOR,
 	SHADER_PATH_LINES,
 	SHADER_BLUE,
+	SHADER_SHADOW,
 	NUM_SHADERS
 };
 
@@ -42,6 +43,11 @@ public:
 	static unsigned int GetShaderProgramID() { return sShaderProgramID[sCurrentShader]; }
 	static unsigned int GetCurrentShader() { return sCurrentShader; }
 	static void SetShader(ShaderType type);
+
+	static void BindFrame();
+
+	static int w_width;
+	static int w_height;
 
 private:
 	static GLFWwindow* spWindow;

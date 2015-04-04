@@ -1,0 +1,35 @@
+#version 330
+
+in vec2 coord_vertex;
+in vec3 normal_vertex;
+in vec4 eye_vertex;
+out vec4 colorOut;
+
+uniform sampler2D sampler;
+uniform vec4 color;
+
+uniform struct Light {
+	vec3 color;
+	vec3 direction;
+	float ambient;
+} light;
+
+uniform struct Fog {
+	vec4 fogColor;
+	float fogStart; //for linear fog
+	float fogEnd; //for linear fog
+	float fogDensity; 
+	
+	int fogType //0 = linear fog
+} fog;
+
+float getFogFactor(Fog params, float fogCoordinate);
+
+void main() {
+	vec4 vColor = texture2D(sampler, coord_verted);
+	float diffuse = max(0.0, dot(normalize(normal_vertex), -light.direction));
+	colorOut = vColor * color * vec4(light.color * (light.ambient + diffuse), 1.0);
+
+	float fogCoord = abs(eye_vertex.z / eye_vertex.w);
+	colourOut = mix(colorOut, fog.fogColor, getFogFactor(fog, fogCoord));
+}

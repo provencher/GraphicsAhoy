@@ -27,6 +27,7 @@
 #include "BSpline.h"
 
 #include <GLFW/glfw3.h>
+
 #include "EventManager.h"
 
 #include <string>
@@ -71,6 +72,23 @@ World::World()
 	gLights->push_back(spotlight);
 	gLights->push_back(directionalLight);
 	gLights->push_back(light3);
+
+
+
+	glfwGetWindowSize(EventManager::GetWindow(), &width, &height);
+
+	const float arr[16] = {
+		0.5, 0.0, 0.0, 0.0,
+		0.0, 0.5, 0.0, 0.0,
+		0.0, 0.0, 0.5, 0.0,
+		0.5, 0.5, 0.5, 1.0 };
+
+	biasMatrix = glm::make_mat4(arr);
+
+	// Compute the MVP matrix from the light's point of view
+	depthProjectionMatrix = glm::ortho<float>(-10, 10, -10, 10, -10, 20);
+	
+
 }
 World::~World()
 {
@@ -202,6 +220,7 @@ void World::LoadScene(const char * scene_path){
 		GroupModel* ground = new GroupModel();
 		vec3 plateSize = vec3(vec3(200,1,200));
 
+		setGroundModel(ground);
 
 		Model* groundPlate = new CubeModel(vec3(0.6f));
 		groundPlate->SetScaling(plateSize);
@@ -247,7 +266,7 @@ void World::LoadScene(const char * scene_path){
 
 
 
-
+	//static model of the player's plane, debug purposes
 	if(0){
 		//Big Plane
 		GroupModel* character = new PlaneModel();
@@ -278,7 +297,7 @@ void World::LoadScene(const char * scene_path){
 
 	// PLAYER
 
-	// Third Person Cube Character -------------------------
+	// Third Person Plane Character -------------------------
     GroupModel* character = new PlaneModel();
 	//character->SetRotation(vec3(1,0,0), 90);//change thirs person to accomidate 
 	float scale = 0.5f;
@@ -289,6 +308,8 @@ void World::LoadScene(const char * scene_path){
 	character->ReScaleCollisionCube(vec3(4));
 	character->SetSpeed(25.0f);	//Should move to camera
     mModel.push_back(character);
+
+	this->playerModel = character;
 
 
 	
@@ -351,7 +372,11 @@ void World::LoadCameras()
 	// Create Character -----------------------------------
 	////////////////////////////////////////////////////////
 
-
+	//Setup Alt Camera
+	glm::vec3 pos = mCamera[0]->GetPosition();
+	glm::vec3 look = mCamera[0]->GetLookAt();
+	glm::vec3 up = mCamera[0]->GetUp();
+	altCamera = new StaticCamera(pos, look, up);
 
 
     // BSpline Camera --------------------------------------
@@ -394,6 +419,13 @@ void World::Update(float dt)
 		}
 	}
 
+	if (getPlayerModel()->GetPosition().z > getGroundModel()->GetPosition().z) {
+		//TODO TAGS: GROUNDMODEL GENERATE CHARACTER
+		generateWorldSection(getPlayerModel()); 
+
+		printf("World section genereated.");
+
+	}
 
 	// Update current Camera
 	mCamera[mCurrentCamera]->Update(dt);
@@ -409,9 +441,41 @@ void World::Update(float dt)
 	}
 }
 
+void World::DrawShadow(){
+	//Set Shaders to shadows
+	unsigned int prevShader = Renderer::GetCurrentShader();
+	Renderer::SetShader(SHADER_SHADOW);
+	glUseProgram(Renderer::GetShaderProgramID());
+
+
+
+	// This looks for the MVP Uniform variable in the Vertex Program
+	GLuint ViewLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "LightVM");
+	mat4 lightView = altCamera->GetViewMatrix();
+	glUniformMatrix4fv(ViewLocation, 1, GL_FALSE, &lightView[0][0]);
+
+	//ProjMat
+	GLuint Projection = glGetUniformLocation(Renderer::GetShaderProgramID(), "Projection");
+	glUniformMatrix4fv(Projection, 1, GL_FALSE, &depthProjectionMatrix[0][0]);
+
+
+
+
+
+	//Draw All models
+	for (vector<Model*>::iterator it = mModel.begin(); it < mModel.end(); ++it){
+		(*it)->Draw();
+	}
+
+	// Restore previous shader
+	Renderer::SetShader((ShaderType)prevShader);
+
+}
+
 void World::Draw()
 {
 	Renderer::BeginFrame();
+	
 	
 	// Set shader to use
 	glUseProgram(Renderer::GetShaderProgramID());
@@ -480,6 +544,10 @@ void World::Draw()
 	GLuint VPMatrixLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "ViewProjectionTransform");	
 	mat4 VP = mCamera[mCurrentCamera]->GetViewProjectionMatrix();
 	glUniformMatrix4fv(VPMatrixLocation, 1, GL_FALSE, &VP[0][0]);
+
+
+
+
 
 	// Draw models
 	vec4 matC;
@@ -604,3 +672,60 @@ void World::RemoveLight(int index){
 	gLights->erase(gLights->begin()+index); // NOTE gLights should be map, issue will arise when deleting corrupting indexes that follow
 }
 
+Model* World::getPlayerModel() {
+	return this->playerModel;
+}
+
+int World::getIndexOfGroundPlate() {
+	return this->indexOfGroundPlate;
+}
+
+void World::generateWorldSection(Model* character) {
+	//Todo finish generation in function
+	vec3 startPos = character->GetPosition(); //The starting position is determined by the current location of the player
+	vec3 groundPos = getGroundModel()->GetPosition(); //The ground position is centered on the ground model
+	vec3 groundScaling = getGroundModel()->GetScaling(); //Scaling used to determine the length from one end of the model to the other e.g. distance at which to render the new model
+	
+	vec3 plateSize = groundScaling;
+
+	Model* groundBase = new GroupModel(); //a new ground point is declared as once the player is a certain distance from the old one it's deleted
+
+	//buggy
+	//vec3 newGroundPos = vec3(groundScaling.x, groundPos.y, groundScaling.z);
+
+	Model* groundPlateForward = new CubeModel(vec3(0.6f));
+	Model* groundPlateLeft = new CubeModel(vec3(0.6f));
+	Model* groundPlateRight = new CubeModel(vec3(0.6f));
+
+	Model* newGround[] = { groundPlateForward, groundPlateLeft, groundPlateRight};
+
+	for (Model* plate : newGround) {
+
+		plate->SetScaling(vec3(200, 1, 200));
+
+	}
+
+	groundBase->SetPosition(groundPos + vec3(0,0,50)); //50 is a magic number, not final version where plates merge seamlessly
+	groundPlateForward->SetPosition(groundBase->GetPosition());
+
+	//newGround->SetPosition(newGroundPos);
+
+	//groundPlateForward->SetParent(groundBase);
+
+	setGroundModel(groundBase);
+
+	//m->SetRotation(vec3(0,0,1), 90.0f);
+	getGroundModel()->AddChild(groundPlateForward);
+
+	mModel.push_back(getGroundModel());
+
+}
+
+void World::setGroundModel(Model* model) {
+	printf("Ground model set. \n");
+	groundModel = model;
+}
+
+Model* World::getGroundModel() {
+	return groundModel;
+}

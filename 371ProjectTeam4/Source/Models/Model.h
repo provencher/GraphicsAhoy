@@ -57,6 +57,8 @@ public:		//------------------------------------------
 	// Children --------------------------------
 	void	SetParent(Model* m);
 	void	AddChild(Model* m);
+	Model*	GetChild(ci_string name);
+	Model*	RemoveChild(Model* m);
 	int		GetChildCount() const { return child.size(); }
 	void	UpdateChildren(float dt);
 	void	DeleteAllChildren();

@@ -11,7 +11,10 @@
 
 #include "ParsingHelper.h"
 #include <vector>
+#include <glm/gtc/type_ptr.hpp>
 #include <GLM/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/vector_angle.hpp>
 
 class Camera;
 class Model;
@@ -28,6 +31,7 @@ public:
 
 	void Update(float dt);
 	void Draw();
+	void DrawShadow();
 
 	void LoadScene(const char * scene_path);
     void LoadCameras();
@@ -39,6 +43,15 @@ public:
 
 	std::vector<Model*>* GetModels() { return &mModel; }
 	
+	//Continuous world generation functions
+	void generateWorldSection(Model* character);
+	void setIndexOfGroundPlate(int index);
+	int getIndexOfGroundPlate();
+	void setGroundModel(Model* model);
+	Model* getGroundModel();
+
+	//Return the player model - i.e. the plane
+	Model* getPlayerModel();
 	glm::vec3 camPos;
 
 	inline void SetLightPostion();
@@ -66,6 +79,12 @@ public:
 	std::vector<Light>* gLights;
 	Camera* GetCamera();
 
+	glm::mat4 depthProjectionMatrix;
+	glm::mat4 lightVP;
+	glm::mat4 depthMVP;
+
+	glm::mat4 biasMatrix;
+
 private:
     static World* instance;
 
@@ -75,6 +94,17 @@ private:
 	std::vector<Camera*> mCamera;
 	unsigned int mCurrentCamera;
 	
+	Model* playerModel;
+
+	glm::mat4 projMat;
+
+	Camera* altCamera;
+	int width;
+	int height;
+
+	//Stores the index of the ground in mModel separarely to store and access it more easily
+	int indexOfGroundPlate;
+	Model* groundModel;
 
 	// Material Coefficients
 	float ka;
