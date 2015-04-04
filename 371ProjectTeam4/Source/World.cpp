@@ -69,7 +69,7 @@ World::World()
 	light3.intensities = glm::vec3(0.5, 0.5, 0.5); //weak yellowish light
 	light3.ambientCoefficient = 0.06f;
 
-	gLights->push_back(spotlight);
+	//gLights->push_back(spotlight);
 	gLights->push_back(directionalLight);
 	//gLights->push_back(light3);
 
