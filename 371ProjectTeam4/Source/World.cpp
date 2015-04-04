@@ -417,6 +417,22 @@ void World::Update(float dt)
 void World::Draw()
 {
 	Renderer::BeginFrame();
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	
+
+	//RenderShadows();
+	
+
+	RenderScene();
+
+
+	DrawPath();
+
+	Renderer::EndFrame();
+}
+
+void World::RenderShadows()
+{
 
 	for (size_t i = 0; i < gLights->size(); ++i){
 
@@ -439,7 +455,7 @@ void World::Draw()
 
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	
+
 	glViewport(0, 0, width, height);
 	// Clear the screen
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -451,16 +467,7 @@ void World::Draw()
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, 1);
 	glUniform1i(shadowMapHandle, 0);
-
-
-	RenderScene();
-
-
-	DrawPath();
-
-	Renderer::EndFrame();
 }
-
 
 void World::DrawShadow(){
 	//Set Shaders to shadows

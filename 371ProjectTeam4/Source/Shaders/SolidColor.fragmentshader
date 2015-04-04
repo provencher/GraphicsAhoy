@@ -129,6 +129,7 @@ void main() {
 				visibility -= 0.2*(1.0-texture( R_shadowMap, vec3(shadowMapCoords0.xy + poissonDisk[index]/700.0,  (shadowMapCoords0.z-bias)/shadowMapCoords0.w) ));
 			}
 
+			//visibility = 1.0;
 			linearColor += (visibility * ApplyLight(allLights[i], surfaceColor.rgb, normal, surfacePos, surfaceToCamera));
 		}else{
 			linearColor += ApplyLight(allLights[i], surfaceColor.rgb, normal, surfacePos, surfaceToCamera);
