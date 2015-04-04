@@ -115,6 +115,7 @@ void Renderer::BeginFrame()
 	int height;
 	glfwGetWindowSize(spWindow, &width, &height);
 	glViewport(0, 0, width, height);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 void Renderer::EndFrame()

@@ -417,10 +417,9 @@ void World::Update(float dt)
 void World::Draw()
 {
 	Renderer::BeginFrame();
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	
 
-	RenderShadows();
+	//RenderShadows();
 	
 
 	RenderScene();
@@ -439,10 +438,16 @@ void World::RenderShadows()
 		glBindFramebuffer(GL_FRAMEBUFFER, 1);
 		// Clear the screen
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		altCamera->SetPosition((glm::vec3)(*gLights)[i].position);				
+		
+		
+		altCamera->SetPosition((glm::vec3)(*gLights)[i].position);	
+		//Dynamic light movement
 		altCamera->SetLookAt(GetCamera()->GetLookAt());
 		altCamera->SetUp(GetCamera()->GetUp());
+
+		//static light
+		//altCamera->SetLookAt(mCamera[1]->GetLookAt());
+		//altCamera->SetUp(mCamera[1]->GetUp());
 
 		//GetCamera()->SetPosition(altCamera->GetPosition());
 
