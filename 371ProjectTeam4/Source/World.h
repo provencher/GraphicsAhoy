@@ -39,7 +39,9 @@ public:
     Path* FindPath(ci_string pathName);
     BSpline* FindSpline(ci_string pathName);
     BSpline* FindSplineByIndex(unsigned int index);
-    Model* FindModelByIndex(unsigned int index);	
+    Model* FindModelByIndex(unsigned int index);
+
+	std::vector<Model*>* GetModels() { return &mModel; }
 	
 	//Continuous world generation functions
 	void generateWorldSection(Model* character);
@@ -50,7 +52,6 @@ public:
 
 	//Return the player model - i.e. the plane
 	Model* getPlayerModel();
-		
 	glm::vec3 camPos;
 
 	inline void SetLightPostion();
@@ -59,8 +60,12 @@ public:
 		glm::vec3 intensities; //a.k.a. the color of the light
 	*/
 	int AddLight(glm::vec4 pos, glm::vec3 color);
-	void UpdateLight(int index, glm::vec4 pos, glm::vec3 color);
 	void RemoveLight(int index);
+	void UpdateLight(int index, glm::vec4 pos, glm::vec3 color);
+	void UpdateLight(int index, glm::vec4 pos, glm::vec3 color, float attenuation, float ambientCoefficient);
+	void UpdateLight(int index, glm::vec4 pos, glm::vec3 color, float attenuation, float ambientCoefficient, float coneAngle, glm::vec3 coneDirection);
+	
+	
 
 	struct Light {
 		glm::vec4 position;
@@ -91,7 +96,7 @@ private:
 	
 	Model* playerModel;
 
-	glm::mat4 projMat = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.0f);
+	glm::mat4 projMat;
 
 	Camera* altCamera;
 	int width;

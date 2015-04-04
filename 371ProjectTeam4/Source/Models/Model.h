@@ -56,11 +56,12 @@ public:		//------------------------------------------
 	void		SetSplineParameterT(float t);
 	// Children --------------------------------
 	void	SetParent(Model* m);
-	void	AddChild(Model* m);	
+	void	AddChild(Model* m);
 	Model*	GetChild(ci_string name);
 	Model*	RemoveChild(Model* m);
 	int		GetChildCount() const { return child.size(); }
 	void	UpdateChildren(float dt);
+	void	DeleteAllChildren();
 	void	DrawChildren();
 	bool	HasParent();
 	Model*	Parent();
@@ -75,6 +76,10 @@ public:		//------------------------------------------
 	float     mRotationAngleX;
 	float     mRotationAngleY;
 	float     mRotationAngleZ;
+	void      collideWith(Model* other);
+	void      CreateDefaultCollisionCube();
+	void      ReScaleCollisionCube(glm::vec3 newScale);
+
 protected: //------------------------------------------
 	//Children 
 	Model* mParent;
@@ -86,7 +91,7 @@ protected: //------------------------------------------
 	glm::vec3 mScaling;
 	glm::vec3 mRotationAxis;
 	float     mRotationAngleInDegrees;
-
+	glm::vec3* mCollisionCube; // can be null; only x & z components are calculated
 	
 
 

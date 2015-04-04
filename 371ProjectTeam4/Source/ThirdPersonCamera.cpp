@@ -289,6 +289,12 @@ void ThirdPersonCamera::UpdateTargeModel(float dt){
 	mTargetModel->SetPosition(pos);
 	//*///////////////////////////////////////////////////////////////
 
+	std::vector<Model*>* models = World::GetInstance()->GetModels();
+	for (int i = 0, iMax = models->size(); i < iMax; ++i)
+	{
+		mTargetModel->collideWith((*models)[i]);
+		collideChildren(mTargetModel, &((*models)[i]->child));
+	}
 
 	
 	//////////////////////////////////////////////////
@@ -307,6 +313,21 @@ void ThirdPersonCamera::UpdateTargeModel(float dt){
 
 	//if (mTargetModel->GetPosition())
 }
+
+void ThirdPersonCamera::collideChildren(Model* collider, std::map <ci_string, Model*>* children)
+{
+	int count = children->size();
+	if (count > 0)
+	{
+		typedef std::map<ci_string, Model*>::iterator it_type;
+		for(it_type iterator = children->begin(); iterator != children->end(); iterator++)
+		{
+			collider->collideWith(iterator->second);
+			collideChildren(collider, &(iterator->second->child));
+		}
+	}
+}
+
 
 //////////////////////////////////////////////////////////
 

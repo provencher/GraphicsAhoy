@@ -13,7 +13,6 @@
 #include "../BSpline.h"
 #include "../World.h"
 //#include "StaticCamera.h"
-#include "../Camera.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/common.hpp>
 
@@ -23,7 +22,7 @@ using namespace glm;
 //###############################################################
 
 //Construct Destruct
-Model::Model() : mName("UNNAMED"), mPosition(0.0f, 0.0f, 0.0f), mScaling(1.0f, 1.0f, 1.0f), mRotationAxis(0.0f, 1.0f, 0.0f), mRotationAngleInDegrees(0.0f), mPath(nullptr), mSpeed(0.0f), mTargetWaypoint(1), mSpline(nullptr), mSplineParameterT(0.0f)
+Model::Model() : mName("UNNAMED"), mPosition(0.0f, 0.0f, 0.0f), mScaling(1.0f, 1.0f, 1.0f), mRotationAxis(0.0f, 1.0f, 0.0f), mRotationAngleInDegrees(0.0f), mPath(nullptr), mSpeed(0.0f), mTargetWaypoint(1), mSpline(nullptr), mSplineParameterT(0.0f), mCollisionCube(nullptr)
 {
 	mParent = nullptr;
 	materialConst = vec4(0.2f, 0.8f, 0.2f, 50.0f);
@@ -34,8 +33,14 @@ Model::Model() : mName("UNNAMED"), mPosition(0.0f, 0.0f, 0.0f), mScaling(1.0f, 1
 	mRotationAngleZ = 0;
 	mNthChild = 0;
 }
+
 Model::~Model()
 {
+	if (mCollisionCube != nullptr)
+	{
+		delete mCollisionCube;
+	}
+	DeleteAllChildren();
 }
 
 //Init----------------------------------------
@@ -248,16 +253,15 @@ Model*	Model::RemoveChild(ci_string key){
 	child.erase(key);			//remove
 	return old;					//return
 }
-Model*	Model::RemoveChild(Model* m){ 
-	//child[key] = m;
 
-	return nullptr;
-	//child.erase()
+
+void Model::DeleteAllChildren(){
+	//will clear the array but may still have memory leak
+	child.clear();
 }
 //----------------------------------------
 void	Model::UpdateChildren(float dt){
-	int count = GetChildCount();
-	if (count > 0){
+	if (GetChildCount() > 0){
 		typedef std::map<ci_string, Model*>::iterator it_type;
 		for(it_type iterator = child.begin(); iterator != child.end(); iterator++) {
 			iterator->second->Update(dt);
@@ -278,8 +282,93 @@ void	Model::SetParent(Model* m){
 	this->mParent = m;
 }
 
+void Model::CreateDefaultCollisionCube()
+{
+	if (mCollisionCube == nullptr)
+	{
+		mCollisionCube = new vec3(1.0f);
+	}
+}
 
+void Model::ReScaleCollisionCube(vec3 newScale) // (1.0f, 1.0f, 1.0f) is normal (default)
+{
+	if (mCollisionCube != nullptr)
+	{
+		mCollisionCube->x *= newScale.x;
+		mCollisionCube->y *= newScale.y; // should have no effect
+		mCollisionCube->z *= newScale.z;
+	}
+}
 
+void Model::collideWith(Model* other)
+{
+	if (this->mCollisionCube == nullptr || other == this || other->mCollisionCube == nullptr)
+	{
+		return;
+	}
+
+	float Axa = this->mPosition.x - this->mCollisionCube->x * this->mScaling.x / 2.0f;
+	float Axb = this->mPosition.x + this->mCollisionCube->x * this->mScaling.x / 2.0f;
+	float Aya = this->mPosition.z - this->mCollisionCube->z * this->mScaling.z / 2.0f;
+	float Ayb = this->mPosition.z + this->mCollisionCube->z * this->mScaling.z / 2.0f;
+	float Bxa = other->mPosition.x - other->mCollisionCube->x * other->mScaling.x / 2.0f;
+	float Bxb = other->mPosition.x + other->mCollisionCube->x * other->mScaling.x / 2.0f;
+	float Bya = other->mPosition.z - other->mCollisionCube->z * other->mScaling.z / 2.0f;
+	float Byb = other->mPosition.z + other->mCollisionCube->z * other->mScaling.z / 2.0f;
+
+	if (Axa >= Bxa && Axa <= Bxb && Aya >= Bya && Aya <= Byb)
+	{
+		float horizOffset = Bxb - Axa;
+		float vertOffset = Byb - Aya;
+		if (abs(horizOffset) < abs(vertOffset))
+		{
+			mPosition.x += horizOffset;
+		}
+		else
+		{
+			mPosition.z += vertOffset;
+		}
+	}
+	else if (Axa >= Bxa && Axa <= Bxb && Ayb >= Bya && Ayb <= Byb)
+	{
+		float horizOffset = Bxb - Axa;
+		float vertOffset = Ayb - Bya;
+		if (abs(horizOffset) < abs(vertOffset))
+		{
+			mPosition.x += horizOffset;
+		}
+		else
+		{
+			mPosition.z -= vertOffset;
+		}
+	}
+	else if (Axb >= Bxa && Axb <= Bxb && Ayb >= Bya && Ayb <= Byb)
+	{
+		float horizOffset = Axb - Bxa;
+		float vertOffset = Ayb - Bya;
+		if (abs(horizOffset) < abs(vertOffset))
+		{
+			mPosition.x -= horizOffset;
+		}
+		else
+		{
+			mPosition.z -= vertOffset;
+		}
+	}
+	else if (Axb >= Bxa && Axb <= Bxb && Aya >= Bya && Aya <= Byb)
+	{
+		float horizOffset = Axb - Bxa;
+		float vertOffset = Byb - Aya;
+		if (abs(horizOffset) < abs(vertOffset))
+		{
+			mPosition.x -= horizOffset;
+		}
+		else
+		{
+			mPosition.z += vertOffset;
+		}
+	}
+}
 
 
 //Physics ------------------------------------------------

@@ -18,7 +18,11 @@ public:
 	bool IsAlive() {return mAlive;}
     ~Particle();
 
+	vec3 mStartColor;
+	vec3 mEndColor;
+
 protected:
+	//------------------
 	bool mAlive;
     float mSpeed;
     vec3  mDirection;
