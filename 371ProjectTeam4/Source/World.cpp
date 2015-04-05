@@ -221,14 +221,49 @@ void World::LoadScene(const char * scene_path){
 		vec3 plateSize = vec3(vec3(200,1,200));
 
 
-
-		Model* groundPlate = new CubeModel(vec3(0.6f));
-		groundPlate->SetScaling(plateSize);
-		groundPlate->SetPosition(vec3(0,-0.5f,0));
-		//m->SetRotation(vec3(0,0,1), 90.0f);
-		ground->AddChild(groundPlate);
+		//world renders in a 3x3 square of plates
+		Model* groundPlates[3][3];
 		
-		setGroundModel(groundPlate);
+		//counters
+		int i = 0, j = 0;
+
+		for (i = 0; i < 3;) {
+			//xPos and zPos describe the coordinates of the plate on the 3x3 grid; X: 0 = left, 1 = mid, 2 = right; Z: 0 = front, 1 = mid, 2 = rear
+			float xPos = 1;
+			float zPos = 1;
+			for (j = 0; j < 3;) {
+				groundPlates[i][j] = new CubeModel(vec3(0.6f));
+				groundPlates[i][j]->SetScaling(plateSize);
+				//front
+				if (j == 0) {
+					zPos = plateSize.z / 2;
+				}
+				else if (j == 2) {
+					zPos = - plateSize.z / 2;
+				}
+				//left side
+				if (i == 0) {
+					xPos = plateSize.x / 2;
+				}
+				//right side
+				else if (i == 2) {
+					xPos = -plateSize.x / 2;
+				}
+
+				groundPlates[i][j]->SetPosition(vec3(xPos, -0.5f, zPos));
+
+				ground->AddChild(groundPlates[i][j]);
+
+				j++;
+			}
+	
+			i++;
+		}
+
+		//m->SetRotation(vec3(0,0,1), 90.0f);
+		
+		//continuous tracking of the ground plate at the center of the square
+		setGroundModel(groundPlates[1][1]);
 		//Billboard
 		//============================================
 		for(int i=0; i< 50; i++){
@@ -421,7 +456,7 @@ void World::Update(float dt)
 
 	if (getPlayerModel()->GetPosition().z > getGroundModel()->GetPosition().z - 50) { //offset check by 50 to keep render out of view
 		//TODO TAGS: GROUNDMODEL GENERATE CHARACTER
-		generateWorldSection(getPlayerModel()); 
+		generateWorldSection(getPlayerModel(), getGroundModel()); 
 
 		printf("World section generated.");
 
@@ -676,110 +711,37 @@ Model* World::getPlayerModel() {
 	return this->playerModel;
 }
 
-void World::generateWorldSection(Model* character) {
+void World::generateWorldSection(Model* character, Model* currentGroundPlate) {
 	//Todo finish generation in function
 	vec3 startPos = character->GetPosition(); //The starting position is determined by the current location of the player
 	vec3 groundPos = getGroundModel()->GetPosition(); //The ground position is centered on the ground model
 	vec3 groundScaling = vec3(200, 1, 200); //Scaling used to determine the length from one end of the model to the other e.g. distance at which to render the new model
 
-	//float yPos = -0.5f; //Copied from setPosition of initial ground declaration - keep things level
+	Model* groundBase = new GroupModel();
 
-	//old models retrieved
-	Model* oldLeft = getLeftPlate();
-	oldLeft = new GroupModel();
+	//Maintain a 3x3 grid of plates around the player
+	Model* plateArray[3][3];
 
-	Model* oldRight = getRightPlate();
-	oldRight = new GroupModel();
-
-	Model* oldFront = getFrontPlate();
-	oldFront = new GroupModel();
-
-	vec3 plateSize = groundScaling;
-
-	Model* groundBase = new GroupModel(); //a new ground point is declared as once the player is a certain distance from the old one it's deleted
-
-	//buggy
-	//vec3 newGroundPos = vec3(groundScaling.x, groundPos.y, groundScaling.z);
-
-	Model* groundPlateForward = new CubeModel(vec3(0.6f));
-	Model* groundPlateLeft = new CubeModel(vec3(0.6f));
-	Model* groundPlateRight = new CubeModel(vec3(0.6f));
-	Model* wallLeft = new CubeModel(vec3(0.6f));
-	Model* wallRight = new CubeModel(vec3(0.6f));
-
-	Model* newGround[] = { groundPlateForward, groundPlateLeft, groundPlateRight };
-
-	//each plate has a uniform size
-	for (Model* plate : newGround) {
-		plate->SetScaling(plateSize);
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 3; j++) {
+			plateArray[i][j] = new CubeModel(vec3(0.6f));
+		}
 	}
 
+	//[1][1] is the midpoint of the cube described by the 3x3 array
+	plateArray[1][1] = currentGroundPlate;
 
+
+	
 	//Set all positions dependent on scaling of previous positions
 	groundBase->SetPosition(groundPos + vec3(0, 0, groundScaling.z / 2));
 
-	groundPlateForward->SetPosition(groundBase->GetPosition());
-
-	groundPlateLeft->SetPosition(groundBase->GetPosition() + vec3(groundScaling.x / 2, 0, 0));
-
-	groundPlateRight->SetPosition(groundBase->GetPosition() + vec3(-groundScaling.x / 2, 0, 0));
-
-	wallLeft->SetPosition(groundPlateLeft->GetPosition() + vec3(groundPlateLeft->GetScaling().x / 2, 0,0));
-
-	wallRight->SetPosition(groundPlateRight->GetPosition() + vec3(-groundPlateRight->GetScaling().x / 2, 0, 0));
-
-	wallLeft->SetScaling(vec3(1, 200, 200));
-	wallRight->SetScaling(vec3(1, 200, 200));
-
-	//groundPlateForward->SetParent(groundBase);
-
 	setGroundModel(groundBase);
 
-	//Reference plates are set for the next round of world generation
-	setLeftPlate(groundPlateLeft);
-	setRightPlate(groundPlateRight);
-	setFrontPlate(groundPlateForward);
+	//add ground and its children to render queue
+	mModel.push_back(groundBase);
 
-	//m->SetRotation(vec3(0,0,1), 90.0f);
-	//all plates are children of the ground
-
-	for (int i = 0; i< 50; i++){
-
-		vec3 randSize = vec3(
-			rand() % 10 + 3,
-			rand() % 10 + 3,
-			rand() % 10 + 3
-			);
-		vec3 randPos = vec3(
-			(rand() % (int)plateSize.x) - 0.5f*plateSize.x,
-			randSize.y / 2,
-			(rand() % (int)plateSize.z) - 0.5f*plateSize.z
-			);
-
-
-
-		Model* shape = new CubeModel(vec3(0.8f));
-		int x = 1.0f;
-		shape->SetPosition(randPos);
-		shape->SetScaling(randSize);
-		shape->CreateDefaultCollisionCube();
-		groundBase->AddChild(shape);
-
-		//ground->AddChild("dog", shape);
-
-	}
-
-
-	for (Model* plate : newGround) {
-		groundBase->AddChild(plate);
-	}
-	groundBase->AddChild(wallLeft);
-	groundBase->AddChild(wallRight);
-
-	mModel.push_back(getGroundModel()); //add model and children to the list of renderables
-	
 }
-
 
 void World::setGroundModel(Model* model) {
 	groundModel = model;
@@ -787,36 +749,4 @@ void World::setGroundModel(Model* model) {
 
 Model* World::getGroundModel() {
 	return groundModel;
-}
-
-void World::setPrevGroundModel(Model* model) {
-	prevGroundModel = model;
-}
-
-Model* World::getPrevGroundModel() {
-	return prevGroundModel;
-}
-
-void World::setLeftPlate(Model* model) {
-	leftPlate = model;
-}
-
-void World::setRightPlate(Model* model) {
-	rightPlate = model;
-}
-
-void World::setFrontPlate(Model* model) {
-	frontPlate = model;
-}
-
-Model* World::getLeftPlate() {
-	return leftPlate;
-}
-
-Model* World::getRightPlate() {
-	return rightPlate;
-}
-
-Model* World::getFrontPlate() {
-	return frontPlate;
 }

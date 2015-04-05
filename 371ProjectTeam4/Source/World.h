@@ -44,20 +44,10 @@ public:
 	std::vector<Model*>* GetModels() { return &mModel; }
 	
 	//Continuous world generation functions
-	void generateWorldSection(Model* character);
+	void generateWorldSection(Model* character, Model* groundPlate);
 	void setGroundModel(Model* model);
 	Model* getGroundModel();
-	void setPrevGroundModel(Model* model);
-	Model* getPrevGroundModel();
-
-	//Used to determine which direction to generate in next
-	Model* getLeftPlate();
-	Model* getRightPlate();
-	Model* getFrontPlate();
-
-	void setLeftPlate(Model* model);
-	void setRightPlate(Model* model);
-	void setFrontPlate(Model* model);
+	
 
 	//Return the player model - i.e. the plane
 	Model* getPlayerModel();
