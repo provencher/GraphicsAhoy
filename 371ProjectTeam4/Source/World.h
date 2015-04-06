@@ -104,7 +104,6 @@ private:
 
 	//Stores the ground 3x3 array separarely to store and access it more easily
 	std::vector<std::vector<Model*>> groundModel;
-	Model* prevGroundModel;
 
 	// Material Coefficients
 	float ka;

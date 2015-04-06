@@ -713,30 +713,43 @@ void World::generateWorldSection(Model* character) {
 	vec3 groundPos = getGroundModel()[1][1]->GetPosition(); //The ground position is centered on the ground model at the center of the 3x3
 	vec3 groundScaling = getGroundModel()[1][1]->GetScaling(); //Scaling used to determine the length from one end of the model to the other e.g. distance at which to render the new model
 	
+	//[X][Z], where X:0-2 is left-right columns, Z:0-2 is front-to-rear rows
+
+	GroupModel* newground = new GroupModel();
+
+	std::vector<std::vector<Model*>> groundPlates(3, std::vector<Model*>(3));
 
 	for (int i = 0; i < 3; i++) {
-		getGroundModel()[i][2] = getGroundModel()[i][1]; //shift mid row to back
-		getGroundModel()[i][1] = getGroundModel()[i][0]; //shift front to mid
-		getGroundModel()[i][0] = new CubeModel(vec3(0.6f));
+		groundPlates[i][2] = getGroundModel()[i][1]; //shift mid row to back
+		groundPlates[i][1] = getGroundModel()[i][0]; //shift front to mid
+		groundPlates[i][0] = new CubeModel(vec3(0.6f));
 		//positioning of front row established
-		getGroundModel()[i][0]->SetScaling(getGroundModel()[i][1]->GetScaling());
-		getGroundModel()[i][0]->SetPosition(
+		groundPlates[i][0]->SetScaling(getGroundModel()[i][1]->GetScaling()); //scaling is identical in all rows to keep textures from distorting
+		groundPlates[i][0]->SetPosition( //position is determined by the position of the previous row
 			vec3(
-			getGroundModel()[i][1]->GetPosition().x,
-			getGroundModel()[i][1]->GetPosition().y,
-			getGroundModel()[i][1]->GetPosition().z + getGroundModel()[i][1]->GetScaling().z //z is pushed forward so it doesnt spawn on top of itself
+			groundPlates[i][1]->GetPosition().x, //x position is unmodified, will be changed in final build to prevent player flying sideways into void
+			groundPlates[i][1]->GetPosition().y, //y is unchanged to keep plane level
+			groundPlates[i][1]->GetPosition().z + getGroundModel()[i][1]->GetScaling().z //z is pushed forward so it doesn't clip the middle row
 			)
 		);
-		
-		
+		mModel.push_back(groundPlates[i][0]);
+	}
+
+	setGroundModel(groundPlates);
+	/*
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 3; j++) {
+			newground->AddChild(groundPlates[i][j]);
+		}
+	}
+	*/
+	for (std::vector<Model*>::iterator it = mModel.begin(); it != mModel.end(); ++it) {
+		if ((*it)->GetChild("Ground") != NULL) {
+			(*it)->RemoveChild("Ground");
+			(*it)->AddChild("Ground", newground);
+		}
 	}
 	
-	//setGroundModel(getGroundModel());
-
-	
-	//Set all positions dependent on scaling of previous positions
-	(groundPos + vec3(0, 0, groundScaling.z / 2));
-
 
 	//add ground and its children to render queue
 	//mModel.push_back(groundBase);

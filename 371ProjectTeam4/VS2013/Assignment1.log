@@ -1,4 +1,4 @@
-﻿Build started 4/5/2015 11:34:13 PM.
+﻿Build started 4/6/2015 12:34:17 AM.
      1>Project "D:\Documents\Repositories\GitHub\GraphicsAhoy\371ProjectTeam4\VS2013\Assignment1.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\VC\bin\CL.exe /c /I"../ThirdParty/glew-1.10.0/include" /I"../ThirdParty/glfw-3.0.4/include" /I../ThirdParty/glm /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"D:\Documents\Repositories\GitHub\GraphicsAhoy\371ProjectTeam4\VS2013\/../Build/Debug/" /Fd"D:\Documents\Repositories\GitHub\GraphicsAhoy\371ProjectTeam4\VS2013\/../Build/Debug/vc120.pdb" /Gd /TP /analyze- /errorReport:prompt ..\Source\World.cpp
@@ -38,4 +38,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:01.19
+Time Elapsed 00:00:01.12
