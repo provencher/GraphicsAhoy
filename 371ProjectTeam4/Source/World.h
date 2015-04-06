@@ -44,9 +44,10 @@ public:
 	std::vector<Model*>* GetModels() { return &mModel; }
 	
 	//Continuous world generation functions
-	void generateWorldSection(Model* character, Model* groundPlate);
-	void setGroundModel(Model* model);
-	Model* getGroundModel();
+	void generateWorldSection(Model* character);
+	void setGroundModel(std::vector<std::vector<Model*>> model);
+	std::vector<std::vector<Model*>> getGroundModel();
+	void checkPositionOfPlayer(Model* character);
 	
 
 	//Return the player model - i.e. the plane
@@ -101,12 +102,9 @@ private:
 	int width;
 	int height;
 
-	//Stores the index of the ground in mModel separarely to store and access it more easily
-	Model* groundModel;
+	//Stores the ground 3x3 array separarely to store and access it more easily
+	std::vector<std::vector<Model*>> groundModel;
 	Model* prevGroundModel;
-	Model* leftPlate; //left, right, front all store the closest plate for determining next worldgen
-	Model* rightPlate; 
-	Model* frontPlate;
 
 	// Material Coefficients
 	float ka;

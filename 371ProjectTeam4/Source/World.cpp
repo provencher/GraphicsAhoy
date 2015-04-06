@@ -220,9 +220,8 @@ void World::LoadScene(const char * scene_path){
 		GroupModel* ground = new GroupModel();
 		vec3 plateSize = vec3(vec3(200,1,200));
 
-
 		//world renders in a 3x3 square of plates
-		Model* groundPlates[3][3];
+		std::vector<std::vector<Model*>> groundPlates(3, std::vector<Model*> (3));
 		
 		//counters
 		int i = 0, j = 0;
@@ -263,7 +262,7 @@ void World::LoadScene(const char * scene_path){
 		//m->SetRotation(vec3(0,0,1), 90.0f);
 		
 		//continuous tracking of the ground plate at the center of the square
-		setGroundModel(groundPlates[1][1]);
+		setGroundModel(groundPlates);
 		//Billboard
 		//============================================
 		for(int i=0; i< 50; i++){
@@ -453,14 +452,10 @@ void World::Update(float dt)
 			mCurrentCamera = 4;
 		}
 	}
-
-	if (getPlayerModel()->GetPosition().z > getGroundModel()->GetPosition().z - 50) { //offset check by 50 to keep render out of view
-		//TODO TAGS: GROUNDMODEL GENERATE CHARACTER
-		generateWorldSection(getPlayerModel(), getGroundModel()); 
-
-		printf("World section generated.");
-
-	}
+	
+	//Comment this out to toggle world generation
+	//checks player's position against the center plate's position + an offset
+	checkPositionOfPlayer(getPlayerModel());
 
 	// Update current Camera
 	mCamera[mCurrentCamera]->Update(dt);
@@ -711,42 +706,61 @@ Model* World::getPlayerModel() {
 	return this->playerModel;
 }
 
-void World::generateWorldSection(Model* character, Model* currentGroundPlate) {
+void World::generateWorldSection(Model* character) {
+	printf("World Generation triggered.\n");
 	//Todo finish generation in function
 	vec3 startPos = character->GetPosition(); //The starting position is determined by the current location of the player
-	vec3 groundPos = getGroundModel()->GetPosition(); //The ground position is centered on the ground model
-	vec3 groundScaling = vec3(200, 1, 200); //Scaling used to determine the length from one end of the model to the other e.g. distance at which to render the new model
-
-	Model* groundBase = new GroupModel();
-
-	//Maintain a 3x3 grid of plates around the player
-	Model* plateArray[3][3];
+	vec3 groundPos = getGroundModel()[1][1]->GetPosition(); //The ground position is centered on the ground model at the center of the 3x3
+	vec3 groundScaling = getGroundModel()[1][1]->GetScaling(); //Scaling used to determine the length from one end of the model to the other e.g. distance at which to render the new model
+	
 
 	for (int i = 0; i < 3; i++) {
-		for (int j = 0; j < 3; j++) {
-			plateArray[i][j] = new CubeModel(vec3(0.6f));
-		}
+		getGroundModel()[i][2] = getGroundModel()[i][1]; //shift mid row to back
+		getGroundModel()[i][1] = getGroundModel()[i][0]; //shift front to mid
+		getGroundModel()[i][0] = new CubeModel(vec3(0.6f));
+		//positioning of front row established
+		getGroundModel()[i][0]->SetScaling(getGroundModel()[i][1]->GetScaling());
+		getGroundModel()[i][0]->SetPosition(
+			vec3(
+			getGroundModel()[i][1]->GetPosition().x,
+			getGroundModel()[i][1]->GetPosition().y,
+			getGroundModel()[i][1]->GetPosition().z + getGroundModel()[i][1]->GetScaling().z //z is pushed forward so it doesnt spawn on top of itself
+			)
+		);
+		
+		
 	}
-
-	//[1][1] is the midpoint of the cube described by the 3x3 array
-	plateArray[1][1] = currentGroundPlate;
-
+	
+	//setGroundModel(getGroundModel());
 
 	
 	//Set all positions dependent on scaling of previous positions
-	groundBase->SetPosition(groundPos + vec3(0, 0, groundScaling.z / 2));
+	(groundPos + vec3(0, 0, groundScaling.z / 2));
 
-	setGroundModel(groundBase);
 
 	//add ground and its children to render queue
-	mModel.push_back(groundBase);
+	//mModel.push_back(groundBase);
 
 }
 
-void World::setGroundModel(Model* model) {
+void World::checkPositionOfPlayer(Model* character) {
+	vec3 pPos = character->GetPosition();
+	std::vector<std::vector<Model*>> groundPlates = getGroundModel();
+	
+	if (pPos.z > groundPlates[1][1]->GetPosition().z - 50) {
+		generateWorldSection(character);
+	}
+
+}
+
+void World::setGroundModel(std::vector<std::vector<Model*>> model) {
+	//this is ugly but it works
+	//front
 	groundModel = model;
+	
+
 }
 
-Model* World::getGroundModel() {
+std::vector<std::vector<Model*>> World::getGroundModel() {
 	return groundModel;
 }
