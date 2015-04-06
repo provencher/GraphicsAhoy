@@ -45,10 +45,13 @@ public:
 	
 	//Continuous world generation functions
 	void generateWorldSection(Model* character);
+	void generateObstacles(Model* groundPlate);
 	void setGroundModel(std::vector<std::vector<Model*>> model);
 	std::vector<std::vector<Model*>> getGroundModel();
 	void checkPositionOfPlayer(Model* character);
 	
+	void setGround(Model* ground);
+	Model* getGround();
 
 	//Return the player model - i.e. the plane
 	Model* getPlayerModel();
@@ -104,6 +107,7 @@ private:
 
 	//Stores the ground 3x3 array separarely to store and access it more easily
 	std::vector<std::vector<Model*>> groundModel;
+	Model* ground;
 
 	// Material Coefficients
 	float ka;

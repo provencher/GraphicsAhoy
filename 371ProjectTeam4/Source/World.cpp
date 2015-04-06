@@ -220,6 +220,8 @@ void World::LoadScene(const char * scene_path){
 		GroupModel* ground = new GroupModel();
 		vec3 plateSize = vec3(vec3(200,1,200));
 
+		setGround(ground);
+
 		//world renders in a 3x3 square of plates
 		std::vector<std::vector<Model*>> groundPlates(3, std::vector<Model*> (3));
 		
@@ -265,7 +267,7 @@ void World::LoadScene(const char * scene_path){
 		setGroundModel(groundPlates);
 		//Billboard
 		//============================================
-		for(int i=0; i< 50; i++){
+		for(int i=0; i< 25; i++){
 			
 			vec3 randSize = vec3(
 				rand() % 10+3,
@@ -715,65 +717,140 @@ void World::generateWorldSection(Model* character) {
 	
 	//[X][Z], where X:0-2 is left-right columns, Z:0-2 is front-to-rear rows
 
-	GroupModel* newground = new GroupModel();
+	Model* newground = getGround();
 
 	std::vector<std::vector<Model*>> groundPlates(3, std::vector<Model*>(3));
 
-	for (int i = 0; i < 3; i++) {
-		groundPlates[i][2] = getGroundModel()[i][1]; //shift mid row to back
-		groundPlates[i][1] = getGroundModel()[i][0]; //shift front to mid
-		groundPlates[i][0] = new CubeModel(vec3(0.6f));
-		//positioning of front row established
-		groundPlates[i][0]->SetScaling(getGroundModel()[i][1]->GetScaling()); //scaling is identical in all rows to keep textures from distorting
-		groundPlates[i][0]->SetPosition( //position is determined by the position of the previous row
-			vec3(
-			groundPlates[i][1]->GetPosition().x, //x position is unmodified, will be changed in final build to prevent player flying sideways into void
-			groundPlates[i][1]->GetPosition().y, //y is unchanged to keep plane level
-			groundPlates[i][1]->GetPosition().z + getGroundModel()[i][1]->GetScaling().z //z is pushed forward so it doesn't clip the middle row
-			)
-		);
-		mModel.push_back(groundPlates[i][0]);
-	}
+	if (startPos.x > groundPos.x + 100) { //+100 puts the offset from the center point at the boundary of [1][1] and [0][1], i.e. the left
+		for (int i = 0; i < 3; i++) {
+			//The DeleteAllChildren function has a serious error causing program abortion, and cannot be called.
+			//groundPlates[i][2]->DeleteAllChildren();
+			groundPlates[i][2] = getGroundModel()[i][1]; //shift mid row to back
+			groundPlates[i][1] = getGroundModel()[i][0]; //shift front to mid
 
-	setGroundModel(groundPlates);
-	/*
-	for (int i = 0; i < 3; i++) {
-		for (int j = 0; j < 3; j++) {
-			newground->AddChild(groundPlates[i][j]);
+			groundPlates[i][0] = new CubeModel(vec3(0.6f));
+			//positioning of front row established
+			groundPlates[i][0]->SetScaling(getGroundModel()[i][1]->GetScaling()); //scaling is identical in all rows to keep textures from distorting
+
+			groundPlates[i][0]->SetPosition( //position is determined by the position of the previous row
+				vec3(
+				groundPlates[i][1]->GetPosition().x + (groundPlates[i][1]->GetScaling().x / 2), //x position is unmodified, will be changed in final build to prevent player flying sideways into void
+				groundPlates[i][1]->GetPosition().y, //y is unchanged to keep plane level
+				groundPlates[i][1]->GetPosition().z + getGroundModel()[i][1]->GetScaling().z //z is pushed forward so it doesn't clip the middle row
+				)
+				);
+			generateObstacles(groundPlates[i][0]);
+
+			mModel.push_back(groundPlates[i][0]);
 		}
 	}
-	*/
-	for (std::vector<Model*>::iterator it = mModel.begin(); it != mModel.end(); ++it) {
-		if ((*it)->GetChild("Ground") != NULL) {
-			(*it)->RemoveChild("Ground");
-			(*it)->AddChild("Ground", newground);
+
+	else if (startPos.x < groundPos.x - 100) { //Same as above, but to the right
+		for (int i = 0; i < 3; i++) {
+			//The DeleteAllChildren function has a serious error causing program abortion, and cannot be called.
+			//groundPlates[i][2]->DeleteAllChildren();
+			groundPlates[i][2] = getGroundModel()[i][1]; //shift mid row to back
+			groundPlates[i][1] = getGroundModel()[i][0]; //shift front to mid
+
+			groundPlates[i][0] = new CubeModel(vec3(0.6f));
+			//positioning of front row established
+			groundPlates[i][0]->SetScaling(getGroundModel()[i][1]->GetScaling()); //scaling is identical in all rows to keep textures from distorting
+
+			groundPlates[i][0]->SetPosition( //position is determined by the position of the previous row
+				vec3(
+				groundPlates[i][1]->GetPosition().x - (groundPlates[i][1]->GetScaling().x / 2), //x position is unmodified, will be changed in final build to prevent player flying sideways into void
+				groundPlates[i][1]->GetPosition().y, //y is unchanged to keep plane level
+				groundPlates[i][1]->GetPosition().z + getGroundModel()[i][1]->GetScaling().z //z is pushed forward so it doesn't clip the middle row
+				)
+				);
+			generateObstacles(groundPlates[i][0]);
+
+			mModel.push_back(groundPlates[i][0]);
 		}
 	}
 	
+	else {
+		for (int i = 0; i < 3; i++) {
+			//The DeleteAllChildren function has a serious error causing program abortion, and cannot be called.
+			//groundPlates[i][2]->DeleteAllChildren();
+			groundPlates[i][2] = getGroundModel()[i][1]; //shift mid row to back
+			groundPlates[i][1] = getGroundModel()[i][0]; //shift front to mid
 
-	//add ground and its children to render queue
-	//mModel.push_back(groundBase);
+			groundPlates[i][0] = new CubeModel(vec3(0.6f));
+			//positioning of front row established
+			groundPlates[i][0]->SetScaling(getGroundModel()[i][1]->GetScaling()); //scaling is identical in all rows to keep textures from distorting
+
+			groundPlates[i][0]->SetPosition( //position is determined by the position of the previous row
+				vec3(
+				groundPlates[i][1]->GetPosition().x, //x position is unmodified, will be changed in final build to prevent player flying sideways into void
+				groundPlates[i][1]->GetPosition().y, //y is unchanged to keep plane level
+				groundPlates[i][1]->GetPosition().z + getGroundModel()[i][1]->GetScaling().z //z is pushed forward so it doesn't clip the middle row
+				)
+				);
+			generateObstacles(groundPlates[i][0]);
+
+			mModel.push_back(groundPlates[i][0]);
+		}
+	}
+
+	setGround(newground);
+	setGroundModel(groundPlates);
 
 }
+
+void World::generateObstacles(Model* groundPlate) {
+
+	vec3 position = groundPlate->GetPosition();
+
+	Model* groundContainer = getGround();
+
+	for (int i = 0; i< 25; i++){
+
+		vec3 randSize = vec3(
+			rand() % 10 + 3,
+			rand() % 10 + 3,
+			rand() % 10 + 3
+			);
+		vec3 randPos = vec3(
+			(rand() % (int)(position.x + 1)) - 0.5f*position.x,
+			randSize.y / 2,
+			(rand() % (int)(position.z + 1)) - 0.5f*position.z
+			);
+
+		Model* shape = new CubeModel(vec3(0.8f));
+		int x = 1.0f;
+		shape->SetPosition(randPos);
+		shape->SetScaling(randSize);
+		shape->CreateDefaultCollisionCube();
+
+		getGround()->AddChild("dog", shape);
+
+	}
+}
+
 
 void World::checkPositionOfPlayer(Model* character) {
 	vec3 pPos = character->GetPosition();
 	std::vector<std::vector<Model*>> groundPlates = getGroundModel();
 	
-	if (pPos.z > groundPlates[1][1]->GetPosition().z - 50) {
+	if (pPos.z > groundPlates[1][1]->GetPosition().z - 150) {
 		generateWorldSection(character);
 	}
 
 }
 
 void World::setGroundModel(std::vector<std::vector<Model*>> model) {
-	//this is ugly but it works
-	//front
 	groundModel = model;
-	
-
 }
 
 std::vector<std::vector<Model*>> World::getGroundModel() {
 	return groundModel;
+}
+
+void World::setGround(Model* model) {
+	ground = model;
+}
+
+Model* World::getGround() {
+	return ground;
 }
