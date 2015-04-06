@@ -5,12 +5,12 @@ in vec2 UV;
 
 
 //Output to screen
-out vec3 color; 
+out vec3 tcolor; 
 
 uniform sampler2D mySamplerTexture; 
 
 
 void main()
 {
-	color = texture2D(mySamplerTexture, UV).rgb;  
+	tcolor = texture2D(mySamplerTexture, UV).rgb;  
 }

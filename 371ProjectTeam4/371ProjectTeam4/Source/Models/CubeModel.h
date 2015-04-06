@@ -24,7 +24,7 @@ public:
 	void DestroyMesh();
 	//colors
 	//void SetSideColor(char side, glm::vec3 col);
-	//void SetColor(vec3 col);
+	void SetColor(glm::vec3 col);
 	
 protected:
 	virtual bool ParseLine(const std::vector<ci_string> &token);

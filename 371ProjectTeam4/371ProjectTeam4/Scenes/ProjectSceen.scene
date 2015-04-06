@@ -50,10 +50,11 @@ controlpoint = 4.0 -1.0 10.0
 controlpoint = 4.0 0.0 2.5
 
 [Terrain]
-name     = "Terrain"
-scaling  = 1.0 200.0 200.0
-position = 0.0 -0.5 0.0
+name     = "Ground"
+scaling  = 0.1 200.0 200.0
+position = 0.0 0.5 0.0
 rotation = 0.0 0.0 1.0 90.0
+
 
 [Cube]
 name     = "Cube"
@@ -62,6 +63,7 @@ position = 0.0 1.0 0.0
 rotation = 0.0 0.0 1.0 180
 boundpath = "Path2"
 pathspeed = 3.0
+
 
 [Sphere]
 name     = "Sphere1"

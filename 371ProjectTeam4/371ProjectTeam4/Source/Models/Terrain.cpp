@@ -1,11 +1,4 @@
-//
-// COMP 371 Project Team 4
-//
-// Created by Nicolas Bergeron on 8/7/14.
-// Updated by Gary Chang on 14/1/15
-// Updated By Rita Phommarath 
-// 
-//
+
 
 // Include GLEW - OpenGL Extension Wrangler
 #include <GL/glew.h>
@@ -55,7 +48,7 @@ Terrain::Terrain(vec3 size) : CubeModel()
 		{ vec3(-halfSize.x, halfSize.y, halfSize.z), vec3(0.0f, 0.0f, 1.0f), vec3(0.0f, 1.0f, 0.0f) },
 		{ vec3(halfSize.x, -halfSize.y, halfSize.z), vec3(0.0f, 0.0f, 1.0f), vec3(0.0f, 1.0f, 0.0f) },
 
-		{ vec3(halfSize.x, halfSize.y, halfSize.z), vec3(1.0f, 0.0f, 0.0f), vec3(0.8f, 0.8f, 1.0f) }, // right - bluegray tint
+		{ vec3(halfSize.x, halfSize.y, halfSize.z), vec3(1.0f, 0.0f, 0.0f), vec3(0.8f, 0.8f, 1.0f) }, // right blue tint
 		{ vec3(halfSize.x, -halfSize.y, -halfSize.z), vec3(1.0f, 0.0f, 0.0f), vec3(0.8f, 0.8f, 1.0f) },
 		{ vec3(halfSize.x, halfSize.y, -halfSize.z), vec3(1.0f, 0.0f, 0.0f), vec3(0.8f, 0.8f, 1.0f) },
 
@@ -166,12 +159,11 @@ void Terrain::Draw()
 	// The Model View Projection transforms are computed in the Vertex Shader
 	glBindVertexArray(mVertexArrayID);
 	
-	// Load the texture using any two methods
-	//Texture = loadBMP_custom("../Source/Textures/tiles1.bmp");
+	// Load the texture 
 	GLuint Texture = loadBMP_custom("../Source/Textures/tiles1.bmp");
 
 	// Get a handle for our "myTextureSampler" uniform
-	TextureID = glGetUniformLocation(Renderer::GetShaderProgramID(), "mySamplerTexture");
+	GLuint TextureID = glGetUniformLocation(Renderer::GetShaderProgramID(), "mySamplerTexture");
 	
 	GLuint WorldMatrixLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "WorldTransform");
 	glUniformMatrix4fv(WorldMatrixLocation, 1, GL_FALSE, &GetWorldMatrix()[0][0]);
@@ -179,17 +171,13 @@ void Terrain::Draw()
 	
 	//enable texture
 	glEnable(GL_TEXTURE_2D);
-	// Bind our texture in Texture Unit 0
-	glActiveTexture(GL_TEXTURE0);
-
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	// Bind our texture in Texture Unit 1?
+	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, Texture);
 
 
-	// Set our "myTextureSampler" sampler to user Texture Unit 0
-	glUniform1i(TextureID, 0);
+	// Set our "myTextureSampler" sampler to user Texture Unit 1?
+	glUniform1i(TextureID, 1);
 	
 
 	// 1st attribute buffer : vertex Positions

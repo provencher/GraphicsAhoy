@@ -20,10 +20,9 @@
 #include "Models/GroupModel.h"
 #include "Models/PlaneModel.h"
 #include "Models/CubeModel.h"
-#include "Models/Craters.h"
-#include "Models/Terrain.h"
 #include "Models/SphereModel.h"
 #include "Models/Billboard.h"
+#include "Models/Terrain.h"
 #include "Models/RazorbackModel.h";
 #include "Path.h"
 #include "BSpline.h"
@@ -53,16 +52,16 @@ World::World()
 
 	// setup lights
 	Light spotlight;
-	spotlight.position = glm::vec4(0, 5, 0, 1);
-	spotlight.intensities = glm::vec3(0, 2, 2); //strong white light
+	spotlight.position = glm::vec4(0, 10, 0, 1);
+	spotlight.intensities = glm::vec3(0, 1, 2); //strong white light
 	spotlight.attenuation = 0.1f;
-	spotlight.ambientCoefficient = 0.5f; //no ambient light
-	spotlight.coneAngle = 5.0f;
+	spotlight.ambientCoefficient = 0.0f; //no ambient light
+	spotlight.coneAngle = 15.0f;
 	spotlight.coneDirection = glm::vec3(0, -1, 0);
 
 	Light directionalLight;
 	directionalLight.position = glm::vec4(5, 20, 0.6, 0); //w == 0 indications a directional light
-	directionalLight.intensities = glm::vec3(1, 1, 1); 
+	directionalLight.intensities = glm::vec3(0.3, 0.35, 0.2); 
 	directionalLight.ambientCoefficient = 0.2f;
 
 	Light light3;
@@ -73,6 +72,26 @@ World::World()
 	gLights->push_back(spotlight);
 	gLights->push_back(directionalLight);
 	gLights->push_back(light3);
+
+
+	glfwGetWindowSize(EventManager::GetWindow(), &width, &height);
+
+
+	const float arr[16] = {
+		0.5, 0.0, 0.0, 0.0,
+		0.0, 0.5, 0.0, 0.0,
+		0.0, 0.0, 0.5, 0.0,
+		0.5, 0.5, 0.5, 1.0 };
+
+	biasMatrix = glm::make_mat4(arr);
+
+	// Compute the MVP matrix from the light's point of view
+	depthProjectionMatrix = glm::ortho<float>(-100, 100, -100, 100, -50, 50);
+	projMat = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 150.0f);
+
+
+
+
 }
 World::~World()
 {
@@ -118,6 +137,10 @@ string LightNameBuilder(string name, int index){
 //=================================================
 void World::LoadScene(const char * scene_path){
 	
+	
+
+	
+	
 	//Load Objects from File =====================
 	// Using case-insensitive strings and streams for easier parsing
 	ci_ifstream input;
@@ -136,34 +159,40 @@ void World::LoadScene(const char * scene_path){
 
 		ci_string result;
 		if( std::getline( iss, result, ']') ){
-			if (result == "cube"){
+			if( result == "cube" ){
 				// Load Box --------------
 				CubeModel* cube = new CubeModel();
 				cube->Load(iss);
 				mModel.push_back(cube);
-			}else if (result == "terrain"){ 
-				// Load Sphere -----------
-				Terrain* terrain = new Terrain();
-				terrain->Load(iss);
-				mModel.push_back(terrain);
-			} else if( result == "sphere" ){
+			} 
+			else if( result == "sphere" ){
 				// Load Sphere -----------
                 SphereModel* sphere = new SphereModel();
                 sphere->Load(iss);
                 mModel.push_back(sphere);
-            } else if( result == "path" ){
+			}
+			else if (result == "terrain"){
+				// Load terrain -----------
+				Terrain* terrain = new Terrain();
+				terrain->Load(iss);
+				mModel.push_back(terrain);
+			}
+			else if( result == "path" ){
 				// Load Path --------------
 				Path* path = new Path();
 				path->Load(iss);
                 mPath.push_back(path);
-			} else if( result == "spline" ){
+			} 
+			else if( result == "spline" ){
 				// Load Spline -------------
 				BSpline* path = new BSpline();
 				path->Load(iss);
                 mSpline.push_back(path);
-			} else if ( result.empty() == false && result[0] == '#'){
+			} 
+			else if ( result.empty() == false && result[0] == '#'){
 				// this is a comment line
-			} else {
+			} 
+			else {
 				fprintf(stderr, "Error loading scene file... !");
 				getchar();
 				exit(-1);
@@ -186,36 +215,32 @@ void World::LoadScene(const char * scene_path){
 	}
 
 
+
+
+
 	//####################################################################################
+	
+	// Create World
+
 	////////////////////////////////////////////////////
 	Model* m = new RazorbackModel();
-	m->SetPosition(vec3(-5,5,-5));
+	m->SetPosition(vec3(0.0f, 1, -80.0f));
 	mModel.push_back(m);
 
 
 	GroupModel* world = new GroupModel();
 
 	if(1){ //Ground ===============================
-		
 		GroupModel* ground = new GroupModel();
 		vec3 plateSize = vec3(vec3(200,1,200));
 
 
-		/*
 		Model* groundPlate = new CubeModel(vec3(0.6f));
 		groundPlate->SetScaling(plateSize);
 		groundPlate->SetPosition(vec3(0,-0.5f,0));
-		m->SetRotation(vec3(0,0,1), 90.0f);
+		//m->SetRotation(vec3(0,0,1), 90.0f);
 		ground->AddChild(groundPlate);
-		*/
-	
-		//To-do: create a pile of craters?------------------------------
-		//Testing a crater
-		/*Model* craters = new Craters();
-		craters->SetScaling(vec3(1.0, 1.0, 1.0));
-		craters->SetPosition(vec3(10, 0.5, 10));
-		ground->AddChild(craters);
-*/
+		
 
 		//Billboard
 		//============================================
@@ -238,7 +263,11 @@ void World::LoadScene(const char * scene_path){
 			int x = 1.0f;
 			shape->SetPosition(randPos);
 			shape->SetScaling(randSize);
+			shape->CreateDefaultCollisionCube();
 			ground->AddChild(shape);
+
+			ground->AddChild("dog",shape);
+			
 		}
 
 		world->AddChild("Ground", ground);
@@ -247,6 +276,8 @@ void World::LoadScene(const char * scene_path){
 	//(rand() % 10 + 50)/10;
 
 	mModel.push_back(world);
+
+
 
 
 	if(0){
@@ -286,6 +317,8 @@ void World::LoadScene(const char * scene_path){
 	character->SetScaling(vec3(scale, scale, scale));
 	character->SetPosition(vec3(0.0f, 1, -90.0f));
 	character->SetRotation(vec3(0, 1, 0),  90);
+	character->CreateDefaultCollisionCube();
+	character->ReScaleCollisionCube(vec3(4));
 	character->SetSpeed(25.0f);	//Should move to camera
     mModel.push_back(character);
 
@@ -350,7 +383,11 @@ void World::LoadCameras()
 	// Create Character -----------------------------------
 	////////////////////////////////////////////////////////
 
-
+	//Setup Alt Camera
+	glm::vec3 pos = mCamera[1]->GetPosition();
+	glm::vec3 look = mCamera[0]->GetLookAt();
+	glm::vec3 up = mCamera[1]->GetUp();
+	altCamera = new StaticCamera(pos, look, up);
 
 
     // BSpline Camera --------------------------------------
@@ -408,24 +445,58 @@ void World::Update(float dt)
 	}
 }
 
-void World::Draw()
-{
+void World::Draw(){
 	Renderer::BeginFrame();
-	
-	// Set shader to use
+
+	//RenderShadows();
+	RenderScene();
+	DrawPath();
+
+	Renderer::EndFrame();
+}
+
+void World::RenderScene(){
+	// Set Shader for path lines
+	unsigned int prevShader = Renderer::GetCurrentShader();
+	Renderer::SetShader(SHADER_SOLID_COLOR);
 	glUseProgram(Renderer::GetShaderProgramID());
+
+
 
 	//Material Attributes uniform
 	GLuint MaterialID = glGetUniformLocation(Renderer::GetShaderProgramID(), "materialCoefficients");
 
 	//WorldCamPosition
 	GLuint CamPos = glGetUniformLocation(Renderer::GetShaderProgramID(), "worldCamPos");
+	//Pull CurrentLookAt vector from camera;	
+	camPos = mCamera[mCurrentCamera]->GetPosition();
 	glUniform3fv(CamPos, 1, &camPos[0]);
+
+
+	// This looks for the MVP Uniform variable in the Vertex Program
+	GLuint VPMatrixLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "ViewProjectionTransform");
+	mat4 VP = projMat*GetCamera()->GetViewMatrix();
+	glUniformMatrix4fv(VPMatrixLocation, 1, GL_FALSE, &VP[0][0]);
+
+	//WorldCamView
+	GLuint CamView = glGetUniformLocation(Renderer::GetShaderProgramID(), "CameraView");
+	mat4 camView = GetCamera()->GetViewMatrix();
+	glUniformMatrix4fv(CamView, 1, GL_FALSE, &camView[0][0]);
+
+	
+
+	//Light Projection
+	GLuint LightProj = glGetUniformLocation(Renderer::GetShaderProgramID(), "LightVP");
+	mat4 lightProject = biasMatrix * depthProjectionMatrix * altCamera->GetViewMatrix();
+	glUniformMatrix4fv(LightProj, 1, GL_FALSE, &lightProject[0][0]);
+
 
 	//Lights
 	GLuint NumLights = glGetUniformLocation(Renderer::GetShaderProgramID(), "numLights");
 	int numberOfLights = (int)gLights->size();
 	glUniform1i(NumLights, numberOfLights);
+
+
 
 	vector<GLuint> gluints;
 	string uniformName;
@@ -469,16 +540,10 @@ void World::Draw()
 		glUniform3fv(gluints[5], 1, &temp[0]);
 
 	}
-	
-	//Look for WorldTransform in the Vertex Shader
-	GLuint WorldMatrixLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "WorldTransform");	
-	mat4 WorldMatrix = mModel[0]->GetWorldMatrix();
-	//glUniformMatrix4fv(WorldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
 
-	// This looks for the MVP Uniform variable in the Vertex Program
-	GLuint VPMatrixLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "ViewProjectionTransform");	
-	mat4 VP = mCamera[mCurrentCamera]->GetViewProjectionMatrix();
-	glUniformMatrix4fv(VPMatrixLocation, 1, GL_FALSE, &VP[0][0]);
+
+
+
 
 	// Draw models
 	vec4 matC;
@@ -490,33 +555,115 @@ void World::Draw()
 		(*it)->Draw();
 	}
 
+	// Restore previous shader
+	Renderer::SetShader((ShaderType)prevShader);
+
+
+}
+
+void World::RenderShadows()
+{
+
+	//for (size_t i = 0; i < gLights->size(); ++i){
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 1);
+	// Clear the screen
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+
+	altCamera->SetPosition((glm::vec3)(*gLights)[0].position);
+	//Dynamic light movement
+	//altCamera->SetLookAt(GetCamera()->GetLookAt());
+	//altCamera->SetUp(GetCamera()->GetUp());
+
+	//static light
+	//altCamera->SetLookAt(mCamera[1]->GetLookAt());
+	//altCamera->SetUp(mCamera[1]->GetUp());
+
+	//GetCamera()->SetPosition(altCamera->GetPosition());
+
+	glCullFace(GL_FRONT);
+	DrawShadow();
+	glCullFace(GL_BACK);
+
+	//}
+
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+	glViewport(0, 0, width, height);
+	// Clear the screen
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	//Renderer::SetShader(SHADER_SOLID_COLOR);
+	//glUseProgram(Renderer::GetShaderProgramID());
+	//std::cout << "ShaderID: " << (int)Renderer::GetShaderProgramID() << endl;
+	GLuint shadowMapHandle = glGetUniformLocation(Renderer::GetShaderProgramID(), "R_shadowMap");
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, 1);
+	glUniform1i(shadowMapHandle, 0);
+}
+
+void World::DrawShadow(){
+	//Set Shaders to shadows
+	unsigned int prevShader = Renderer::GetCurrentShader();
+	Renderer::SetShader(SHADER_SHADOW);
+	glUseProgram(Renderer::GetShaderProgramID());
+
+
+
+
+	// This looks for the MVP Uniform variable in the Vertex Program
+	GLuint ViewLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "LightVM");
+	mat4 lightView = altCamera->GetViewMatrix();
+	glUniformMatrix4fv(ViewLocation, 1, GL_FALSE, &lightView[0][0]);
+
+	//ProjMat
+	GLuint Projection = glGetUniformLocation(Renderer::GetShaderProgramID(), "Projection");
+	glUniformMatrix4fv(Projection, 1, GL_FALSE, &depthProjectionMatrix[0][0]);
+
+
+
+	//Draw All models
+	for (vector<Model*>::iterator it = mModel.begin(); it < mModel.end(); ++it){
+		(*it)->Draw();
+	}
+
+	// Restore previous shader
+	Renderer::SetShader((ShaderType)prevShader);
+
+}
+
+void World::DrawPath()
+{
 	// Draw Path Lines
-	
+
 	// Set Shader for path lines
 	unsigned int prevShader = Renderer::GetCurrentShader();
 	Renderer::SetShader(SHADER_PATH_LINES);
 	glUseProgram(Renderer::GetShaderProgramID());
 
 	// Send the view projection constants to the shader
-	VPMatrixLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "ViewProjectionTransform");
-	glUniformMatrix4fv(VPMatrixLocation, 1, GL_FALSE, &VP[0][0]);
+	GLuint VPMatrixLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "ViewProjectionTransform");
+	mat4 ViewPorj = projMat * GetCamera()->GetViewMatrix();
+	glUniformMatrix4fv(VPMatrixLocation, 1, GL_FALSE, &ViewPorj[0][0]);
 
 	for (vector<Path*>::iterator it = mPath.begin(); it < mPath.end(); ++it){
 		// Draw model
 		(*it)->Draw();
 	}
 
-    // Draw B-Spline Lines (using the same shader for Path Lines)
-    for (vector<BSpline*>::iterator it = mSpline.begin(); it < mSpline.end(); ++it){
+	// Draw B-Spline Lines (using the same shader for Path Lines)
+	for (vector<BSpline*>::iterator it = mSpline.begin(); it < mSpline.end(); ++it){
 		// Draw model
 		(*it)->Draw();
 	}
 
 	// Restore previous shader
-	Renderer::SetShader((ShaderType) prevShader);
+	Renderer::SetShader((ShaderType)prevShader);
 
-	Renderer::EndFrame();
 }
+
 
 //=================================================
 Path* World::FindPath(ci_string pathName)
@@ -576,17 +723,28 @@ int World::AddLight(vec4 pos, vec3 color){
 }
 
 void World::UpdateLight(int index, glm::vec4 pos, glm::vec3 color){
-	
-	
 	(*gLights)[index].position = pos;
 	(*gLights)[index].intensities = color;
-
 	(*gLights)[index].attenuation = 0.1f;
 	(*gLights)[index].ambientCoefficient = 0.0f; //no ambient light
-	(*gLights)[index].coneAngle = 1.0f;
-	//(*gLights)[index].coneDirection = glm::vec3(0, -1, 0);
 }
 
+
+void World::UpdateLight(int index, glm::vec4 pos, glm::vec3 color, float attenuation, float ambientCoefficient){
+	(*gLights)[index].position = pos;
+	(*gLights)[index].intensities = color;
+	(*gLights)[index].attenuation = attenuation;
+	(*gLights)[index].ambientCoefficient = ambientCoefficient;
+}
+
+void World::UpdateLight(int index, glm::vec4 pos, glm::vec3 color, float attenuation, float ambientCoefficient, float coneAngle, glm::vec3 coneDirection){
+	(*gLights)[index].position = pos;
+	(*gLights)[index].intensities = color;
+	(*gLights)[index].attenuation = attenuation;
+	(*gLights)[index].ambientCoefficient = ambientCoefficient; 
+	(*gLights)[index].coneAngle = coneAngle;
+	(*gLights)[index].coneDirection = coneDirection;
+}
 
 void World::RemoveLight(int index){
 	gLights->erase(gLights->begin()+index); // NOTE gLights should be map, issue will arise when deleting corrupting indexes that follow

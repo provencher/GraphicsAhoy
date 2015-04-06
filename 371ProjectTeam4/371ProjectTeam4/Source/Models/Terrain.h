@@ -3,7 +3,7 @@
 //
 // Created by Nicolas Bergeron on 8/7/14.
 // Updated by Gary Chang on 14/1/15
-//
+// Updated by Rita Phommarath on 2015/04/03
 // Copyright (c) 2014-2015 Concordia University. All rights reserved.
 //
 
@@ -20,13 +20,6 @@ public:
 	virtual void Update(float dt);
 	virtual void Draw();
 
-	//meshes
-	//void LoadMesh(glm::vec3 size, glm::vec3 color);
-	//void DestroyMesh();
-
-	//colors
-	//void SetSideColor(char side, glm::vec3 col);
-	//void SetColor(vec3 col);
 
 protected:
 	virtual bool ParseLine(const std::vector<ci_string> &token);
@@ -42,11 +35,7 @@ private:
 
 	unsigned int mVertexArrayID;
 	unsigned int mVertexBufferID;
-
 	unsigned int uvbuffer;
 
-	// Load a .BMP filepath using our custom loader
-	//GLuint loadBMP_custom(ci_string file_path);
-	GLuint TextureID;
-	GLuint Texture;
+	
 };

@@ -53,8 +53,7 @@ void Renderer::Initialize()
 
 	// Black background
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-	//glClearColor(0.3f, 0.3f, 0.3f, 0.0f);
-
+	
 	// Enable depth test
     glEnable(GL_DEPTH_TEST);
     
@@ -84,11 +83,11 @@ void Renderer::Initialize()
                             shaderPathPrefix + "BlueColor.fragmentshader")
                                );
 	sShaderProgramID.push_back(
-				LoadShaders(shaderPathPrefix + "Texture.vertexshader",
-							shaderPathPrefix + "Texture.fragmentshader")
-							   );
+		LoadShaders(shaderPathPrefix + "shadow.vertexshader",
+		shaderPathPrefix + "shadow.fragmentshader")
+		);
 	sCurrentShader = 0;
-
+	BindFrame();
 }
 
 void Renderer::Shutdown()
@@ -108,7 +107,15 @@ void Renderer::Shutdown()
 void Renderer::BeginFrame()
 {
 	// Clear the screen
+	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	int width;
+	int height;
+	glfwGetWindowSize(spWindow, &width, &height);
+	glViewport(0, 0, width, height);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 }
 
@@ -116,6 +123,44 @@ void Renderer::EndFrame()
 {
 	// Swap buffers
 	glfwSwapBuffers(spWindow);
+}
+
+
+void Renderer::BindFrame(){
+
+
+	// The framebuffer, which regroups 0, 1, or more textures, and 0 or 1 depth buffer.
+	GLuint FramebufferName = 0;
+	glGenFramebuffers(1, &FramebufferName);
+	//std::cout << "FramebufferName: " << (int)FramebufferName << endl;
+
+	//std::cout << (int)FramebufferName;
+	glBindFramebuffer(GL_FRAMEBUFFER, FramebufferName);
+
+	// Depth texture. Slower than a depth buffer, but you can sample it later in your shader
+	GLuint depthTexture;
+	glGenTextures(1, &depthTexture);
+	//std::cout << "DepthTex: " << (int)depthTexture << endl;
+
+	int width;
+	int height;
+	glfwGetWindowSize(EventManager::GetWindow(), &width, &height);
+
+	glBindTexture(GL_TEXTURE_2D, depthTexture);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT16, width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, 0);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_R_TO_TEXTURE);
+
+	glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, depthTexture, 0);
+
+	// No color output in the bound framebuffer, only depth.
+	glDrawBuffer(GL_NONE);
+
+
 }
 
 void Renderer::SetShader(ShaderType type)

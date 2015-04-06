@@ -62,6 +62,12 @@
     <None Include="..\Scenes\ProjectSceen.scene">
       <Filter>Resource Files\Scenes</Filter>
     </None>
+    <None Include="..\Source\Shaders\shadow.vertexshader">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="..\Source\Shaders\shadow.fragmentshader">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
     <None Include="..\Source\Shaders\Texture.fragmentshader">
       <Filter>Resource Files\Shaders</Filter>
     </None>
@@ -142,13 +148,10 @@
     <ClCompile Include="..\Source\Models\LightModel.cpp">
       <Filter>Source Files\Model</Filter>
     </ClCompile>
-    <ClCompile Include="..\Source\Models\Terrain.cpp">
-      <Filter>Source Files\Model</Filter>
-    </ClCompile>
     <ClCompile Include="..\Source\TextureLoader.cpp">
-      <Filter>Source Files\Tools</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Source\Models\Craters.cpp">
+    <ClCompile Include="..\Source\Models\Terrain.cpp">
       <Filter>Source Files\Model</Filter>
     </ClCompile>
   </ItemGroup>
@@ -228,17 +231,11 @@
     <ClInclude Include="..\Source\Models\LightModel.h">
       <Filter>Source Files\Model</Filter>
     </ClInclude>
+    <ClInclude Include="..\Source\TextureLoader.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
     <ClInclude Include="..\Source\Models\Terrain.h">
       <Filter>Source Files\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Source\TextureLoader.h">
-      <Filter>Source Files\Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Source\Models\Craters.h">
-      <Filter>Source Files\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Source\Skybox.h">
-      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

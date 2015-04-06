@@ -25,12 +25,21 @@ public:
 
 	virtual glm::vec3 getCamPos(){ return mPosition; }	
 
+	//getters
+	virtual glm::vec3 GetPosition(){ return mPosition; }
+	virtual glm::vec3 GetLookAt(){ return mLookAt; }
+	virtual glm::vec3 GetUp(){ return mUp; }
+	//setters
+	virtual void SetPosition(glm::vec3 p){ mPosition = p; }
+	virtual void SetLookAt(glm::vec3 at){ mLookAt = at; }
+	virtual void SetUp(glm::vec3 up){ mUp = up; }
+
 protected:
 	virtual void UpdateTargeModel(float dt);
 	virtual void updateCameraLookAt();
 
 private:
-
+	void collideChildren(Model* collider, std::map <ci_string, Model*>* children);
     Model* mTargetModel;
     // Cartesian Coordinates
     float mHorizontalAngle;

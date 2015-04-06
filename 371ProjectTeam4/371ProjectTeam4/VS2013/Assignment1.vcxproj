@@ -104,6 +104,8 @@
     <None Include="..\Source\Shaders\BlueColor.fragmentshader" />
     <None Include="..\Source\Shaders\PathLines.fragmentshader" />
     <None Include="..\Source\Shaders\PathLines.vertexshader" />
+    <None Include="..\Source\Shaders\shadow.fragmentshader" />
+    <None Include="..\Source\Shaders\shadow.vertexshader" />
     <None Include="..\Source\Shaders\SolidColor.vertexshader" />
     <None Include="..\Source\Shaders\SolidColor.fragmentshader" />
     <None Include="..\Source\Shaders\Texture.fragmentshader" />
@@ -117,7 +119,6 @@
     <ClCompile Include="..\Source\Mesh.cpp" />
     <ClCompile Include="..\Source\meshLoader.cpp" />
     <ClCompile Include="..\Source\Models\BillBoard.cpp" />
-    <ClCompile Include="..\Source\Models\Craters.cpp" />
     <ClCompile Include="..\Source\Models\CubeModel.cpp" />
     <ClCompile Include="..\Source\Models\GroupModel.cpp" />
     <ClCompile Include="..\Source\Models\LightModel.cpp" />
@@ -147,7 +148,6 @@
     <ClInclude Include="..\Source\Mesh.h" />
     <ClInclude Include="..\Source\meshLoader.h" />
     <ClInclude Include="..\Source\Models\BillBoard.h" />
-    <ClInclude Include="..\Source\Models\Craters.h" />
     <ClInclude Include="..\Source\Models\CubeModel.h" />
     <ClInclude Include="..\Source\Models\GroupModel.h" />
     <ClInclude Include="..\Source\Models\LightModel.h" />
@@ -161,7 +161,6 @@
     <ClInclude Include="..\Source\Models\TorrentModel.h" />
     <ClInclude Include="..\Source\ParsingHelper.h" />
     <ClInclude Include="..\Source\Path.h" />
-    <ClInclude Include="..\Source\Skybox.h" />
     <ClInclude Include="..\Source\StaticCamera.h" />
     <ClInclude Include="..\Source\EventManager.h" />
     <ClInclude Include="..\Source\Renderer.h" />

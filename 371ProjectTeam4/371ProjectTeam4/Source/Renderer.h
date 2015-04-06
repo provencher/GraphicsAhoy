@@ -23,7 +23,7 @@ enum ShaderType
 	SHADER_SOLID_COLOR,
 	SHADER_PATH_LINES,
 	SHADER_BLUE,
-	SHADER_TEXTURE,
+	SHADER_SHADOW,
 	NUM_SHADERS
 };
 
@@ -36,6 +36,7 @@ public:
 
 	static void BeginFrame();
 	static void EndFrame();
+	static void BindFrame();
 
 	static GLuint LoadShaders(std::string vertex_shader_path, std::string fragment_shader_path);
 	static bool   LoadOBJ(const char * path, std::vector<glm::vec3> & out_vertices, std::vector<glm::vec2> & out_uvs, std::vector<glm::vec3> & out_normals );
