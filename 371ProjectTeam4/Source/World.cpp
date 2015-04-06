@@ -53,7 +53,7 @@ World::World()
 	// setup lights
 	Light spotlight;
 	spotlight.position = glm::vec4(0, 5, 0, 1);
-	spotlight.intensities = glm::vec3(0, 1, 2); //strong white light
+	spotlight.intensities = glm::vec3(2, 1, 2); //strong white light
 	spotlight.attenuation = 0.1f;
 	spotlight.ambientCoefficient = 0.0f; //no ambient light
 	spotlight.coneAngle = 5.0f;
@@ -61,17 +61,17 @@ World::World()
 
 	Light directionalLight;
 	directionalLight.position = glm::vec4(3.0f, 25.0f, 5.0f, 0.0f); //w == 0 indications a directional light
-	directionalLight.intensities = glm::vec3(0.7, 0.7, 0.7); 
+	directionalLight.intensities = glm::vec3(0.5, 0.5, 0.5); 
 	directionalLight.ambientCoefficient = 0.2f;
 
 	Light light3;
 	light3.position = glm::vec4(-1, 5, -1, 0); //w == 0 indications a directional light
-	light3.intensities = glm::vec3(0.5, 0.5, 0.5); //weak yellowish light
+	light3.intensities = glm::vec3(0.3, 0.5, 0.3); //weak yellowish light
 	light3.ambientCoefficient = 0.06f;
 
-	//gLights->push_back(spotlight);
+	gLights->push_back(spotlight);
 	gLights->push_back(directionalLight);
-	//gLights->push_back(light3);
+	gLights->push_back(light3);
 
 
 
@@ -87,7 +87,8 @@ World::World()
 	biasMatrix = glm::make_mat4(arr);
 
 	// Compute the MVP matrix from the light's point of view
-	depthProjectionMatrix = glm::ortho<float>(-75, 75, -75, 75, -75, 100);
+	depthProjectionMatrix = glm::ortho<float>(-100, 100, -100, 100, -50, 50);
+	projMat = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 150.0f);
 	
 
 }

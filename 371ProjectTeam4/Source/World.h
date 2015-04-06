@@ -68,6 +68,7 @@ public:
 	Camera* GetCamera();
 
 	glm::mat4 depthProjectionMatrix;
+	glm::mat4 projMat;
 	glm::mat4 lightVP;
 	glm::mat4 depthMVP;
 	glm::mat4 biasMatrix;
@@ -80,9 +81,7 @@ private:
     std::vector<BSpline*> mSpline;
 	std::vector<Camera*> mCamera;
 	unsigned int mCurrentCamera;
-	
-
-	glm::mat4 projMat = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 200.0f);
+		
 
 	Camera* altCamera;
 	int width;
