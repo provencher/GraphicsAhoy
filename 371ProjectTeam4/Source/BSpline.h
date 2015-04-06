@@ -10,7 +10,7 @@
 #pragma once
 
 #include "ParsingHelper.h"
-#include "Model.h"
+#include "Models/Model.h"
 #include <vector>
 
 #include <GLM/glm.hpp>
