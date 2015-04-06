@@ -436,8 +436,9 @@ void World::Update(float dt)
 void World::Draw(){
 	Renderer::BeginFrame();
 
-	RenderShadows();
+	//RenderShadows();
 	RenderScene();
+	DrawPath();
 
 	Renderer::EndFrame();
 
@@ -622,7 +623,35 @@ void World::DrawShadow(){
 
 }
 
+void World::DrawPath()
+{
+	// Draw Path Lines
 
+	// Set Shader for path lines
+	unsigned int prevShader = Renderer::GetCurrentShader();
+	Renderer::SetShader(SHADER_PATH_LINES);
+	glUseProgram(Renderer::GetShaderProgramID());
+
+	// Send the view projection constants to the shader
+	GLuint VPMatrixLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "ViewProjectionTransform");
+	mat4 ViewPorj = projMat * GetCamera()->GetViewMatrix();
+	glUniformMatrix4fv(VPMatrixLocation, 1, GL_FALSE, &ViewPorj[0][0]);
+
+	for (vector<Path*>::iterator it = mPath.begin(); it < mPath.end(); ++it){
+		// Draw model
+		(*it)->Draw();
+	}
+
+	// Draw B-Spline Lines (using the same shader for Path Lines)
+	for (vector<BSpline*>::iterator it = mSpline.begin(); it < mSpline.end(); ++it){
+		// Draw model
+		(*it)->Draw();
+	}
+
+	// Restore previous shader
+	Renderer::SetShader((ShaderType)prevShader);
+
+}
 
 
 //=================================================

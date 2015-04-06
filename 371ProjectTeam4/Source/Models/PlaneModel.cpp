@@ -24,14 +24,10 @@ PlaneModel::PlaneModel(vec3 size) : GroupModel(){
 
 	//note if(1){} used to seperate scope to allow rapid development
 
-
-
-
-	//Color of Jet
 	vec3 color =  vec3(1,0,0);
 
-
-
+	//########################################################################################
+	
 	if(1){//body
 		SphereModel* model = new SphereModel(color);
 		model->SetScaling(vec3(0.8f, 0.5f, 2.5f));
@@ -40,6 +36,7 @@ PlaneModel::PlaneModel(vec3 size) : GroupModel(){
 		AddChild("body", model);
 	}
 
+	//########################################################################################
 
 	if(1){//cockpit
 		GroupModel* group = new GroupModel();
@@ -61,14 +58,76 @@ PlaneModel::PlaneModel(vec3 size) : GroupModel(){
 		group->mRotationAngleX = -5.0f;
 	}
 
-
+	//########################################################################################
 	//wing
-	SphereModel* wing = new SphereModel();
-	wing->SetScaling(vec3(4.0f, 0.1f, 0.5f));
-	wing->SetPosition(vec3(0.0f, 0.0f, 0.0f));
+	GroupModel* wing = new GroupModel();
+	SphereModel* wingbase = new SphereModel();
+	wingbase->SetScaling(vec3(4.0f, 0.1f, 0.5f));
+	wingbase->SetPosition(vec3(0.0f, 0.0f, 0.0f));
 	//sphere->SetRotation(vec3(0.0f, 1.0f, 0.0f), 45.0f);
+	wing->AddChild("wing_base", wingbase);
 	AddChild("wing", wing);
-
+	//Flaps ---------------------------------------------------------------------------------
+	float flapWidth = 0.45f;// z width of flap
+	float flapLen = 2.0f;//  3.4 full wing
+	float wingAng = 6; // rotate to fit wing
+	float zOffset = -0.2;//-0.2;
+	float xOffset = 1.78f;//2.3f;
+	vec3 flapColor = vec3(0.3f);
+	//Left Flap -----------------------------------------------------------------------------
+	if(1){
+		GroupModel* wingside = new GroupModel();					//wingside->AddChild(new CubeModel(vec3(0,0,1), vec3(0.2f))); //marker
+			if(1){
+				Model* m = new CubeModel(flapColor);	//flap->AddChild(new CubeModel(vec3(1), vec3(0.2f))); //marker
+				m->SetPosition(vec3(1.60f,0,-0.42f));
+				m->SetScaling(vec3(1.2f,0.05f, flapWidth));
+				wingside->AddChild(m);
+			}
+		
+			GroupModel* flap = new GroupModel();
+				//flaps cube
+				Model* m = new CubeModel(flapColor);	//flap->AddChild(new CubeModel(vec3(1), vec3(0.2f))); //marker
+				m->SetPosition(vec3(0,0,-flapWidth/2));
+				m->SetScaling(vec3(flapLen,0.05f, flapWidth));
+			
+			flap->SetRotation(vec3(1,0,0), 0); // angle of flap
+			flap->SetPosition(vec3(0,0,zOffset));
+			//flap->SetRotationSpeed(60);
+			flap->AddChild("flap", m);
+		
+		wingside->SetRotation(vec3(0,1,0), -wingAng);
+		wingside->SetPosition(vec3(xOffset,0,0));
+		wingside->AddChild("flap",flap);
+		wing->AddChild("left", wingside);
+	}
+	//Right Flap -----------------------------------------------------------------------------
+	if(1){
+		GroupModel* wingside = new GroupModel();					//wingside->AddChild(new CubeModel(vec3(0,0,1), vec3(0.2f))); //marker
+			if(1){
+				Model* m = new CubeModel(flapColor);	//flap->AddChild(new CubeModel(vec3(1), vec3(0.2f))); //marker
+				m->SetPosition(vec3(-1.60f,0,-0.42f));
+				m->SetScaling(vec3(1.2f,0.05f, flapWidth));
+				wingside->AddChild(m);
+			}
+		
+			GroupModel* flap = new GroupModel();
+				//flaps cube
+				Model* m = new CubeModel(flapColor);	//flap->AddChild(new CubeModel(vec3(1), vec3(0.2f))); //marker
+				m->SetPosition(vec3(0,0,-flapWidth/2));
+				m->SetScaling(vec3(flapLen,0.05f, flapWidth));
+			
+			flap->SetRotation(vec3(1,0,0), 0); // angle of flap
+			flap->SetPosition(vec3(0,0,zOffset));
+			//flap->SetRotationSpeed(60);
+			flap->AddChild("flap", m);
+		
+		wingside->SetRotation(vec3(0,1,0), wingAng);
+		wingside->SetPosition(vec3(-xOffset,0,0));
+		wingside->AddChild("flap",flap);
+		wing->AddChild("right", wingside);
+	}
+	
+	//########################################################################################
 
 
 
@@ -129,6 +188,7 @@ PlaneModel::PlaneModel(vec3 size) : GroupModel(){
 	
 
 
+	//########################################################################################
 
 	//*
 	if(1){
@@ -169,6 +229,7 @@ PlaneModel::PlaneModel(vec3 size) : GroupModel(){
 
 
 
+	//########################################################################################
 
 	
 	//--------------------------------------------------
@@ -195,6 +256,7 @@ PlaneModel::PlaneModel(vec3 size) : GroupModel(){
 	}
 	//*/
 
+	//########################################################################################
 
 	//Rudder
 	GroupModel* rudder = new GroupModel();
@@ -228,7 +290,8 @@ PlaneModel::PlaneModel(vec3 size) : GroupModel(){
 	
 
 
-	
+	//########################################################################################
+
 
 
 
@@ -243,6 +306,7 @@ PlaneModel::PlaneModel(vec3 size) : GroupModel(){
 	lightModel->SetAmbientCoefficient(0.0f);
 
 
+	//########################################################################################
 
 	//--------------------------------------------------
 	//* 2 rotating offset spheres

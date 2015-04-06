@@ -32,6 +32,7 @@ public:
 	void Update(float dt);
 	void Draw();
 	void Draw2();
+	void DrawPath(); 
 	void RenderScene();
 
 	void RenderShadows();

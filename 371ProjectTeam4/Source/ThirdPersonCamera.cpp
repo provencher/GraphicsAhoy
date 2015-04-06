@@ -192,6 +192,15 @@ void ThirdPersonCamera::UpdateTargeModel(float dt){
 
 			turn++;
 		}
+		//*
+		//Control Flap movement when turning --------------------------------------------------------
+		Model* leftFlap = mTargetModel->child["wing"]->child["left"]->child["flap"];
+		leftFlap->SetRotation(leftFlap->GetRotationAxis(), -45*mTargetModel->mRotationAngleZ/maxZTilt);
+
+		Model* rightFlap = mTargetModel->child["wing"]->child["right"]->child["flap"];
+		rightFlap->SetRotation(rightFlap->GetRotationAxis(), 45*mTargetModel->mRotationAngleZ/maxZTilt);
+		//---------------------------------------------------------------------------------------------
+		//*/
 	}
 
 	//===========================================================================
