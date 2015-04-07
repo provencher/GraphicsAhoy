@@ -801,6 +801,7 @@ void World::generateWorldSection(Model* character) {
 void World::generateObstacles(Model* groundPlate) {
 
 	vec3 position = groundPlate->GetPosition();
+	vec3 plateSize = groundPlate->GetScaling();
 
 	Model* groundContainer = getGround();
 
@@ -812,18 +813,25 @@ void World::generateObstacles(Model* groundPlate) {
 			rand() % 10 + 3
 			);
 		vec3 randPos = vec3(
-			(rand() % (int)(position.x + 1)) - 0.5f*position.x,
+			(rand() % (int)plateSize.x) - 0.5f*plateSize.x,
 			randSize.y / 2,
-			(rand() % (int)(position.z + 1)) - 0.5f*position.z
+			(rand() % (int)plateSize.z) - 0.5f*plateSize.z
 			);
+
+
 
 		Model* shape = new CubeModel(vec3(0.8f));
 		int x = 1.0f;
-		shape->SetPosition(randPos);
+		shape->SetPosition(vec3(
+			randPos.x + position.x,
+			randPos.y,
+			randPos.z + position.z
+			));
 		shape->SetScaling(randSize);
 		shape->CreateDefaultCollisionCube();
+		ground->AddChild(shape);
 
-		getGround()->AddChild("dog", shape);
+		ground->AddChild("dog", shape);
 
 	}
 }

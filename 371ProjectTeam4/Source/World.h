@@ -109,6 +109,7 @@ private:
 	std::vector<std::vector<Model*>> groundModel;
 	Model* ground;
 
+
 	// Material Coefficients
 	float ka;
 	float kd;
