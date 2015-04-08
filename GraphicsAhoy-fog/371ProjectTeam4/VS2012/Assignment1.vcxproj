@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -20,13 +20,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -121,6 +121,7 @@
     <ClCompile Include="..\Source\Mesh.cpp" />
     <ClCompile Include="..\Source\meshLoader.cpp" />
     <ClCompile Include="..\Source\Models\BillBoard.cpp" />
+    <ClCompile Include="..\Source\Models\Craters.cpp" />
     <ClCompile Include="..\Source\Models\CubeModel.cpp" />
     <ClCompile Include="..\Source\Models\GroupModel.cpp" />
     <ClCompile Include="..\Source\Models\LightModel.cpp" />
@@ -150,6 +151,7 @@
     <ClInclude Include="..\Source\Mesh.h" />
     <ClInclude Include="..\Source\meshLoader.h" />
     <ClInclude Include="..\Source\Models\BillBoard.h" />
+    <ClInclude Include="..\Source\Models\Craters.h" />
     <ClInclude Include="..\Source\Models\CubeModel.h" />
     <ClInclude Include="..\Source\Models\GroupModel.h" />
     <ClInclude Include="..\Source\Models\LightModel.h" />

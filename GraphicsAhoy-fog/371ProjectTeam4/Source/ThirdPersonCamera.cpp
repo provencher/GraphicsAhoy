@@ -143,7 +143,7 @@ void ThirdPersonCamera::UpdateTargeModel(float dt){
 	// Settings -------------------------------------------------------
 	int turn = 0;				//turn direction - for left + for right
 	int verticalTilt = 0;		//- for up + for down
-	float tiltspeed = 10.0f;	
+	float tiltspeed = 5.0f;	
 
 	//vec3 v3MaxAngles = vec3(0,0,0);
 	float maxZTilt = 45;
