@@ -13,7 +13,7 @@ in vec2 UV; // for textures
 uniform vec4 materialCoefficients; // x: ambient   y: diffuse   z: specular   w: specular exponent
 uniform sampler2D mySamplerTexture;// for textures
 uniform vec3 worldCamPos;
-uniform sampler2DShadow R_shadowMap;
+//uniform sampler2DShadow R_shadowMap;
 
 
 #define MAX_LIGHTS 10
@@ -109,20 +109,20 @@ float ApplyShadow(Light light) {
 	//float bias = 0.005;
 
 	// ...variable bias
-	float bias = 0.005*tan(acos(cosTheta));
-	bias = clamp(bias, 0,0.01);
+	//float bias = 0.005*tan(acos(cosTheta));
+	//bias = clamp(bias, 0,0.01);
 
 	// Sample the shadow map 4 times
-	for (int i=0;i<4;i++){
+	//for (int i=0;i<4;i++){
 		// use either :
 		//  - Always the same samples.
 		//    Gives a fixed pattern in the shadow, but no noise
-		int index = i;		
+		//int index = i;		
 		
 		// being fully in the shadow will eat up 4*0.2 = 0.8
 		// 0.2 potentially remain, which is quite dark.
-		visibility -= 0.2*(1.0-texture( R_shadowMap, vec3(shadowMapCoords0.xy + poissonDisk[index]/700.0,  (shadowMapCoords0.z-bias)/shadowMapCoords0.w) ));
-	}	
+		//visibility -= 0.2*(1.0-texture( R_shadowMap, vec3(shadowMapCoords0.xy + poissonDisk[index]/700.0,  (shadowMapCoords0.z-bias)/shadowMapCoords0.w) ));
+	//}	
    
     return visibility;
 }
@@ -142,12 +142,12 @@ void main() {
 		}	
 	}
 
-    float e = ApplyShadow(allLights[0]);
+    //float e = ApplyShadow(allLights[0]);
     
     //final color (after gamma correction)
     vec3 gamma = vec3(1.0/2.2);
 
 	//final color
-	color = v_color.rgb * linearColor * e;
+	color = v_color.rgb * linearColor;
   
 }

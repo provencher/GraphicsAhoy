@@ -6,13 +6,13 @@ out vec3 color;
 in vec4 v_color;
 in vec3 normal; // You will need this when you do per-fragment lighting
 in vec4 worldPosition;
-in vec4 shadowMapCoords0;
+//in vec4 shadowMapCoords0;
 in vec2 UV;
 
 // Light and Material Uniform Variables
 uniform vec4 materialCoefficients; // x: ambient   y: diffuse   z: specular   w: specular exponent
 uniform vec3 worldCamPos;
-uniform sampler2DShadow R_shadowMap;
+//uniform sampler2DShadow R_shadowMap;
 
 //FOG----------------------------------
 in float fogVisibility;
@@ -116,16 +116,16 @@ float ApplyShadow(Light light) {
 	bias = clamp(bias, 0,0.01);
 
 	// Sample the shadow map 4 times
-	for (int i=0;i<4;i++){
+	//for (int i=0;i<4;i++){
 		// use either :
 		//  - Always the same samples.
 		//    Gives a fixed pattern in the shadow, but no noise
-		int index = i;		
+		//int index = i;		
 		
 		// being fully in the shadow will eat up 4*0.2 = 0.8
 		// 0.2 potentially remain, which is quite dark.
-		visibility -= 0.2*(1.0-texture( R_shadowMap, vec3(shadowMapCoords0.xy + poissonDisk[index]/700.0,  (shadowMapCoords0.z-bias)/shadowMapCoords0.w) ));
-	}	
+		//visibility -= 0.2*(1.0-texture( R_shadowMap, vec3(shadowMapCoords0.xy + poissonDisk[index]/700.0,  (shadowMapCoords0.z-bias)/shadowMapCoords0.w) ));
+	//}	
    
     return visibility;
 }

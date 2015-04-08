@@ -17,7 +17,7 @@ uniform mat4 LightVP;
 out vec3 normal;  // You will need this when you do per-fragment lighting
 out vec4 v_color;
 out vec4 worldPosition;
-out vec4 shadowMapCoords0;
+//out vec4 shadowMapCoords0;
 out vec2 UV;
 
 //----FOG------------------------------------
@@ -32,7 +32,7 @@ void main()
 	// Output position of the vertex, in clip space : MVP * position
 	worldPosition = WorldTransform * vec4(vertexPosition_modelspace,1);
 	gl_Position =  ViewProjectionTransform * worldPosition;
-	shadowMapCoords0 = LightVP * WorldTransform * vec4(vertexPosition_modelspace,1);
+	//shadowMapCoords0 = LightVP * WorldTransform * vec4(vertexPosition_modelspace,1);
 
 
 	//olNormal = vertexNormal_modelspace	
