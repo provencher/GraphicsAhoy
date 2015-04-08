@@ -50,7 +50,7 @@ World::World()
 
 	//Create light Vector
 	gLights = new vector<Light>();
-
+	float d = 0.5f;
 	// setup lights
 	Light spotlight;
 	spotlight.position = glm::vec4(0, 10, 0, 1);
@@ -61,12 +61,12 @@ World::World()
 	spotlight.coneDirection = glm::vec3(0, -1, 0);
 
 	Light directionalLight;
-	directionalLight.position = glm::vec4(5, 20, 0.6, 0); //w == 0 indications a directional light
-	directionalLight.intensities = glm::vec3(0.3, 0.35, 0.2); 
+	directionalLight.position = glm::vec4(25, 20, 0.6, 0); //w == 0 indications a directional light
+	directionalLight.intensities = glm::vec3(d, d, d); 
 	directionalLight.ambientCoefficient = 0.2f;
 
 	Light light3;
-	light3.position = glm::vec4(-5, 5, 15, 0); //w == 0 indications a directional light
+	light3.position = glm::vec4(-15, 5, 15, 0); //w == 0 indications a directional light
 	light3.intensities = glm::vec3(0.5, 0.5, 0.5); //weak yellowish light
 	light3.ambientCoefficient = 0.06f;
 
@@ -228,9 +228,8 @@ void World::LoadScene(const char * scene_path){
 
 
 		//Drawing a terrain. To toggle this, enable "RenderTexture()"  
-		//DrawTerrain(*ground);
-		//--------------------------------------------------------------------
-
+		DrawTerrain(*ground);
+		//-----------------------------------------------------------
 
 
 		//Billboard
@@ -409,15 +408,58 @@ void World::Draw(){
 
 	//---------------------------------------------
 	//RenderShadows(); // Toggles the shadow
-	//RenderTerrain(); // Toggles the tiles texture
+	RenderTerrain(); // Toggles the tiles texture
 	//RenderFog(); // Toggles the fog feature 
-	RenderScene(); // Toggles the default scene
+	//RenderScene(); // Toggles the default scene
 	DrawPath();
 
 	Renderer::EndFrame();
 }
 
-//Common rendering for fog, default scene and texture features
+// Render fog to the scenery
+void World::RenderFog(){
+
+	// Set Shader for path lines
+	unsigned int prevShader = Renderer::GetCurrentShader();
+	Renderer::SetShader(SHADER_FOG);
+	glUseProgram(Renderer::GetShaderProgramID());
+
+	RenderCommon();
+
+	// Restore previous shader
+	Renderer::SetShader((ShaderType)prevShader);
+}
+
+// Drawing a terrain
+void World::DrawTerrain(GroupModel &ground){
+	//Create a simple terrain object
+	Terrain* terrain = new Terrain();
+	terrain->SetScaling(vec3(200,0.01,200));
+	terrain->SetPosition(vec3(0, 0, 0));
+	terrain->SetRotation(vec3(0, 0, 1), 360.0f);
+	ground.AddChild(terrain);
+
+	//Creating craters for decor (needs to be adjust)
+	Craters* crater = new Craters();
+	crater->SetScaling(vec3(2, 2, 2));
+	crater->SetPosition(vec3(5, 1.5, 5));
+	crater->SetRotation(vec3(0, 1, 0), 50.0f);
+	ground.AddChild(crater);
+
+	Craters* crater1 = new Craters();
+	crater1->SetScaling(vec3(2, 2, 2));
+	crater1->SetPosition(vec3(5, 3.5, 5));
+	crater->SetRotation(vec3(0, 1, 0), 35.0f);
+	ground.AddChild(crater1);
+
+	Craters* crater2 = new Craters();
+	crater2->SetScaling(vec3(2, 2, 2));
+	crater2->SetPosition(vec3(5, 1.5, 8));
+	crater->SetRotation(vec3(0, 1, 0), 35.0f);
+	ground.AddChild(crater2);
+}
+
+//Common rendering for fog, shadow and texture features
 void World::RenderCommon(){
 	//Material Attributes uniform
 	GLuint MaterialID = glGetUniformLocation(Renderer::GetShaderProgramID(), "materialCoefficients");
@@ -503,49 +545,6 @@ void World::RenderCommon(){
 	}
 }
 
-
-// Render fog to the scenery
-void World::RenderFog(){
-
-	// Set Shader for path lines
-	unsigned int prevShader = Renderer::GetCurrentShader();
-	Renderer::SetShader(SHADER_FOG);
-	glUseProgram(Renderer::GetShaderProgramID());
-
-	RenderCommon();
-
-	// Restore previous shader
-	Renderer::SetShader((ShaderType)prevShader);
-}
-
-// Drawing a terrain
-void World::DrawTerrain(GroupModel &ground){
-	//Create a simple terrain object
-	Terrain* terrain = new Terrain();
-	terrain->SetScaling(vec3(200,0.01,200));
-	terrain->SetPosition(vec3(0, 0.5, 0));
-	terrain->SetRotation(vec3(0, 0, 1), 360.0f);
-	ground.AddChild(terrain);
-
-	//Creating craters for decor (testing for fun)-----------
-	Craters* crater = new Craters();
-	crater->SetScaling(vec3(2, 2, 2));
-	crater->SetPosition(vec3(5, 1.5, 5));
-	crater->SetRotation(vec3(0, 1, 0), 50.0f);
-	ground.AddChild(crater);
-
-	Craters* crater1 = new Craters();
-	crater1->SetScaling(vec3(2, 2, 2));
-	crater1->SetPosition(vec3(5, 3.5, 5));
-	crater->SetRotation(vec3(0, 1, 0), 35.0f);
-	ground.AddChild(crater1);
-
-	Craters* crater2 = new Craters();
-	crater2->SetScaling(vec3(2, 2, 2));
-	crater2->SetPosition(vec3(5, 1.5, 8));
-	crater->SetRotation(vec3(0, 1, 0), 35.0f);
-	ground.AddChild(crater2);
-}
 
 // Render the terrain to the scenery
 void World::RenderTerrain(){

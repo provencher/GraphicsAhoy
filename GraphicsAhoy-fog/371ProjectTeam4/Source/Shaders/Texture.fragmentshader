@@ -101,7 +101,6 @@ float ApplyShadow(Light light) {
     //directional light
     vec3 surfaceToLight = normalize(light.position.xyz - worldPosition.xyz);
       
-
 	float cosTheta = clamp( dot( normal, surfaceToLight ), 0,1 );
 
 	float visibility=1.0;

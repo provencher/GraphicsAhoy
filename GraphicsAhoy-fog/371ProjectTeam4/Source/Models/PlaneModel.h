@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "LightModel.h"
 #include "GroupModel.h"
 
 class PlaneModel : public GroupModel
@@ -23,15 +24,25 @@ public:
 protected:
 	virtual bool ParseLine(const std::vector<ci_string> &token);
 
+	
+	void MakeBody();
+	void MakePropeller();
+	void MakeWings();
+	void MakeRudder();
+	void MakeGuns();
+	void MakeThrusters();
+	void MakeThrust();
+
 private:
 	// The vertex format could be different for different types of models
+	glm::vec3 color;
 	struct Vertex
 	{
 		glm::vec3 position;
 		glm::vec3 normal;
 		glm::vec3 color;
 	};
-
+	LightModel* mLightModel;
 	unsigned int mVertexArrayID;
 	unsigned int mVertexBufferID;
 };

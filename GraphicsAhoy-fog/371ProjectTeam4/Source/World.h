@@ -34,10 +34,10 @@ public:
 	void Draw();
 	void Draw2();
 	void DrawPath(); 
-
-
-	void RenderCommon();
 	void RenderScene();
+
+	//Render function for texture, default scene and fog
+	void RenderCommon();
 
 	//Render the fog shader
 	void RenderFog(); 

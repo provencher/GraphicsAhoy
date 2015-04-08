@@ -102,10 +102,16 @@
     <None Include="..\Scenes\PathScene.scene" />
     <None Include="..\Scenes\ProjectSceen.scene" />
     <None Include="..\Source\Shaders\BlueColor.fragmentshader" />
+    <None Include="..\Source\Shaders\Fog.fragmentshader" />
+    <None Include="..\Source\Shaders\Fog.vertexshader" />
     <None Include="..\Source\Shaders\PathLines.fragmentshader" />
     <None Include="..\Source\Shaders\PathLines.vertexshader" />
+    <None Include="..\Source\Shaders\shadow.fragmentshader" />
+    <None Include="..\Source\Shaders\shadow.vertexshader" />
     <None Include="..\Source\Shaders\SolidColor.vertexshader" />
     <None Include="..\Source\Shaders\SolidColor.fragmentshader" />
+    <None Include="..\Source\Shaders\Texture.fragmentshader" />
+    <None Include="..\Source\Shaders\Texture.vertexshader" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Source\BSpline.cpp" />
@@ -124,12 +130,14 @@
     <ClCompile Include="..\Source\Models\PlaneModel.cpp" />
     <ClCompile Include="..\Source\Models\RazorbackModel.cpp" />
     <ClCompile Include="..\Source\Models\SphereModel.cpp" />
+    <ClCompile Include="..\Source\Models\Terrain.cpp" />
     <ClCompile Include="..\Source\Models\TorrentModel.cpp" />
     <ClCompile Include="..\Source\Path.cpp" />
     <ClCompile Include="..\Source\StaticCamera.cpp" />
     <ClCompile Include="..\Source\EventManager.cpp" />
     <ClCompile Include="..\Source\main.cpp" />
     <ClCompile Include="..\Source\Renderer.cpp" />
+    <ClCompile Include="..\Source\TextureLoader.cpp" />
     <ClCompile Include="..\Source\ThirdPersonCamera.cpp" />
     <ClCompile Include="..\Source\World.cpp" />
   </ItemGroup>
@@ -151,12 +159,14 @@
     <ClInclude Include="..\Source\Models\PlaneModel.h" />
     <ClInclude Include="..\Source\Models\RazorbackModel.h" />
     <ClInclude Include="..\Source\Models\SphereModel.h" />
+    <ClInclude Include="..\Source\Models\Terrain.h" />
     <ClInclude Include="..\Source\Models\TorrentModel.h" />
     <ClInclude Include="..\Source\ParsingHelper.h" />
     <ClInclude Include="..\Source\Path.h" />
     <ClInclude Include="..\Source\StaticCamera.h" />
     <ClInclude Include="..\Source\EventManager.h" />
     <ClInclude Include="..\Source\Renderer.h" />
+    <ClInclude Include="..\Source\TextureLoader.h" />
     <ClInclude Include="..\Source\ThirdPersonCamera.h" />
     <ClInclude Include="..\Source\World.h" />
   </ItemGroup>
@@ -166,6 +176,12 @@
     <Image Include="..\Scenes\Obj\XA-20_Razorback_Strike_Fighter\Pilot_usa.png" />
     <Image Include="..\Scenes\Obj\XA-20_Razorback_Strike_Fighter\XA-20_Razorback_Strike_Fighter_N.png" />
     <Image Include="..\Scenes\Obj\XA-20_Razorback_Strike_Fighter\XA-20_Razorback_Strike_Fighter_P01.png" />
+    <Image Include="..\Source\Textures\ice.bmp" />
+    <Image Include="..\Source\Textures\ice2.bmp" />
+    <Image Include="..\Source\Textures\img1.bmp" />
+    <Image Include="..\Source\Textures\terrain.bmp" />
+    <Image Include="..\Source\Textures\tiles1.bmp" />
+    <Image Include="..\Source\Textures\wood.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
