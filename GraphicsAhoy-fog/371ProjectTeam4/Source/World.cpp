@@ -401,18 +401,25 @@ void World::Update(float dt)
 }
 
 
+/*
+This Draw() function contains the different features (shadow, texture, fog, and default) that the game has to offer.
+To display each feature, simply follow the instruction beside the function. Remember that when one feature is enable, disable other features.
+*/
 void World::Draw(){
 
-	Renderer::BeginFrame(); //Default frame with black background
-	//Renderer::BeginFrameFog(); // If RenderFog() is toggle, switch to this frame to have a gray sky (more realistic)
+	//Frame choices:
+	Renderer::BeginFrame(); // Default frame.
+	//Renderer::BeginFrameFog(); // Switch to this frame ONLY when enabling RenderFog();
+	//-----------------------------------------------------------------------------------------------------------------------------------------
+	
+	//Choose ONLY ONE (not all of them) of the rendering scene to see the 4 different features.
+	RenderScene(); // This toggles the default scene.
+	//RenderShadows(); // This toggles the shadow. You must toggle the RenderScene() to see this feature.
+	//RenderTerrain(); // This toggles the tiles texture. YOU MUST toggle DrawTerrain() in the World::LoadScene also to trigger this feature. Don't forget to uncomment the DrawTerrain() once you change to another feature.
+	//RenderFog(); // This toggles the fog feature. You must enable Renderer::BeginFrameFog() to trigger this feature to get the gray sky.
+	//------------------------------------------------------------------------------------------------------------------------------------------
 
-	//---------------------------------------------
-	//RenderShadows(); // Toggles the shadow
-	//RenderTerrain(); // Toggles the tiles texture
-	//RenderFog(); // Toggles the fog feature 
-	RenderScene(); // Toggles the default scene
 	DrawPath();
-
 	Renderer::EndFrame();
 }
 
