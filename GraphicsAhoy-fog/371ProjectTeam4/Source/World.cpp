@@ -227,8 +227,8 @@ void World::LoadScene(const char * scene_path){
 		ground->AddChild(groundPlate);
 
 
-		//Drawing a terrain. To toggle this, enable "RenderTexture()"  
-		DrawTerrain(*ground);
+		//Drawing a terrain. To toggle this, enable "RenderTerrain()"  
+		//DrawTerrain(*ground);
 		//-----------------------------------------------------------
 
 
@@ -408,9 +408,9 @@ void World::Draw(){
 
 	//---------------------------------------------
 	//RenderShadows(); // Toggles the shadow
-	RenderTerrain(); // Toggles the tiles texture
+	//RenderTerrain(); // Toggles the tiles texture
 	//RenderFog(); // Toggles the fog feature 
-	//RenderScene(); // Toggles the default scene
+	RenderScene(); // Toggles the default scene
 	DrawPath();
 
 	Renderer::EndFrame();
