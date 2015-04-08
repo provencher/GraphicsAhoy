@@ -160,6 +160,9 @@
     <ClCompile Include="..\Source\Models\Terrain.cpp">
       <Filter>Source Files\Model</Filter>
     </ClCompile>
+    <ClCompile Include="..\Source\Models\Craters.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Source\EventManager.h">
@@ -241,6 +244,9 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\Source\Models\Terrain.h">
+      <Filter>Source Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Models\Craters.h">
       <Filter>Source Files\Model</Filter>
     </ClInclude>
   </ItemGroup>

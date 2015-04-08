@@ -34,6 +34,9 @@ public:
 	void Draw();
 	void Draw2();
 	void DrawPath(); 
+
+
+	void RenderCommon();
 	void RenderScene();
 
 	//Render the fog shader
