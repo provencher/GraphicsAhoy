@@ -228,7 +228,7 @@ void World::LoadScene(const char * scene_path){
 
 
 		//Drawing a terrain. To toggle this, enable "RenderTerrain()"  
-		//DrawTerrain(*ground);
+		DrawTerrain(*ground);
 		//-----------------------------------------------------------
 
 
@@ -407,15 +407,15 @@ To display each feature, simply follow the instruction beside the function. Reme
 */
 void World::Draw(){
 
-	//Frame choices:
+	//Frame choices (must enable only ONE of the following 2):
 	Renderer::BeginFrame(); // Default frame.
 	//Renderer::BeginFrameFog(); // Switch to this frame ONLY when enabling RenderFog();
 	//-----------------------------------------------------------------------------------------------------------------------------------------
 	
 	//Choose ONLY ONE (not all of them) of the rendering scene to see the 4 different features.
-	RenderScene(); // This toggles the default scene.
+	//RenderScene(); // This toggles the default scene.
 	//RenderShadows(); // This toggles the shadow. You must toggle the RenderScene() to see this feature.
-	//RenderTerrain(); // This toggles the tiles texture. YOU MUST toggle DrawTerrain() in the World::LoadScene also to trigger this feature. Don't forget to uncomment the DrawTerrain() once you change to another feature.
+	RenderTerrain(); // This toggles the tiles texture. YOU MUST toggle DrawTerrain() in the World::LoadScene also to trigger this feature. Don't forget to uncomment the DrawTerrain() once you change to another feature.
 	//RenderFog(); // This toggles the fog feature. You must enable Renderer::BeginFrameFog() to trigger this feature to get the gray sky.
 	//------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -431,7 +431,91 @@ void World::RenderFog(){
 	Renderer::SetShader(SHADER_FOG);
 	glUseProgram(Renderer::GetShaderProgramID());
 
-	RenderCommon();
+	//RenderCommon();
+
+	//Material Attributes uniform
+	GLuint MaterialID = glGetUniformLocation(Renderer::GetShaderProgramID(), "materialCoefficients");
+
+	//WorldCamPosition
+	GLuint CamPos = glGetUniformLocation(Renderer::GetShaderProgramID(), "worldCamPos");
+
+	//Pull CurrentLookAt vector from camera;	
+	camPos = mCamera[mCurrentCamera]->GetPosition();
+	glUniform3fv(CamPos, 1, &camPos[0]);
+
+	// This looks for the MVP Uniform variable in the Vertex Program
+	GLuint VPMatrixLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "ViewProjectionTransform");
+	mat4 VP = projMat*GetCamera()->GetViewMatrix();
+	glUniformMatrix4fv(VPMatrixLocation, 1, GL_FALSE, &VP[0][0]);
+
+	//WorldCamView
+	GLuint CamView = glGetUniformLocation(Renderer::GetShaderProgramID(), "CameraView");
+	mat4 camView = GetCamera()->GetViewMatrix();
+	glUniformMatrix4fv(CamView, 1, GL_FALSE, &camView[0][0]);
+
+	//Light Projection
+	GLuint LightProj = glGetUniformLocation(Renderer::GetShaderProgramID(), "LightVP");
+	mat4 lightProject = biasMatrix * depthProjectionMatrix * altCamera->GetViewMatrix();
+	glUniformMatrix4fv(LightProj, 1, GL_FALSE, &lightProject[0][0]);
+
+	//Lights
+	GLuint NumLights = glGetUniformLocation(Renderer::GetShaderProgramID(), "numLights");
+	int numberOfLights = (int)gLights->size();
+	glUniform1i(NumLights, numberOfLights);
+
+	vector<GLuint> gluints;
+	string uniformName;
+	const char* c_str;
+
+	glm::vec3 temp;
+	glm::vec4 v4f;
+
+
+	//Stores the light parameters of each light
+	for (size_t i = 0; i < numberOfLights; ++i){
+		//Initialize vector to hold all 6 parameters
+		gluints = vector<GLuint>(6);
+
+		v4f = (*gLights)[i].position;
+		uniformName = LightNameBuilder("position", i);
+		gluints[0] = glGetUniformLocation(Renderer::GetShaderProgramID(), (c_str = uniformName.c_str()));
+		glUniform4fv(gluints[0], 1, &v4f[0]);
+
+
+		uniformName = LightNameBuilder("intensities", i);
+		temp = (*gLights)[i].intensities;
+		gluints[1] = glGetUniformLocation(Renderer::GetShaderProgramID(), (c_str = uniformName.c_str()));
+		glUniform3fv(gluints[1], 1, &temp[0]);
+
+		uniformName = LightNameBuilder("attenuation", i);
+		gluints[2] = glGetUniformLocation(Renderer::GetShaderProgramID(), (c_str = uniformName.c_str()));
+		glUniform1f(gluints[2], (*gLights)[i].attenuation);
+
+		uniformName = LightNameBuilder("ambientCoefficient", i);
+		gluints[3] = glGetUniformLocation(Renderer::GetShaderProgramID(), (c_str = uniformName.c_str()));
+		glUniform1f(gluints[3], (*gLights)[i].ambientCoefficient);
+
+		uniformName = LightNameBuilder("coneAngle", i);
+		gluints[4] = glGetUniformLocation(Renderer::GetShaderProgramID(), (c_str = uniformName.c_str()));
+		glUniform1f(gluints[4], (*gLights)[i].coneAngle);
+
+		temp = (*gLights)[i].coneDirection;
+		uniformName = LightNameBuilder("coneDirection", i);
+		gluints[5] = glGetUniformLocation(Renderer::GetShaderProgramID(), (c_str = uniformName.c_str()));
+		glUniform3fv(gluints[5], 1, &temp[0]);
+
+	}
+
+	// Draw models
+	vec4 matC;
+	for (vector<Model*>::iterator it = mModel.begin(); it < mModel.end(); ++it){
+
+		matC = (*it)->materialConst;
+		glUniform4fv(MaterialID, 1, &matC[0]);
+		// Draw model
+		(*it)->Draw();
+	}
+
 
 	// Restore previous shader
 	Renderer::SetShader((ShaderType)prevShader);
@@ -453,7 +537,7 @@ void World::DrawTerrain(GroupModel &ground){
 	crater->SetRotation(vec3(0, 1, 0), 50.0f);
 	ground.AddChild(crater);
 
-	Craters* crater1 = new Craters();
+	/*Craters* crater1 = new Craters();
 	crater1->SetScaling(vec3(2, 2, 2));
 	crater1->SetPosition(vec3(5, 3.5, 5));
 	crater->SetRotation(vec3(0, 1, 0), 35.0f);
@@ -463,7 +547,7 @@ void World::DrawTerrain(GroupModel &ground){
 	crater2->SetScaling(vec3(2, 2, 2));
 	crater2->SetPosition(vec3(5, 1.5, 8));
 	crater->SetRotation(vec3(0, 1, 0), 35.0f);
-	ground.AddChild(crater2);
+	ground.AddChild(crater2);*/
 }
 
 //Common rendering for fog, shadow and texture features
@@ -561,7 +645,90 @@ void World::RenderTerrain(){
 	Renderer::SetShader(SHADER_TEXTURE);
 	glUseProgram(Renderer::GetShaderProgramID());
 
-	RenderCommon();
+	//RenderCommon();
+
+	//Material Attributes uniform
+	GLuint MaterialID = glGetUniformLocation(Renderer::GetShaderProgramID(), "materialCoefficients");
+
+	//WorldCamPosition
+	GLuint CamPos = glGetUniformLocation(Renderer::GetShaderProgramID(), "worldCamPos");
+
+	//Pull CurrentLookAt vector from camera;	
+	camPos = mCamera[mCurrentCamera]->GetPosition();
+	glUniform3fv(CamPos, 1, &camPos[0]);
+
+	// This looks for the MVP Uniform variable in the Vertex Program
+	GLuint VPMatrixLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "ViewProjectionTransform");
+	mat4 VP = projMat*GetCamera()->GetViewMatrix();
+	glUniformMatrix4fv(VPMatrixLocation, 1, GL_FALSE, &VP[0][0]);
+
+	//WorldCamView
+	GLuint CamView = glGetUniformLocation(Renderer::GetShaderProgramID(), "CameraView");
+	mat4 camView = GetCamera()->GetViewMatrix();
+	glUniformMatrix4fv(CamView, 1, GL_FALSE, &camView[0][0]);
+
+	//Light Projection
+	GLuint LightProj = glGetUniformLocation(Renderer::GetShaderProgramID(), "LightVP");
+	mat4 lightProject = biasMatrix * depthProjectionMatrix * altCamera->GetViewMatrix();
+	glUniformMatrix4fv(LightProj, 1, GL_FALSE, &lightProject[0][0]);
+
+	//Lights
+	GLuint NumLights = glGetUniformLocation(Renderer::GetShaderProgramID(), "numLights");
+	int numberOfLights = (int)gLights->size();
+	glUniform1i(NumLights, numberOfLights);
+
+	vector<GLuint> gluints;
+	string uniformName;
+	const char* c_str;
+
+	glm::vec3 temp;
+	glm::vec4 v4f;
+
+
+	//Stores the light parameters of each light
+	for (size_t i = 0; i < numberOfLights; ++i){
+		//Initialize vector to hold all 6 parameters
+		gluints = vector<GLuint>(6);
+
+		v4f = (*gLights)[i].position;
+		uniformName = LightNameBuilder("position", i);
+		gluints[0] = glGetUniformLocation(Renderer::GetShaderProgramID(), (c_str = uniformName.c_str()));
+		glUniform4fv(gluints[0], 1, &v4f[0]);
+
+
+		uniformName = LightNameBuilder("intensities", i);
+		temp = (*gLights)[i].intensities;
+		gluints[1] = glGetUniformLocation(Renderer::GetShaderProgramID(), (c_str = uniformName.c_str()));
+		glUniform3fv(gluints[1], 1, &temp[0]);
+
+		uniformName = LightNameBuilder("attenuation", i);
+		gluints[2] = glGetUniformLocation(Renderer::GetShaderProgramID(), (c_str = uniformName.c_str()));
+		glUniform1f(gluints[2], (*gLights)[i].attenuation);
+
+		uniformName = LightNameBuilder("ambientCoefficient", i);
+		gluints[3] = glGetUniformLocation(Renderer::GetShaderProgramID(), (c_str = uniformName.c_str()));
+		glUniform1f(gluints[3], (*gLights)[i].ambientCoefficient);
+
+		uniformName = LightNameBuilder("coneAngle", i);
+		gluints[4] = glGetUniformLocation(Renderer::GetShaderProgramID(), (c_str = uniformName.c_str()));
+		glUniform1f(gluints[4], (*gLights)[i].coneAngle);
+
+		temp = (*gLights)[i].coneDirection;
+		uniformName = LightNameBuilder("coneDirection", i);
+		gluints[5] = glGetUniformLocation(Renderer::GetShaderProgramID(), (c_str = uniformName.c_str()));
+		glUniform3fv(gluints[5], 1, &temp[0]);
+
+	}
+
+	// Draw models
+	vec4 matC;
+	for (vector<Model*>::iterator it = mModel.begin(); it < mModel.end(); ++it){
+
+		matC = (*it)->materialConst;
+		glUniform4fv(MaterialID, 1, &matC[0]);
+		// Draw model
+		(*it)->Draw();
+	}
 
 	// Restore previous shader
 	Renderer::SetShader((ShaderType)prevShader);
@@ -575,7 +742,90 @@ void World::RenderScene(){
 	Renderer::SetShader(SHADER_SOLID_COLOR);
 	glUseProgram(Renderer::GetShaderProgramID());
 
-	RenderCommon();
+	//RenderCommon();
+
+	//Material Attributes uniform
+	GLuint MaterialID = glGetUniformLocation(Renderer::GetShaderProgramID(), "materialCoefficients");
+
+	//WorldCamPosition
+	GLuint CamPos = glGetUniformLocation(Renderer::GetShaderProgramID(), "worldCamPos");
+
+	//Pull CurrentLookAt vector from camera;	
+	camPos = mCamera[mCurrentCamera]->GetPosition();
+	glUniform3fv(CamPos, 1, &camPos[0]);
+
+	// This looks for the MVP Uniform variable in the Vertex Program
+	GLuint VPMatrixLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "ViewProjectionTransform");
+	mat4 VP = projMat*GetCamera()->GetViewMatrix();
+	glUniformMatrix4fv(VPMatrixLocation, 1, GL_FALSE, &VP[0][0]);
+
+	//WorldCamView
+	GLuint CamView = glGetUniformLocation(Renderer::GetShaderProgramID(), "CameraView");
+	mat4 camView = GetCamera()->GetViewMatrix();
+	glUniformMatrix4fv(CamView, 1, GL_FALSE, &camView[0][0]);
+
+	//Light Projection
+	GLuint LightProj = glGetUniformLocation(Renderer::GetShaderProgramID(), "LightVP");
+	mat4 lightProject = biasMatrix * depthProjectionMatrix * altCamera->GetViewMatrix();
+	glUniformMatrix4fv(LightProj, 1, GL_FALSE, &lightProject[0][0]);
+
+	//Lights
+	GLuint NumLights = glGetUniformLocation(Renderer::GetShaderProgramID(), "numLights");
+	int numberOfLights = (int)gLights->size();
+	glUniform1i(NumLights, numberOfLights);
+
+	vector<GLuint> gluints;
+	string uniformName;
+	const char* c_str;
+
+	glm::vec3 temp;
+	glm::vec4 v4f;
+
+
+	//Stores the light parameters of each light
+	for (size_t i = 0; i < numberOfLights; ++i){
+		//Initialize vector to hold all 6 parameters
+		gluints = vector<GLuint>(6);
+
+		v4f = (*gLights)[i].position;
+		uniformName = LightNameBuilder("position", i);
+		gluints[0] = glGetUniformLocation(Renderer::GetShaderProgramID(), (c_str = uniformName.c_str()));
+		glUniform4fv(gluints[0], 1, &v4f[0]);
+
+
+		uniformName = LightNameBuilder("intensities", i);
+		temp = (*gLights)[i].intensities;
+		gluints[1] = glGetUniformLocation(Renderer::GetShaderProgramID(), (c_str = uniformName.c_str()));
+		glUniform3fv(gluints[1], 1, &temp[0]);
+
+		uniformName = LightNameBuilder("attenuation", i);
+		gluints[2] = glGetUniformLocation(Renderer::GetShaderProgramID(), (c_str = uniformName.c_str()));
+		glUniform1f(gluints[2], (*gLights)[i].attenuation);
+
+		uniformName = LightNameBuilder("ambientCoefficient", i);
+		gluints[3] = glGetUniformLocation(Renderer::GetShaderProgramID(), (c_str = uniformName.c_str()));
+		glUniform1f(gluints[3], (*gLights)[i].ambientCoefficient);
+
+		uniformName = LightNameBuilder("coneAngle", i);
+		gluints[4] = glGetUniformLocation(Renderer::GetShaderProgramID(), (c_str = uniformName.c_str()));
+		glUniform1f(gluints[4], (*gLights)[i].coneAngle);
+
+		temp = (*gLights)[i].coneDirection;
+		uniformName = LightNameBuilder("coneDirection", i);
+		gluints[5] = glGetUniformLocation(Renderer::GetShaderProgramID(), (c_str = uniformName.c_str()));
+		glUniform3fv(gluints[5], 1, &temp[0]);
+
+	}
+
+	// Draw models
+	vec4 matC;
+	for (vector<Model*>::iterator it = mModel.begin(); it < mModel.end(); ++it){
+
+		matC = (*it)->materialConst;
+		glUniform4fv(MaterialID, 1, &matC[0]);
+		// Draw model
+		(*it)->Draw();
+	}
 
 	// Restore previous shader
 	Renderer::SetShader((ShaderType)prevShader);
