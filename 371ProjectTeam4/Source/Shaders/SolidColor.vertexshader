@@ -35,6 +35,13 @@ out vec4 shadowMapCoords0;
 out vec2 UV;
 
 
+//----FOG------------------------------------
+out float fogVisibility;
+float density = 0.008; //thickness of the fog
+float gradient = 10; //how quickly the fog visibility decreases
+//-------------------------------------------
+
+
 void main()
 {
 	// Output position of the vertex, in clip space : MVP * position
@@ -47,6 +54,13 @@ void main()
 	normal = normalize((WorldTransform * vec4(vertexNormal_modelspace, 0.0)).xyz);
 	v_color = vec4(vertexColor, 1.0f);	
 	UV = vertexUV*10;
+
+	//----------------FOG--------------------------------------------
+	vec4 positionRelativeToCam = CameraView * worldPosition;
+	float distance = length(positionRelativeToCam.xyz); 
+	fogVisibility = exp(-pow((distance * density),gradient));
+	fogVisibility = clamp(fogVisibility, 0.0, 1.0);
+	//---------------------------------------------------------------
 
 				
 }

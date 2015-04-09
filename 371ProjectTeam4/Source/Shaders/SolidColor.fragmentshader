@@ -23,6 +23,11 @@ in vec4 worldPosition;
 in vec4 shadowMapCoords0;
 in vec2 UV; // for textures
 
+//FOG----------------------------------
+in float fogVisibility;
+vec3 SkyColour = vec3(0.5, 0.5, 0.5);
+//-------------------------------------
+
 
 // Light and Material Uniform Variables
 uniform vec4 materialCoefficients; // x: ambient   y: diffuse   z: specular   w: specular exponent
@@ -144,7 +149,7 @@ float ApplyShadow(Light light) {
 
 void main() {    
     vec3 surfacePos = worldPosition.xyz;
-    vec4 surfaceColor = v_color;//texture(materialTex, fragTexCoord);
+    vec4 surfaceColor = texture2D(mySamplerTexture, UV);
     vec3 surfaceToCamera = normalize(worldCamPos - surfacePos);
 
     //combine color from all the lights
@@ -162,10 +167,14 @@ void main() {
     //final color (after gamma correction)
    // vec3 gamma = vec3(1.0/2.2);
 
+   	//FOG---------------------------------------
+	//color = mix(SkyColour, color, fogVisibility);
+
    // color = surfaceColor.rgb * linearColor * e;
 
 	//final color (after gamma correction)
     vec3 gamma = vec3(1.0/2.2);
-    color = vec4(pow(linearColor*shadowAmt, gamma), surfaceColor.a);
+    color = vec4(pow(v_color.rgb *linearColor*shadowAmt, gamma), surfaceColor.a);
 
 }
+//mix(SkyColour, v_color.rgb *linearColor*shadowAmt, fogVisibility)

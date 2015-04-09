@@ -53,7 +53,7 @@ World::World()
 
 	//Create light Vector
 	gLights = new vector<Light>();
-	float d = 0.5f;
+	float d = 0.2f;
 	// setup lights
 	Light spotlight;
 	spotlight.position = glm::vec4(0, 10, 0, 1);
@@ -70,7 +70,7 @@ World::World()
 
 	Light light3;
 	light3.position = glm::vec4(-15, 5, 15, 0); //w == 0 indications a directional light
-	light3.intensities = glm::vec3(0.5, 0.5, 0.5); //weak yellowish light
+	light3.intensities = glm::vec3(d/6, d/4, d/8); //weak yellowish light
 	light3.ambientCoefficient = 0.06f;
 
 	
@@ -557,7 +557,7 @@ void World::RenderTerrain(){
 
 	// Set Shader for path lines
 	unsigned int prevShader = Renderer::GetCurrentShader();
-	Renderer::SetShader(SHADER_TEXTURE);
+	Renderer::SetShader(SHADER_SOLID_COLOR);
 	glUseProgram(Renderer::GetShaderProgramID());
 
 	//RenderShadows();
