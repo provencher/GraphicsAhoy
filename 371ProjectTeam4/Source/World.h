@@ -18,6 +18,7 @@
 
 class Camera;
 class Model;
+class GroupModel;
 class Path;
 class BSpline;
 
@@ -35,6 +36,17 @@ public:
 	void DrawPath(); 
 	void RenderScene();
 
+	//Render function for texture, default scene and fog
+	void RenderCommon();
+
+	//Render the fog shader
+	void RenderFog(); 
+	
+	//Terrain
+	void DrawTerrain(GroupModel* ground); //Draw a terrain
+	void RenderTerrain(); // Render the shader for drawing a terrain
+	
+	//Shadows
 	void RenderShadows();
 	void DrawShadow();
 
@@ -99,4 +111,6 @@ private:
 	float kd;
 	float ks;
 	float n;
+
+
 };

@@ -3,9 +3,8 @@
 //
 // Created by Nicolas Bergeron on 8/7/14.
 // Updated by Gary Chang on 14/1/15
-// Jordan
+// Hierarchy, Color and Transforms Added by Jordan Rutty
 //
-// Copyright (c) 2014-2015 Concordia University. All rights reserved.
 //
 
 #include "Model.h"
@@ -254,9 +253,17 @@ Model*	Model::RemoveChild(ci_string key){
 
 
 void Model::DeleteAllChildren(){
-	//will clear the array but may still have memory leak
-	child.clear();
+	std::map<ci_string, Model*>::iterator it;
+	if(!child.empty()){
+		for (it = child.begin(); it != child.end(); it++){
+			Model* item = (*it).second;
+			if(item != nullptr)
+			delete item;
+		}
+		child.clear();
+	}
 }
+
 //----------------------------------------
 void	Model::UpdateChildren(float dt){
 	if (GetChildCount() > 0){
@@ -409,6 +416,11 @@ bool Model::CollideWith(Model* other)
 
 void Model::Intersect(const Ray& ray, std::vector<std::pair<Model*, glm::vec3>>& intersectionPoints)
 {
+	if (this->mCollisionCube == nullptr)
+	{
+		return;
+	}
+
 	//vec3 worldPosition = vec3(GetWorldMatrix() * vec4(mPosition, 1.0f));
 	vec3 worldPosition = this->mPosition;
 
@@ -423,7 +435,7 @@ void Model::Intersect(const Ray& ray, std::vector<std::pair<Model*, glm::vec3>>&
 
 	if (RayTriangleCollision::TestIntersectionPlane(vec3(xa, yb, zb), vec3(xa, yb, za), vec3(xb, yb, za), ray, intersection, true))
 	{
-		intersectionPoints-.push_back(std::pair<Model*, glm::vec3>(this, intersection));
+		intersectionPoints.push_back(std::pair<Model*, glm::vec3>(this, intersection));
 	}
 	if (RayTriangleCollision::TestIntersectionPlane(vec3(xb, yb, zb), vec3(xb, yb, za), vec3(xb, ya, zb), ray, intersection, true))
 	{

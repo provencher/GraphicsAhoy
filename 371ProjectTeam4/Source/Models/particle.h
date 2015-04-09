@@ -1,4 +1,4 @@
-
+//Created By Jordan Rutty
 
 #include "GroupModel.h"
 
@@ -19,7 +19,7 @@ public:
     ~Particle();
 
 	vec3 mStartColor;
-	vec3 mEndColor;
+	vec3 mEndColor; //non functional
 
 protected:
 	//------------------

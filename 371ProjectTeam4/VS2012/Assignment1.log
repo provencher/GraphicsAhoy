@@ -1,52 +1,43 @@
-﻿Build started 2015-04-06 12:59:09 PM.
-     1>Project "C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\Assignment1.vcxproj" on node 2 (Build target(s)).
+﻿Build started 2015-04-09 10:45:52 AM.
+     1>Project "C:\Users\Jordan\Desktop\PROJ\Master\VS2012\Assignment1.vcxproj" on node 2 (Build target(s)).
+       Project file contains ToolsVersion="12.0". This toolset may be unknown or missing, in which case you may be able to resolve this by installing the appropriate version of MSBuild, or the build may have been forced to a particular ToolsVersion for policy reasons. Treating the project as if it had ToolsVersion="4.0". For more information, please see http://go.microsoft.com/fwlink/?LinkId=291333.
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /I"../ThirdParty/glew-1.10.0/include" /I"../ThirdParty/glfw-3.0.4/include" /I../ThirdParty/glm /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\/../Build/Debug/" /Fd"C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\/../Build/Debug/vc110.pdb" /Gd /TP /analyze- /errorReport:prompt ..\Source\BSplineCamera.cpp ..\Source\Models\BillBoard.cpp ..\Source\Models\LightModel.cpp ..\Source\Models\Model.cpp ..\Source\Models\PlaneModel.cpp ..\Source\Models\particleEmitter.cpp ..\Source\ThirdPersonCamera.cpp ..\Source\World.cpp ..\Source\main.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /I"../ThirdParty/glew-1.10.0/include" /I"../ThirdParty/glfw-3.0.4/include" /I../ThirdParty/glm /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"C:\Users\Jordan\Desktop\PROJ\Master\VS2012\/../Build/Debug/" /Fd"C:\Users\Jordan\Desktop\PROJ\Master\VS2012\/../Build/Debug/vc110.pdb" /Gd /TP /analyze- /errorReport:prompt ..\Source\World.cpp
          World.cpp
-     1>c:\users\jordan\desktop\graphicsahoy-master\371projectteam4\source\world.cpp(25): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-     1>c:\users\jordan\desktop\graphicsahoy-master\371projectteam4\source\world.cpp(251): warning C4244: 'initializing' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\jordan\desktop\graphicsahoy-master\371projectteam4\source\world.cpp(328): warning C4244: 'initializing' : conversion from 'int' to 'float', possible loss of data
-     1>c:\users\jordan\desktop\graphicsahoy-master\371projectteam4\source\world.cpp(332): warning C4244: 'initializing' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\jordan\desktop\graphicsahoy-master\371projectteam4\source\world.cpp(498): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\jordan\desktop\proj\master\source\world.cpp(32): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+     1>c:\users\jordan\desktop\proj\master\source\world.cpp(512): warning C4018: '<' : signed/unsigned mismatch
          GLM: perspective function taking degrees as a parameter is deprecated. #define GLM_FORCE_RADIANS before including GLM headers to remove this message.
-         Generating Code...
-         Skipping... (no relevant changes detected)
-         main.cpp
-         ThirdPersonCamera.cpp
-         particleEmitter.cpp
-         PlaneModel.cpp
-         Model.cpp
-         LightModel.cpp
-         BillBoard.cpp
-         BSplineCamera.cpp
        Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\/../Bin/371ProjectTeam4-Debug.exe" /INCREMENTAL /NOLOGO /LIBPATH:"../ThirdParty/glew-1.10.0/lib/Release/Win32" /LIBPATH:"../ThirdParty/glfw-3.0.4/lib/Win32/lib-msvc110" opengl32.lib glew32s.lib glfw3.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\/../Bin/371ProjectTeam4-Debug.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\/../Bin/371ProjectTeam4-Debug.lib" /MACHINE:X86 "C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\/../Build/Debug/BSpline.obj"
-         "C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\/../Build/Debug/BSplineCamera.obj"
-         "C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\/../Build/Debug/Camera.obj"
-         "C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\/../Build/Debug/light.obj"
-         "C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\/../Build/Debug/Mesh.obj"
-         "C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\/../Build/Debug/meshLoader.obj"
-         "C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\/../Build/Debug/BillBoard.obj"
-         "C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\/../Build/Debug/CubeModel.obj"
-         "C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\/../Build/Debug/GroupModel.obj"
-         "C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\/../Build/Debug/LightModel.obj"
-         "C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\/../Build/Debug/Model.obj"
-         "C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\/../Build/Debug/particle.obj"
-         "C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\/../Build/Debug/particleEmitter.obj"
-         "C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\/../Build/Debug/PlaneModel.obj"
-         "C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\/../Build/Debug/RazorbackModel.obj"
-         "C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\/../Build/Debug/SphereModel.obj"
-         "C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\/../Build/Debug/TorrentModel.obj"
-         "C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\/../Build/Debug/Path.obj"
-         "C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\/../Build/Debug/StaticCamera.obj"
-         "C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\/../Build/Debug/EventManager.obj"
-         "C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\/../Build/Debug/main.obj"
-         "C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\/../Build/Debug/Renderer.obj"
-         "C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\/../Build/Debug/ThirdPersonCamera.obj"
-         "C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\/../Build/Debug/World.obj"
-         Assignment1.vcxproj -> C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\/../Bin/371ProjectTeam4-Debug.exe
-     1>Done Building Project "C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\Assignment1.vcxproj" (Build target(s)).
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Jordan\Desktop\PROJ\Master\VS2012\/../Bin/371ProjectTeam4-Debug.exe" /INCREMENTAL /NOLOGO /LIBPATH:"../ThirdParty/glew-1.10.0/lib/Release/Win32" /LIBPATH:"../ThirdParty/glfw-3.0.4/lib/Win32/lib-msvc110" opengl32.lib glew32s.lib glfw3.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Jordan\Desktop\PROJ\Master\VS2012\/../Bin/371ProjectTeam4-Debug.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Jordan\Desktop\PROJ\Master\VS2012\/../Bin/371ProjectTeam4-Debug.lib" /MACHINE:X86 C:\Users\Jordan\Desktop\PROJ\Master\VS2012\/../Build/Debug/BSpline.obj
+         C:\Users\Jordan\Desktop\PROJ\Master\VS2012\/../Build/Debug/BSplineCamera.obj
+         C:\Users\Jordan\Desktop\PROJ\Master\VS2012\/../Build/Debug/Camera.obj
+         C:\Users\Jordan\Desktop\PROJ\Master\VS2012\/../Build/Debug/light.obj
+         C:\Users\Jordan\Desktop\PROJ\Master\VS2012\/../Build/Debug/meshLoader.obj
+         C:\Users\Jordan\Desktop\PROJ\Master\VS2012\/../Build/Debug/BillBoard.obj
+         C:\Users\Jordan\Desktop\PROJ\Master\VS2012\/../Build/Debug/Craters.obj
+         C:\Users\Jordan\Desktop\PROJ\Master\VS2012\/../Build/Debug/CubeModel.obj
+         C:\Users\Jordan\Desktop\PROJ\Master\VS2012\/../Build/Debug/GroupModel.obj
+         C:\Users\Jordan\Desktop\PROJ\Master\VS2012\/../Build/Debug/LightModel.obj
+         C:\Users\Jordan\Desktop\PROJ\Master\VS2012\/../Build/Debug/Model.obj
+         C:\Users\Jordan\Desktop\PROJ\Master\VS2012\/../Build/Debug/particle.obj
+         C:\Users\Jordan\Desktop\PROJ\Master\VS2012\/../Build/Debug/particleEmitter.obj
+         C:\Users\Jordan\Desktop\PROJ\Master\VS2012\/../Build/Debug/PlaneModel.obj
+         C:\Users\Jordan\Desktop\PROJ\Master\VS2012\/../Build/Debug/RazorbackModel.obj
+         C:\Users\Jordan\Desktop\PROJ\Master\VS2012\/../Build/Debug/SphereModel.obj
+         C:\Users\Jordan\Desktop\PROJ\Master\VS2012\/../Build/Debug/Terrain.obj
+         C:\Users\Jordan\Desktop\PROJ\Master\VS2012\/../Build/Debug/TorrentModel.obj
+         C:\Users\Jordan\Desktop\PROJ\Master\VS2012\/../Build/Debug/Path.obj
+         C:\Users\Jordan\Desktop\PROJ\Master\VS2012\/../Build/Debug/PlayerCamera.obj
+         C:\Users\Jordan\Desktop\PROJ\Master\VS2012\/../Build/Debug/StaticCamera.obj
+         C:\Users\Jordan\Desktop\PROJ\Master\VS2012\/../Build/Debug/EventManager.obj
+         C:\Users\Jordan\Desktop\PROJ\Master\VS2012\/../Build/Debug/main.obj
+         C:\Users\Jordan\Desktop\PROJ\Master\VS2012\/../Build/Debug/Renderer.obj
+         C:\Users\Jordan\Desktop\PROJ\Master\VS2012\/../Build/Debug/TextureLoader.obj
+         C:\Users\Jordan\Desktop\PROJ\Master\VS2012\/../Build/Debug/ThirdPersonCamera.obj
+         C:\Users\Jordan\Desktop\PROJ\Master\VS2012\/../Build/Debug/World.obj
+         Assignment1.vcxproj -> C:\Users\Jordan\Desktop\PROJ\Master\VS2012\/../Bin/371ProjectTeam4-Debug.exe
+     1>Done Building Project "C:\Users\Jordan\Desktop\PROJ\Master\VS2012\Assignment1.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:04.56
+Time Elapsed 00:00:04.45

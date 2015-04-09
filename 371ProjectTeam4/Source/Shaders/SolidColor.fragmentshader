@@ -1,18 +1,40 @@
 #version 330 core
 
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+// 
+//	4rce of Nature
+//		World Shaders
+//
+//	Contributors:
+//		Eric Provencher
+//		Rita Phom
+//		Jordan Rutty
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 // Ouput to fragment shader
-out vec3 color;
+out vec4 color;
 
 in vec4 v_color;
 in vec3 normal; // You will need this when you do per-fragment lighting
 in vec4 worldPosition;
 in vec4 shadowMapCoords0;
+in vec2 UV; // for textures
+
+//FOG----------------------------------
+in float fogVisibility;
+vec3 SkyColour = vec3(0.5, 0.5, 0.5);
+//-------------------------------------
+
 
 // Light and Material Uniform Variables
 uniform vec4 materialCoefficients; // x: ambient   y: diffuse   z: specular   w: specular exponent
-
 uniform vec3 worldCamPos;
 uniform sampler2DShadow R_shadowMap;
+uniform sampler2D mySamplerTexture;
+
 
 #define MAX_LIGHTS 10
 uniform int numLights;
@@ -99,8 +121,6 @@ float ApplyShadow(Light light) {
     //directional light
     vec3 surfaceToLight = normalize(light.position.xyz - worldPosition.xyz);
       
-		
-
 	float cosTheta = clamp( dot( normal, surfaceToLight ), 0,1 );
 
 	float visibility=1.0;
@@ -113,7 +133,7 @@ float ApplyShadow(Light light) {
 	bias = clamp(bias, 0,0.01);
 
 	// Sample the shadow map 4 times
-	for (int i=0;i<4;i++){
+	for (int i=0;i<1;i++){
 		// use either :
 		//  - Always the same samples.
 		//    Gives a fixed pattern in the shadow, but no noise
@@ -121,7 +141,7 @@ float ApplyShadow(Light light) {
 		
 		// being fully in the shadow will eat up 4*0.2 = 0.8
 		// 0.2 potentially remain, which is quite dark.
-		visibility -= 0.2*(1.0-texture( R_shadowMap, vec3(shadowMapCoords0.xy + poissonDisk[index]/700.0,  (shadowMapCoords0.z-bias)/shadowMapCoords0.w) ));
+		visibility -= 0.60*(1.0-texture( R_shadowMap, vec3(shadowMapCoords0.xy + poissonDisk[index]/700.0,  (shadowMapCoords0.z-bias)/shadowMapCoords0.w) ));
 	}	
    
     return visibility;
@@ -129,26 +149,32 @@ float ApplyShadow(Light light) {
 
 void main() {    
     vec3 surfacePos = worldPosition.xyz;
-    vec4 surfaceColor = v_color;//texture(materialTex, fragTexCoord);
+    vec4 surfaceColor = texture2D(mySamplerTexture, UV)*0.85;
     vec3 surfaceToCamera = normalize(worldCamPos - surfacePos);
 
     //combine color from all the lights
     vec3 linearColor = vec3(0);
-
 	
 
 	if (numLights > 1){
-		for(int i = 0; i < numLights; ++i){      
-		
+		for(int i = 0; i < numLights; ++i){      	
 			linearColor += ApplyLight(allLights[i], surfaceColor.rgb, normal, surfacePos, surfaceToCamera);		
-
-		}
-	
+		}	
 	}
 
-    float e = ApplyShadow(allLights[0]);
+    float shadowAmt = ApplyShadow(allLights[0]);
     
     //final color (after gamma correction)
+   // vec3 gamma = vec3(1.0/2.2);
+
+   	//FOG---------------------------------------
+	//color = mix(SkyColour, color, fogVisibility);
+
+   // color = surfaceColor.rgb * linearColor * e;
+
+	//final color (after gamma correction)
     vec3 gamma = vec3(1.0/2.2);
-    color = surfaceColor.rgb * linearColor * e;
+    color = vec4(pow(v_color.rgb*0.75*linearColor*shadowAmt, gamma), surfaceColor.a*0.75 );
+
 }
+//mix(SkyColour, v_color.rgb *linearColor*shadowAmt, fogVisibility)

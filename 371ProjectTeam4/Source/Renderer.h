@@ -1,11 +1,15 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+// 
+//	4rce of Nature
+//		Scene Render Framework
 //
-// COMP 371 Assignment Framework
+//	Contributors:
+//		Eric Provencher
+//		Rita Phom
+//		Nicolas Bergeron
+//		Gary Chang
 //
-// Created by Nicolas Bergeron on 8/7/14.
-// Updated by Gary Chang on 14/1/15
-//
-// Copyright (c) 2014-2015 Concordia University. All rights reserved.
-//
+////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #pragma once
 
@@ -24,6 +28,8 @@ enum ShaderType
 	SHADER_PATH_LINES,
 	SHADER_BLUE,
 	SHADER_SHADOW,
+	SHADER_TEXTURE,
+	SHADER_FOG,
 	NUM_SHADERS
 };
 
@@ -35,6 +41,7 @@ public:
 	static void Shutdown();
 
 	static void BeginFrame();
+	static void BeginFrameFog(); // when toggling the fog, enable this to make the background gray
 	static void EndFrame();
 	static void BindFrame();
 

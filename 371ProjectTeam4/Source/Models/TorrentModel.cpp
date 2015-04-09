@@ -1,11 +1,4 @@
-//
-// COMP 371 Assignment Framework
-//
-// Created by Nicolas Bergeron on 8/7/14.
-// Updated by Gary Chang on 14/1/15
-//
-// Copyright (c) 2014-2015 Concordia University. All rights reserved.
-//
+// by Jordan Rutty
 
 #include "TorrentModel.h"
 #include "CubeModel.h"
@@ -17,12 +10,14 @@
 using namespace glm;
 
 TorrentModel::TorrentModel(vec3 size) : GroupModel(){
-	CubeModel* rutter= new CubeModel(vec3(0.4f,0.4f,0.4f));
+
+	float black = 0.05f;
+	CubeModel* rutter= new CubeModel(vec3(black,black,black));
 	rutter->SetRotation(glm::vec3(0.0f,0.0f,2.0f), -45.0f);
 	rutter->SetScaling(glm::vec3(0.3f,0.15f, 0.75f));
 	AddChild(rutter);
 	
-	CubeModel* rutter2= new CubeModel(vec3(0.4f,0.4f,0.4f));
+	CubeModel* rutter2= new CubeModel(vec3(black,black,black));
 	rutter2->SetRotation(glm::vec3(0.0f,0.0f,2.0f), 45.0f);
 	rutter2->SetScaling(glm::vec3(0.3f,0.15f, 0.75f));
 	AddChild(rutter2);

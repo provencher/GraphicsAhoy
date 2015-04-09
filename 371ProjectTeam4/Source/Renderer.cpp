@@ -1,11 +1,15 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+// 
+//	4rce of Nature
+//		Scene Render Framework
 //
-// COMP 371 Assignment Framework
+//	Contributors:
+//		Eric Provencher
+//		Rita Phom
+//		Nicolas Bergeron
+//		Gary Chang
 //
-// Created by Nicolas Bergeron on 8/7/14.
-// Updated by Gary Chang on 14/1/15
-//
-// Copyright (c) 2014-2015 Concordia University. All rights reserved.
-//
+////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #include "Renderer.h"
 
@@ -83,9 +87,18 @@ void Renderer::Initialize()
                             shaderPathPrefix + "BlueColor.fragmentshader")
                                );
 	sShaderProgramID.push_back(
-		LoadShaders(shaderPathPrefix + "shadow.vertexshader",
-		shaderPathPrefix + "shadow.fragmentshader")
-		);
+				LoadShaders(shaderPathPrefix + "shadow.vertexshader",
+							shaderPathPrefix + "shadow.fragmentshader")
+							   );
+
+	sShaderProgramID.push_back(
+				LoadShaders(shaderPathPrefix + "Texture.vertexshader",
+							shaderPathPrefix + "Texture.fragmentshader")
+							   );
+	sShaderProgramID.push_back(
+				LoadShaders(shaderPathPrefix + "Fog.vertexshader",
+							shaderPathPrefix + "Fog.fragmentshader")
+							   );
 	sCurrentShader = 0;
 	BindFrame();
 }
@@ -104,19 +117,34 @@ void Renderer::Shutdown()
 	spWindow = nullptr;
 }
 
-void Renderer::BeginFrame()
-{
+//Frame used to render fog to get skycolor = gray
+void Renderer::BeginFrameFog(){
 	// Clear the screen
-	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClearColor(0.5f, 0.5f, 0.5f, 0.0f); // Skycolor for the fog
 
 	int width;
 	int height;
 	glfwGetWindowSize(spWindow, &width, &height);
 	glViewport(0, 0, width, height);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
 
+void Renderer::BeginFrame()
+{
+	// Clear the screen
+	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	int width;
+	int height;
+	glfwGetWindowSize(spWindow, &width, &height);
+	glViewport(0, 0, width, height);
+
+	//Use default framebuffer to render scene
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 void Renderer::EndFrame()
@@ -125,9 +153,8 @@ void Renderer::EndFrame()
 	glfwSwapBuffers(spWindow);
 }
 
-
+//Reworked from OpenGL-Tutorial #16 to allow for binding depth information to a texture
 void Renderer::BindFrame(){
-
 
 	// The framebuffer, which regroups 0, 1, or more textures, and 0 or 1 depth buffer.
 	GLuint FramebufferName = 0;
