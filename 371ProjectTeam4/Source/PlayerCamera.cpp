@@ -13,7 +13,7 @@
 #include <GLM/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/vector_angle.hpp>
-
+#include "Models/particleEmitter.h"
 #include <GLFW/glfw3.h>
 #include <algorithm>
 #include <math.h>
@@ -342,7 +342,19 @@ void PlayerCamera::UpdateTargeModel(float dt){
 		}
 		if (closestIntersection != nullptr)
 		{
-
+			//closestIntersection->first->Parent()->DeleteChild(closestIntersection->first->GetName());
+			//ParticleEmitter* pe = new ParticleEmitter(vec3(0,1,0));
+			//pe->SetPosition(vec3(0.0f, 1, -88.0f));
+			//pe->SetScaling(vec3(5,1,0.5f));
+			//std::vector<Model*>& models = *World::GetInstance()->GetModels();
+			//for (int i = 0, iMax = models.size(); i < iMax; ++i)
+			//{
+			//	if (models[i]->GetName().compare("Ground") == 0)
+			//	{
+			//		models[i]->AddChild("left-afterburner", pe);
+			//		break;
+			//	}
+			//}
 		}
 	}
 }
