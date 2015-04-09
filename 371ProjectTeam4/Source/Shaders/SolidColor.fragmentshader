@@ -149,7 +149,7 @@ float ApplyShadow(Light light) {
 
 void main() {    
     vec3 surfacePos = worldPosition.xyz;
-    vec4 surfaceColor = texture2D(mySamplerTexture, UV);
+    vec4 surfaceColor = texture2D(mySamplerTexture, UV)*0.85;
     vec3 surfaceToCamera = normalize(worldCamPos - surfacePos);
 
     //combine color from all the lights
@@ -174,7 +174,7 @@ void main() {
 
 	//final color (after gamma correction)
     vec3 gamma = vec3(1.0/2.2);
-    color = vec4(pow(v_color.rgb *linearColor*shadowAmt, gamma), surfaceColor.a);
+    color = vec4(pow(v_color.rgb*0.75*linearColor*shadowAmt, gamma), surfaceColor.a*0.75 );
 
 }
 //mix(SkyColour, v_color.rgb *linearColor*shadowAmt, fogVisibility)
