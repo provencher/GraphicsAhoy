@@ -128,7 +128,7 @@ glm::mat4 ThirdPersonCamera::GetViewMatrix() const
 //Update Target Model
 
 void ThirdPersonCamera::UpdateTargeModel(float dt){
-		
+
 
 	///////////////////////////////////////////////////
 	//POSITION
@@ -139,11 +139,11 @@ void ThirdPersonCamera::UpdateTargeModel(float dt){
 
 
 	glm::vec3 tempUp = glm::normalize(glm::cross(vec3(0.0f, 0.0f, 1.0f), vec3(1.0f, 0.0f, 0.0f)));
-	
+
 	// Settings -------------------------------------------------------
 	int turn = 0;				//turn direction - for left + for right
 	int verticalTilt = 0;		//- for up + for down
-	float tiltspeed = 1.5f;	
+	float tiltspeed = 1.5f;
 
 	//vec3 v3MaxAngles = vec3(0,0,0);
 	float maxZTilt = 45;
@@ -154,7 +154,7 @@ void ThirdPersonCamera::UpdateTargeModel(float dt){
 	float normalTiltZ = 0;
 	float normalTiltX = 0;
 	float normalTiltY = 0;
-	
+
 	//pi
 	float pif = 3.14159265359f;
 
@@ -162,7 +162,7 @@ void ThirdPersonCamera::UpdateTargeModel(float dt){
 	float rotateSpeed = 0.03f;
 
 	// Movement  -----------------------------------------------------
-	glm::vec3 movementDir = glm::vec3(0,0,0);
+	glm::vec3 movementDir = glm::vec3(0, 0, 0);
 	//Forward
 	movementDir += mLookAt;
 
@@ -170,30 +170,30 @@ void ThirdPersonCamera::UpdateTargeModel(float dt){
 	//mTargetModel->SetSpeed(mTargetModel->GetSpeed()+0.5); // acceleration 
 
 	// Down
-	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_S ) == GLFW_PRESS){ //Back
+	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_S) == GLFW_PRESS){ //Back
 		//Point down -------------------------------
 		movementDir -= direction;
 		//mTargetModel->SetSpeed(mTargetModel->GetSpeed()-0.5);
-	} 
+	}
 
 	//===========================================================================
 	//Roll Angle
-	if(1){
+	if (1){
 		// Left
-		if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_A ) == GLFW_PRESS){ //Left
-			mTargetModel->mRotationAngleZ-=tiltspeed;
-			
-			if(mTargetModel->mRotationAngleZ < -maxZTilt)		//Limit left roll
+		if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_A) == GLFW_PRESS){ //Left
+			mTargetModel->mRotationAngleZ -= tiltspeed;
+
+			if (mTargetModel->mRotationAngleZ < -maxZTilt)		//Limit left roll
 				mTargetModel->mRotationAngleZ = -maxZTilt;
 
 			turn--;
 		}
 
 		// Right
-		if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_D ) == GLFW_PRESS){ //Right
+		if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_D) == GLFW_PRESS){ //Right
 			//Go right
-			mTargetModel->mRotationAngleZ+=tiltspeed;
-			if(mTargetModel->mRotationAngleZ > maxZTilt)		//Limit right roll
+			mTargetModel->mRotationAngleZ += tiltspeed;
+			if (mTargetModel->mRotationAngleZ > maxZTilt)		//Limit right roll
 				mTargetModel->mRotationAngleZ = maxZTilt;
 
 			turn++;
@@ -202,11 +202,11 @@ void ThirdPersonCamera::UpdateTargeModel(float dt){
 
 	//===========================================================================
 	// HOROZONTAL MOVEMENT 
-	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_D ) == GLFW_PRESS){ //right
+	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_D) == GLFW_PRESS){ //right
 		mTargetModel->SetRotation(mTargetModel->GetRotationAxis(), (mHorizontalAngle / pif * 180));
 		mHorizontalAngle -= rotateSpeed;
 	}
-	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_A ) == GLFW_PRESS){ //left
+	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_A) == GLFW_PRESS){ //left
 		mTargetModel->SetRotation(mTargetModel->GetRotationAxis(), (mHorizontalAngle / pif * 180));
 
 		mHorizontalAngle += rotateSpeed;
@@ -215,67 +215,68 @@ void ThirdPersonCamera::UpdateTargeModel(float dt){
 
 
 	//Move up Move down
-	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_SPACE ) == GLFW_PRESS){ //Up
+	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_SPACE) == GLFW_PRESS){ //Up
 		movementDir += tempUp;
-		mTargetModel->mRotationAngleX-=0.2*tiltspeed;
-			//Limit Right roll
-			if(mTargetModel->mRotationAngleX < -maxXTilt) 
-				mTargetModel->mRotationAngleX = -maxXTilt;
+		mTargetModel->mRotationAngleX -= 0.2*tiltspeed;
+		//Limit Right roll
+		if (mTargetModel->mRotationAngleX < -maxXTilt)
+			mTargetModel->mRotationAngleX = -maxXTilt;
 		verticalTilt--;
 	}
-	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_RIGHT_SHIFT ) == GLFW_PRESS ||
-		glfwGetKey(EventManager::GetWindow(), GLFW_KEY_LEFT_SHIFT ) == GLFW_PRESS){ //Down
+	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS ||
+		glfwGetKey(EventManager::GetWindow(), GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS){ //Down
 		movementDir -= tempUp;
-		mTargetModel->mRotationAngleX+=0.2*tiltspeed;
-			//Limit Right roll
-			if(mTargetModel->mRotationAngleX > maxXTilt) 
-				mTargetModel->mRotationAngleX = maxXTilt;
+		mTargetModel->mRotationAngleX += 0.2*tiltspeed;
+		//Limit Right roll
+		if (mTargetModel->mRotationAngleX > maxXTilt)
+			mTargetModel->mRotationAngleX = maxXTilt;
 		verticalTilt++;
 
 	}
 
 
 	//*
-	if(turn == 0){
+	if (turn == 0){
 		//Correct roll - 
-		if(mTargetModel->mRotationAngleZ < normalTiltZ)
-			if(mTargetModel->mRotationAngleZ+tiltspeed > normalTiltZ)	//if less then increment set to normal
+		if (mTargetModel->mRotationAngleZ < normalTiltZ)
+			if (mTargetModel->mRotationAngleZ + tiltspeed > normalTiltZ)	//if less then increment set to normal
 				mTargetModel->mRotationAngleZ = normalTiltZ;
 			else
 				mTargetModel->mRotationAngleZ += tiltspeed;
 
 		//Correct roll +
-		if(mTargetModel->mRotationAngleZ > -normalTiltZ)
-			if(mTargetModel->mRotationAngleZ-tiltspeed < normalTiltZ)	
+		if (mTargetModel->mRotationAngleZ > -normalTiltZ)
+			if (mTargetModel->mRotationAngleZ - tiltspeed < normalTiltZ)
 				mTargetModel->mRotationAngleZ = normalTiltZ;
 			else
 				mTargetModel->mRotationAngleZ -= tiltspeed;
 	}
 
-	if(verticalTilt == 0){
+	if (verticalTilt == 0){
 		//Correct roll - 
-		if(mTargetModel->mRotationAngleX < normalTiltX)
-			if(mTargetModel->mRotationAngleX+0.2*tiltspeed > normalTiltX)	//if less then increment set to normal
+		if (mTargetModel->mRotationAngleX < normalTiltX)
+			if (mTargetModel->mRotationAngleX + 0.2*tiltspeed > normalTiltX)	//if less then increment set to normal
 				mTargetModel->mRotationAngleX = normalTiltX;
 			else
 				mTargetModel->mRotationAngleX += 0.2*tiltspeed;
 
 		//Correct roll +
-		if(mTargetModel->mRotationAngleX > -normalTiltX)
-			if(mTargetModel->mRotationAngleX-0.2*tiltspeed < normalTiltX)
+		if (mTargetModel->mRotationAngleX > -normalTiltX)
+			if (mTargetModel->mRotationAngleX - 0.2*tiltspeed < normalTiltX)
 				mTargetModel->mRotationAngleX = normalTiltX;
 			else
 				mTargetModel->mRotationAngleX -= 0.2*tiltspeed;
-		
+
 	}
 	//*/
 
-	
+
 	//Wrap Horizontal angle within [-90, 90] degrees
 	//Controlled model is not meant to be able to backtrack, limiting its range of motion accomplishes this
-	if (mHorizontalAngle > pif / 3)			mHorizontalAngle = pif / 3;
-	else if (mHorizontalAngle < -pif / 3)		mHorizontalAngle = -pif / 3;
-
+	if (0) {
+		if (mHorizontalAngle > pif / 3)			mHorizontalAngle = pif / 3;
+		else if (mHorizontalAngle < -pif / 3)		mHorizontalAngle = -pif / 3;
+	}
 
 	//distance -------------------------------------------------------
 	float dist = dt*mTargetModel->GetSpeed();

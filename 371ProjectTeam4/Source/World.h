@@ -10,11 +10,12 @@
 #pragma once
 
 #include "ParsingHelper.h"
-#include <vector>
 #include <glm/gtc/type_ptr.hpp>
 #include <GLM/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/vector_angle.hpp>
+#include <queue>
+#include <vector>
 
 class Camera;
 class Model;
@@ -46,9 +47,12 @@ public:
 	//Continuous world generation functions
 	void generateWorldSection(Model* character);
 	void generateObstacles(Model* groundPlate);
-	void setGroundModel(std::vector<std::vector<Model*>> model);
-	std::vector<std::vector<Model*>> getGroundModel();
+	void setGroundQueue(std::vector<std::queue<ci_string>> queue);
+	std::vector<std::queue<ci_string>> getGroundQueue();
 	void checkPositionOfPlayer(Model* character);
+
+	int numPlates;
+
 	
 	void setGround(Model* ground);
 	Model* getGround();
@@ -105,8 +109,8 @@ private:
 	int width;
 	int height;
 
-	//Stores the ground 3x3 array separarely to store and access it more easily
-	std::vector<std::vector<Model*>> groundModel;
+	//Stores the ground separarely to store and access it more easily
+	std::vector<std::queue<ci_string>> groundQueue;
 	Model* ground;
 
 

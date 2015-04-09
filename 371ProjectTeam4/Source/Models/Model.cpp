@@ -256,8 +256,13 @@ Model*	Model::RemoveChild(ci_string key){
 
 
 void Model::DeleteAllChildren(){
-	//will clear the array but may still have memory leak
-	child.clear();
+	std::map<ci_string, Model*>::iterator it;
+	if (!child.empty()){
+		for (it = child.begin(); it != child.end(); it++){
+			delete (*it).second;
+		}
+		child.clear();
+	}
 }
 //----------------------------------------
 void	Model::UpdateChildren(float dt){
