@@ -11,7 +11,6 @@
 #include "CubeModel.h"
 #include "SphereModel.h"
 #include "TorrentModel.h"
-#include "LightModel.h";
 #include "../Renderer.h"
 #include "particleEmitter.h"
 
@@ -24,7 +23,64 @@ PlaneModel::PlaneModel(vec3 size) : GroupModel(){
 
 	//note if(1){} used to seperate scope to allow rapid development
 
-	vec3 color =  vec3(1,0,0);
+	color =  vec3(1,0,0);
+	MakeBody();
+	//MakePropeller();
+	MakeWings();
+	MakeGuns();
+	MakeRudder();
+	MakeThrusters();
+	MakeThrust();
+	
+
+
+
+
+
+
+	//########################################################################################
+	//*/
+}
+
+PlaneModel::~PlaneModel(){
+	// Free the GPU from the Vertex Buffer
+	glDeleteBuffers(1, &mVertexBufferID);
+	glDeleteVertexArrays(1, &mVertexArrayID);
+}
+
+
+void PlaneModel::MakePropeller(){
+
+
+	//########################################################################################
+
+	
+	//--------------------------------------------------
+	//* Front Propeller
+	if(true){
+		GroupModel* propeller = new GroupModel();
+		float bladeLength = 0.6f;
+		int blades = 8;
+		for(int i=0; i<blades;i++){	
+			GroupModel* blade = new GroupModel();
+				SphereModel* sphere = new SphereModel();
+				sphere->SetScaling(vec3(bladeLength, 0.06f, 0.1f));
+				sphere->SetPosition(vec3(bladeLength/2, 0.0f, 0.0f));
+				sphere->SetRotation(vec3(1.0f, 0.0f, 0.0f), 45.0f);
+			blade->AddChild(sphere);
+			blade->SetRotation(vec3(0.0f,0.0f,2.0f), i*(360.0f/blades));
+			propeller->AddChild(blade);
+		}
+	
+		propeller->SetPosition(vec3(0.0f,0.0f,2.5f));
+		propeller->SetRotation(vec3(0.0f,0.0f,1.0f), 0.0f);
+		propeller->SetRotationSpeed(5.0f*180.0f);
+		AddChild("propeller", propeller);
+	}
+	//*/
+}
+
+void PlaneModel::MakeBody(){
 
 	//########################################################################################
 	
@@ -58,7 +114,11 @@ PlaneModel::PlaneModel(vec3 size) : GroupModel(){
 		group->mRotationAngleX = -5.0f;
 	}
 
-	//########################################################################################
+	
+
+}
+void PlaneModel::MakeWings(){
+//########################################################################################
 	//wing
 	GroupModel* wing = new GroupModel();
 	SphereModel* wingbase = new SphereModel();
@@ -73,13 +133,13 @@ PlaneModel::PlaneModel(vec3 size) : GroupModel(){
 	float wingAng = 6; // rotate to fit wing
 	float zOffset = -0.2;//-0.2;
 	float xOffset = 1.78f;//2.3f;
-	vec3 flapColor = vec3(0.3f);
+	vec3 flapColor = vec3(0.4f, 0,0);
 	//Left Flap -----------------------------------------------------------------------------
 	if(1){
 		GroupModel* wingside = new GroupModel();					//wingside->AddChild(new CubeModel(vec3(0,0,1), vec3(0.2f))); //marker
 			if(1){
 				Model* m = new CubeModel(flapColor);	//flap->AddChild(new CubeModel(vec3(1), vec3(0.2f))); //marker
-				m->SetPosition(vec3(1.60f,0,-0.42f));
+				m->SetPosition(vec3(1.60f,-0.025,-0.42f));
 				m->SetScaling(vec3(1.2f,0.05f, flapWidth));
 				wingside->AddChild(m);
 			}
@@ -87,7 +147,7 @@ PlaneModel::PlaneModel(vec3 size) : GroupModel(){
 			GroupModel* flap = new GroupModel();
 				//flaps cube
 				Model* m = new CubeModel(flapColor);	//flap->AddChild(new CubeModel(vec3(1), vec3(0.2f))); //marker
-				m->SetPosition(vec3(0,0,-flapWidth/2));
+				m->SetPosition(vec3(0,-0.025,-flapWidth/2));
 				m->SetScaling(vec3(flapLen,0.05f, flapWidth));
 			
 			flap->SetRotation(vec3(1,0,0), 0); // angle of flap
@@ -105,7 +165,7 @@ PlaneModel::PlaneModel(vec3 size) : GroupModel(){
 		GroupModel* wingside = new GroupModel();					//wingside->AddChild(new CubeModel(vec3(0,0,1), vec3(0.2f))); //marker
 			if(1){
 				Model* m = new CubeModel(flapColor);	//flap->AddChild(new CubeModel(vec3(1), vec3(0.2f))); //marker
-				m->SetPosition(vec3(-1.60f,0,-0.42f));
+				m->SetPosition(vec3(-1.60f,-0.025,-0.42f));
 				m->SetScaling(vec3(1.2f,0.05f, flapWidth));
 				wingside->AddChild(m);
 			}
@@ -113,7 +173,7 @@ PlaneModel::PlaneModel(vec3 size) : GroupModel(){
 			GroupModel* flap = new GroupModel();
 				//flaps cube
 				Model* m = new CubeModel(flapColor);	//flap->AddChild(new CubeModel(vec3(1), vec3(0.2f))); //marker
-				m->SetPosition(vec3(0,0,-flapWidth/2));
+				m->SetPosition(vec3(0,-0.025,-flapWidth/2));
 				m->SetScaling(vec3(flapLen,0.05f, flapWidth));
 			
 			flap->SetRotation(vec3(1,0,0), 0); // angle of flap
@@ -128,9 +188,9 @@ PlaneModel::PlaneModel(vec3 size) : GroupModel(){
 	}
 	
 	//########################################################################################
-
-
-
+}
+void PlaneModel::MakeGuns(){
+	
 	//Torrent Model ----------------------------------------
 	GroupModel* torrentLayer = new GroupModel();
 	if(1){
@@ -180,13 +240,11 @@ PlaneModel::PlaneModel(vec3 size) : GroupModel(){
 			torrentLayer->AddChild(g);
 		}
 	
-		torrentLayer->SetPosition(vec3(0,-0.2f,0.2));
-		AddChild("engines", torrentLayer);
+		torrentLayer->SetPosition(vec3(0,-0.2f,0.22));
+		AddChild("guns", torrentLayer);
 	}
-
-
-	
-
+}
+void PlaneModel::MakeThrusters(){
 
 	//########################################################################################
 
@@ -210,51 +268,60 @@ PlaneModel::PlaneModel(vec3 size) : GroupModel(){
 			group->AddChild("right", model);
 		}
 		AddChild("thruster", group);
-		
-		//Left afterburner
-		if(1){
-			ParticleEmitter* pe = new ParticleEmitter(vec3(0,0,-1));
-			pe->SetPosition(vec3(-0.5f,-0.1f,-2.4));
-			AddChild("left-afterburner", pe);
-		}
-
-		//Right afterburner
-		if(1){
-			ParticleEmitter* pe = new ParticleEmitter(vec3(0,0,-1));
-			pe->SetPosition(vec3(0.5f,-0.1f,-2.4));
-			AddChild("right-afterburner", pe);
-		}
 	}
-	//*/
 
-
+}
+void PlaneModel::MakeThrust(){
 
 	//########################################################################################
 
-	
-	//--------------------------------------------------
-	//* Front Propeller
-	if(true){
-		GroupModel* propeller = new GroupModel();
-		float bladeLength = 0.6f;
-		int blades = 8;
-		for(int i=0; i<blades;i++){	
-			GroupModel* blade = new GroupModel();
-				SphereModel* sphere = new SphereModel();
-				sphere->SetScaling(vec3(bladeLength, 0.06f, 0.1f));
-				sphere->SetPosition(vec3(bladeLength/2, 0.0f, 0.0f));
-				sphere->SetRotation(vec3(1.0f, 0.0f, 0.0f), 45.0f);
-			blade->AddChild(sphere);
-			blade->SetRotation(vec3(0.0f,0.0f,2.0f), i*(360.0f/blades));
-			propeller->AddChild(blade);
-		}
-	
-		propeller->SetPosition(vec3(0.0f,0.0f,2.5f));
-		propeller->SetRotation(vec3(0.0f,0.0f,1.0f), 0.0f);
-		propeller->SetRotationSpeed(5.0f*180.0f);
-		AddChild("propeller", propeller);
+	//Left afterburner
+	if(1){
+		ParticleEmitter* pe = new ParticleEmitter(vec3(0,0,-1));
+		pe->SetPosition(vec3(-0.5f,-0.1f,-2.4));
+		AddChild("left-afterburner", pe);
 	}
+
+	//Right afterburner
+	if(1){
+		ParticleEmitter* pe = new ParticleEmitter(vec3(0,0,-1));
+		pe->SetPosition(vec3(0.5f,-0.1f,-2.4));
+		AddChild("right-afterburner", pe);
+	}
+	
+
+	//Light ---------------------------------------------
+	if(1){
+		mLightModel = new LightModel();
+		AddChild(mLightModel);
+		mLightModel->SetPosition(vec3(0,0.5f,-2.5f));
+		mLightModel->SetIntensities(4.2f*vec3(1,0.6f,0.4f));
+		mLightModel->SetIsDirectional(1);
+		mLightModel->SetAttenuation(0.05f);
+		mLightModel->SetAmbientCoefficient(0.0f);
+	}
+
+
+	//Cast Darkness
+	if(1){
+		LightModel* lm = new LightModel();
+		lm->SetPosition(vec3(0,0.0f,-1.5f));
+		lm->SetIntensities(-3.2f*vec3(1,0.6f,0.4f));
+		lm->SetIsDirectional(1);
+		lm->SetAttenuation(0.2f);
+		lm->SetAmbientCoefficient(0.0f);
+		//mLightModel->SetConeAngle(45);
+		//mLightModel->SetConeDirection(vec3(0,0,-1));//relative to world
+		AddChild(lm);
+	}
+
+
+
 	//*/
+}
+void PlaneModel::MakeRudder(){
+	
+
 
 	//########################################################################################
 
@@ -291,58 +358,7 @@ PlaneModel::PlaneModel(vec3 size) : GroupModel(){
 
 
 	//########################################################################################
-
-
-
-
-
-	//Light ---------------------------------------------
-	LightModel* lightModel = new LightModel();
-	AddChild(lightModel);
-	lightModel->SetPosition(vec3(0,0.2f,-2.5f));
-	lightModel->SetIntensities(2.0f*vec3(1,0.6f,0.4f));
-	lightModel->SetIsDirectional(1);
-	lightModel->SetAttenuation(0.1f);
-	lightModel->SetAmbientCoefficient(0.0f);
-
-
-	//########################################################################################
-
-	//--------------------------------------------------
-	//* 2 rotating offset spheres
-	if(0){
-		GroupModel* propeller = new GroupModel();
-		float bladeLength = 0.6f;
-		int blades = 2;
-		for(int i=0; i<blades;i++){	
-			//Build blade -------------------------------
-			GroupModel* blade = new GroupModel();
-				SphereModel* sphere2 = new SphereModel();
-				sphere2->SetScaling(vec3(	0.2,	0.5f,	1.0f));
-				sphere2->SetPosition(vec3(	4.5f,	0.0f,	0.0f));
-				sphere2->SetRotation(vec3(	1.0f,	2.0f,	0.0f), 0.0f);
-				blade->AddChild(sphere2);
-			blade->SetRotation(vec3(0.0f,0.0f,1.0f), i*(360.0f/blades));
-			propeller->AddChild(blade);
-		}
-		propeller->SetPosition(vec3(0.0f,0.0f,0.0f));
-		propeller->SetRotation(vec3(0.0f,1.0f,0.0f), 0.0f);
-		propeller->SetRotationSpeed(0.5f*360.0f);
-		AddChild(propeller);
-	}
-	//*/
-
-
-
-	//*/
 }
-
-PlaneModel::~PlaneModel(){
-	// Free the GPU from the Vertex Buffer
-	glDeleteBuffers(1, &mVertexBufferID);
-	glDeleteVertexArrays(1, &mVertexArrayID);
-}
-
 void PlaneModel::Update(float dt){
 	GroupModel::Update(dt);
 

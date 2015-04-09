@@ -20,6 +20,8 @@
 #include "Models/GroupModel.h"
 #include "Models/PlaneModel.h"
 #include "Models/CubeModel.h"
+#include "Models/Craters.h"
+#include "Models/Terrain.h"
 #include "Models/SphereModel.h"
 #include "Models/Billboard.h"
 #include "Models/RazorbackModel.h";
@@ -48,7 +50,7 @@ World::World()
 
 	//Create light Vector
 	gLights = new vector<Light>();
-
+	float d = 0.5f;
 	// setup lights
 	Light spotlight;
 	spotlight.position = glm::vec4(0, 10, 0, 1);
@@ -59,17 +61,18 @@ World::World()
 	spotlight.coneDirection = glm::vec3(0, -1, 0);
 
 	Light directionalLight;
-	directionalLight.position = glm::vec4(5, 20, 0.6, 0); //w == 0 indications a directional light
-	directionalLight.intensities = glm::vec3(0.3, 0.35, 0.2); 
+	directionalLight.position = glm::vec4(15, 18, 0.6, 0); //w == 0 indications a directional light
+	directionalLight.intensities = glm::vec3(d, d, d); 
 	directionalLight.ambientCoefficient = 0.2f;
 
 	Light light3;
-	light3.position = glm::vec4(-5, 5, 15, 0); //w == 0 indications a directional light
+	light3.position = glm::vec4(-15, 5, 15, 0); //w == 0 indications a directional light
 	light3.intensities = glm::vec3(0.5, 0.5, 0.5); //weak yellowish light
 	light3.ambientCoefficient = 0.06f;
 
-	gLights->push_back(spotlight);
+	
 	gLights->push_back(directionalLight);
+	gLights->push_back(spotlight);
 	gLights->push_back(light3);
 
 
@@ -88,10 +91,8 @@ World::World()
 	depthProjectionMatrix = glm::ortho<float>(-100, 100, -100, 100, -50, 50);
 	projMat = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 150.0f);
 
-
-
-
 }
+
 World::~World()
 {
 	// Models
@@ -133,12 +134,8 @@ string LightNameBuilder(string name, int index){
 	return ss.str();
 }
 
-//=================================================
+//======================================================
 void World::LoadScene(const char * scene_path){
-	
-	
-
-	
 	
 	//Load Objects from File =====================
 	// Using case-insensitive strings and streams for easier parsing
@@ -163,24 +160,29 @@ void World::LoadScene(const char * scene_path){
 				CubeModel* cube = new CubeModel();
 				cube->Load(iss);
 				mModel.push_back(cube);
-			} else if( result == "sphere" ){
+			}
+			else if( result == "sphere" ){
 				// Load Sphere -----------
                 SphereModel* sphere = new SphereModel();
                 sphere->Load(iss);
                 mModel.push_back(sphere);
-            } else if( result == "path" ){
+			}
+			else if( result == "path" ){
 				// Load Path --------------
 				Path* path = new Path();
 				path->Load(iss);
                 mPath.push_back(path);
-			} else if( result == "spline" ){
+			} 
+			else if( result == "spline" ){
 				// Load Spline -------------
 				BSpline* path = new BSpline();
 				path->Load(iss);
                 mSpline.push_back(path);
-			} else if ( result.empty() == false && result[0] == '#'){
+			} 
+			else if ( result.empty() == false && result[0] == '#'){
 				// this is a comment line
-			} else {
+			} 
+			else {
 				fprintf(stderr, "Error loading scene file... !");
 				getchar();
 				exit(-1);
@@ -203,14 +205,11 @@ void World::LoadScene(const char * scene_path){
 	}
 
 
-
-
-
 	//####################################################################################
 	
 	// Create World
 
-	////////////////////////////////////////////////////
+	//------------------------------------------------------------------------------------
 	Model* m = new RazorbackModel();
 	m->SetPosition(vec3(0.0f, 1, -80.0f));
 	mModel.push_back(m);
@@ -222,13 +221,19 @@ void World::LoadScene(const char * scene_path){
 		GroupModel* ground = new GroupModel();
 		vec3 plateSize = vec3(vec3(200,1,200));
 
-
 		Model* groundPlate = new CubeModel(vec3(0.6f));
 		groundPlate->SetScaling(plateSize);
 		groundPlate->SetPosition(vec3(0,-0.5f,0));
 		//m->SetRotation(vec3(0,0,1), 90.0f);
 		ground->AddChild(groundPlate);
+
+
 		
+
+		//Drawing a terrain. To toggle this, enable "RenderTerrain()"  
+		DrawTerrain(ground);
+		//-----------------------------------------------------------
+
 
 		//Billboard
 		//============================================
@@ -245,8 +250,6 @@ void World::LoadScene(const char * scene_path){
 				(rand() % (int)plateSize.z) - 0.5f*plateSize.z
 			);
 
-			
-
 			Model* shape = new CubeModel(vec3(0.8f));
 			int x = 1.0f;
 			shape->SetPosition(randPos);
@@ -254,19 +257,14 @@ void World::LoadScene(const char * scene_path){
 			shape->CreateDefaultCollisionCube();
 			ground->AddChild(shape);
 
-			ground->AddChild("dog",shape);
-			
+			ground->AddChild("dog",shape);		
 		}
-
 		world->AddChild("Ground", ground);
 	}	
 	
 	//(rand() % 10 + 50)/10;
 
 	mModel.push_back(world);
-
-
-
 
 	if(0){
 		//Big Plane
@@ -279,19 +277,6 @@ void World::LoadScene(const char * scene_path){
 		character->SetSpeed(14.0f);	//Should move to camera
 		mModel.push_back(character);
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
 	
 
 	////////////////////////////////////////////////////////
@@ -310,16 +295,12 @@ void World::LoadScene(const char * scene_path){
 	character->SetSpeed(25.0f);	//Should move to camera
     mModel.push_back(character);
 
-
-	
 	// Create Camera -----------------------------------------
 	ThirdPersonCamera* newCam = new ThirdPersonCamera(character);
 	newCam->SetCameraRadius(7.0f);
 	mCamera.push_back(newCam); //4
     //*note: to be moved into its own class
 	////////////////////////////////////////////////////////
-
-	
 
 
 	//Billboard
@@ -337,23 +318,12 @@ void World::LoadScene(const char * scene_path){
 			mModel.push_back(myBillBoard);
 		}
 	}
-
-
-
-
-
-
-
-
-
-
-    
     LoadCameras();
 	mCurrentCamera = 0;
 }
+
 void World::LoadCameras()
 {
-    
     // Setup Camera ----------------------------------------
     mCamera.push_back(new StaticCamera(
 		vec3(3.0f, 5.0f, 5.0f),  
@@ -433,34 +403,76 @@ void World::Update(float dt)
 	}
 }
 
-void World::Draw(){
-	Renderer::BeginFrame();
 
-	//RenderShadows();
-	RenderScene();
-	DrawPath();
+void World::Draw(){
+
+	Renderer::BeginFrame(); //Default frame with black background
+	//Renderer::BeginFrameFog(); // If RenderFog() is toggle, switch to this frame to have a gray sky (more realistic)
+
+	//---------------------------------------------
+	RenderShadows(); // Toggles the shadow
+	RenderTerrain(); // Toggles the tiles texture
+	//RenderFog(); // Toggles the fog feature 
+	//RenderScene(); // Toggles the default scene
+	//DrawPath();
 
 	Renderer::EndFrame();
-
 }
 
-void World::RenderScene(){
+// Render fog to the scenery
+void World::RenderFog(){
+
 	// Set Shader for path lines
 	unsigned int prevShader = Renderer::GetCurrentShader();
-	Renderer::SetShader(SHADER_SOLID_COLOR);
+	Renderer::SetShader(SHADER_FOG);
 	glUseProgram(Renderer::GetShaderProgramID());
 
+	RenderCommon();
 
+	// Restore previous shader
+	Renderer::SetShader((ShaderType)prevShader);
+}
 
+// Drawing a terrain
+void World::DrawTerrain(GroupModel *ground){
+	//Create a simple terrain object
+	Model* terrain = new Terrain();
+	terrain->SetScaling(vec3(200,0.01,200));
+	terrain->SetPosition(vec3(0, 0, 0));
+	terrain->SetRotation(vec3(0, 0, 1), 360.0f);
+	ground->AddChild(terrain);
+
+	//Creating craters for decor (needs to be adjust)
+	Model* crater = new Craters();
+	crater->SetScaling(vec3(2, 2, 2));
+	crater->SetPosition(vec3(5, 1.5, 5));
+	crater->SetRotation(vec3(0, 1, 0), 50.0f);
+	ground->AddChild(crater);
+
+	Model* crater1 = new Craters();
+	crater1->SetScaling(vec3(2, 2, 2));
+	crater1->SetPosition(vec3(5, 3.5, 5));
+	crater->SetRotation(vec3(0, 1, 0), 35.0f);
+	ground->AddChild(crater1);
+
+	Model* crater2 = new Craters();
+	crater2->SetScaling(vec3(2, 2, 2));
+	crater2->SetPosition(vec3(5, 1.5, 8));
+	crater->SetRotation(vec3(0, 1, 0), 35.0f);
+	ground->AddChild(crater2);
+}
+
+//Common rendering for fog, shadow and texture features
+void World::RenderCommon(){
 	//Material Attributes uniform
 	GLuint MaterialID = glGetUniformLocation(Renderer::GetShaderProgramID(), "materialCoefficients");
 
 	//WorldCamPosition
 	GLuint CamPos = glGetUniformLocation(Renderer::GetShaderProgramID(), "worldCamPos");
+
 	//Pull CurrentLookAt vector from camera;	
 	camPos = mCamera[mCurrentCamera]->GetPosition();
 	glUniform3fv(CamPos, 1, &camPos[0]);
-
 
 	// This looks for the MVP Uniform variable in the Vertex Program
 	GLuint VPMatrixLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "ViewProjectionTransform");
@@ -472,20 +484,15 @@ void World::RenderScene(){
 	mat4 camView = GetCamera()->GetViewMatrix();
 	glUniformMatrix4fv(CamView, 1, GL_FALSE, &camView[0][0]);
 
-	
-
 	//Light Projection
 	GLuint LightProj = glGetUniformLocation(Renderer::GetShaderProgramID(), "LightVP");
 	mat4 lightProject = biasMatrix * depthProjectionMatrix * altCamera->GetViewMatrix();
 	glUniformMatrix4fv(LightProj, 1, GL_FALSE, &lightProject[0][0]);
 
-
 	//Lights
 	GLuint NumLights = glGetUniformLocation(Renderer::GetShaderProgramID(), "numLights");
 	int numberOfLights = (int)gLights->size();
 	glUniform1i(NumLights, numberOfLights);
-
-
 
 	vector<GLuint> gluints;
 	string uniformName;
@@ -530,10 +537,6 @@ void World::RenderScene(){
 
 	}
 
-
-
-
-
 	// Draw models
 	vec4 matC;
 	for (vector<Model*>::iterator it = mModel.begin(); it < mModel.end(); ++it){
@@ -543,22 +546,47 @@ void World::RenderScene(){
 		// Draw model
 		(*it)->Draw();
 	}
+}
+
+
+// Render the terrain to the scenery
+void World::RenderTerrain(){
+
+	// Set Shader for path lines
+	unsigned int prevShader = Renderer::GetCurrentShader();
+	Renderer::SetShader(SHADER_TEXTURE);
+	glUseProgram(Renderer::GetShaderProgramID());
+
+	//RenderShadows();
+	RenderCommon();
+	
 
 	// Restore previous shader
 	Renderer::SetShader((ShaderType)prevShader);
 
-
 }
+
+//Default scenery
+void World::RenderScene(){
+	// Set Shader for path lines
+	unsigned int prevShader = Renderer::GetCurrentShader();
+	Renderer::SetShader(SHADER_SOLID_COLOR);
+	glUseProgram(Renderer::GetShaderProgramID());
+
+	RenderCommon();
+
+	// Restore previous shader
+	Renderer::SetShader((ShaderType)prevShader);
+}
+
 
 void World::RenderShadows()
 {
 
 	//for (size_t i = 0; i < gLights->size(); ++i){
-
 	glBindFramebuffer(GL_FRAMEBUFFER, 1);
 	// Clear the screen
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 
 	altCamera->SetPosition((glm::vec3)(*gLights)[0].position);
 	//Dynamic light movement
@@ -576,8 +604,6 @@ void World::RenderShadows()
 	glCullFace(GL_BACK);
 
 	//}
-
-
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	glViewport(0, 0, width, height);
@@ -599,9 +625,6 @@ void World::DrawShadow(){
 	Renderer::SetShader(SHADER_SHADOW);
 	glUseProgram(Renderer::GetShaderProgramID());
 
-
-
-
 	// This looks for the MVP Uniform variable in the Vertex Program
 	GLuint ViewLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "LightVM");
 	mat4 lightView = altCamera->GetViewMatrix();
@@ -610,8 +633,6 @@ void World::DrawShadow(){
 	//ProjMat
 	GLuint Projection = glGetUniformLocation(Renderer::GetShaderProgramID(), "Projection");
 	glUniformMatrix4fv(Projection, 1, GL_FALSE, &depthProjectionMatrix[0][0]);
-
-
 
 	//Draw All models
 	for (vector<Model*>::iterator it = mModel.begin(); it < mModel.end(); ++it){
@@ -688,7 +709,6 @@ Model* World::FindModelByIndex(unsigned int index)
 {
     return mModel.size() > 0 ? mModel[index % mModel.size()] : nullptr;
 }
-
 
 
 int World::AddLight(vec4 pos, vec3 color){

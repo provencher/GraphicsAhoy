@@ -83,9 +83,18 @@ void Renderer::Initialize()
                             shaderPathPrefix + "BlueColor.fragmentshader")
                                );
 	sShaderProgramID.push_back(
-		LoadShaders(shaderPathPrefix + "shadow.vertexshader",
-		shaderPathPrefix + "shadow.fragmentshader")
-		);
+				LoadShaders(shaderPathPrefix + "shadow.vertexshader",
+							shaderPathPrefix + "shadow.fragmentshader")
+							   );
+
+	sShaderProgramID.push_back(
+				LoadShaders(shaderPathPrefix + "Texture.vertexshader",
+							shaderPathPrefix + "Texture.fragmentshader")
+							   );
+	sShaderProgramID.push_back(
+				LoadShaders(shaderPathPrefix + "Fog.vertexshader",
+							shaderPathPrefix + "Fog.fragmentshader")
+							   );
 	sCurrentShader = 0;
 	BindFrame();
 }
@@ -104,11 +113,25 @@ void Renderer::Shutdown()
 	spWindow = nullptr;
 }
 
+//Frame used to render fog to get skycolor = gray
+void Renderer::BeginFrameFog(){
+	// Clear the screen
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClearColor(0.5f, 0.5f, 0.5f, 0.0f); // Skycolor for the fog
+
+	int width;
+	int height;
+	glfwGetWindowSize(spWindow, &width, &height);
+	glViewport(0, 0, width, height);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
 void Renderer::BeginFrame()
 {
 	// Clear the screen
 	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	int width;
@@ -116,7 +139,6 @@ void Renderer::BeginFrame()
 	glfwGetWindowSize(spWindow, &width, &height);
 	glViewport(0, 0, width, height);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
 }
 
 void Renderer::EndFrame()
@@ -127,7 +149,6 @@ void Renderer::EndFrame()
 
 
 void Renderer::BindFrame(){
-
 
 	// The framebuffer, which regroups 0, 1, or more textures, and 0 or 1 depth buffer.
 	GLuint FramebufferName = 0;

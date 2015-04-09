@@ -62,6 +62,24 @@
     <None Include="..\Scenes\ProjectSceen.scene">
       <Filter>Resource Files\Scenes</Filter>
     </None>
+    <None Include="..\Source\Shaders\Fog.fragmentshader">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="..\Source\Shaders\Fog.vertexshader">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="..\Source\Shaders\shadow.fragmentshader">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="..\Source\Shaders\shadow.vertexshader">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="..\Source\Shaders\Texture.fragmentshader">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="..\Source\Shaders\Texture.vertexshader">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Source\EventManager.cpp">
@@ -134,6 +152,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\Source\Models\LightModel.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\TextureLoader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Models\Terrain.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Models\Craters.cpp">
       <Filter>Source Files\Model</Filter>
     </ClCompile>
   </ItemGroup>
@@ -213,6 +240,15 @@
     <ClInclude Include="..\Source\Models\LightModel.h">
       <Filter>Source Files\Model</Filter>
     </ClInclude>
+    <ClInclude Include="..\Source\TextureLoader.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Models\Terrain.h">
+      <Filter>Source Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Models\Craters.h">
+      <Filter>Source Files\Model</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Scenes\Obj\XA-20_Razorback_Strike_Fighter\Glass_Cockpit.png">
@@ -229,6 +265,24 @@
     </Image>
     <Image Include="..\Scenes\Obj\XA-20_Razorback_Strike_Fighter\Eject_Seat.png">
       <Filter>Resource Files\Obj\XA-20</Filter>
+    </Image>
+    <Image Include="..\Source\Textures\ice.bmp">
+      <Filter>Resource Files\Obj</Filter>
+    </Image>
+    <Image Include="..\Source\Textures\ice2.bmp">
+      <Filter>Resource Files\Obj</Filter>
+    </Image>
+    <Image Include="..\Source\Textures\img1.bmp">
+      <Filter>Resource Files\Obj</Filter>
+    </Image>
+    <Image Include="..\Source\Textures\terrain.bmp">
+      <Filter>Resource Files\Obj</Filter>
+    </Image>
+    <Image Include="..\Source\Textures\tiles1.bmp">
+      <Filter>Resource Files\Obj</Filter>
+    </Image>
+    <Image Include="..\Source\Textures\wood.bmp">
+      <Filter>Resource Files\Obj</Filter>
     </Image>
   </ItemGroup>
 </Project>

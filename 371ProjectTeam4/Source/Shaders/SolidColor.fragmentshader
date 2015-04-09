@@ -1,18 +1,21 @@
 #version 330 core
 
 // Ouput to fragment shader
-out vec3 color;
+out vec4 color;
 
 in vec4 v_color;
 in vec3 normal; // You will need this when you do per-fragment lighting
 in vec4 worldPosition;
 in vec4 shadowMapCoords0;
+in vec2 UV; // for textures
+
 
 // Light and Material Uniform Variables
 uniform vec4 materialCoefficients; // x: ambient   y: diffuse   z: specular   w: specular exponent
-
 uniform vec3 worldCamPos;
 uniform sampler2DShadow R_shadowMap;
+uniform sampler2D mySamplerTexture;
+
 
 #define MAX_LIGHTS 10
 uniform int numLights;
@@ -99,8 +102,6 @@ float ApplyShadow(Light light) {
     //directional light
     vec3 surfaceToLight = normalize(light.position.xyz - worldPosition.xyz);
       
-		
-
 	float cosTheta = clamp( dot( normal, surfaceToLight ), 0,1 );
 
 	float visibility=1.0;
@@ -134,21 +135,23 @@ void main() {
 
     //combine color from all the lights
     vec3 linearColor = vec3(0);
-
 	
 
 	if (numLights > 1){
-		for(int i = 0; i < numLights; ++i){      
-		
+		for(int i = 0; i < numLights; ++i){      	
 			linearColor += ApplyLight(allLights[i], surfaceColor.rgb, normal, surfacePos, surfaceToCamera);		
-
-		}
-	
+		}	
 	}
 
-    float e = ApplyShadow(allLights[0]);
+    float shadowAmt = ApplyShadow(allLights[0]);
     
     //final color (after gamma correction)
+   // vec3 gamma = vec3(1.0/2.2);
+
+   // color = surfaceColor.rgb * linearColor * e;
+
+	//final color (after gamma correction)
     vec3 gamma = vec3(1.0/2.2);
-    color = surfaceColor.rgb * linearColor * e;
+    color = vec4(pow(linearColor*shadowAmt, gamma), surfaceColor.a);
+
 }

@@ -24,6 +24,8 @@ enum ShaderType
 	SHADER_PATH_LINES,
 	SHADER_BLUE,
 	SHADER_SHADOW,
+	SHADER_TEXTURE,
+	SHADER_FOG,
 	NUM_SHADERS
 };
 
@@ -35,6 +37,7 @@ public:
 	static void Shutdown();
 
 	static void BeginFrame();
+	static void BeginFrameFog(); // when toggling the fog, enable this to make the background gray
 	static void EndFrame();
 	static void BindFrame();
 

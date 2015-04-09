@@ -1,52 +1,114 @@
-﻿Build started 2015-04-06 12:59:09 PM.
-     1>Project "C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\Assignment1.vcxproj" on node 2 (Build target(s)).
+﻿Build started 2015-04-07 11:50:28 PM.
+     1>Project "D:\GraphicsAhoy\GraphicsAhoy-fog\371ProjectTeam4\VS2012\Assignment1.vcxproj" on node 2 (Rebuild target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /I"../ThirdParty/glew-1.10.0/include" /I"../ThirdParty/glfw-3.0.4/include" /I../ThirdParty/glm /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\/../Build/Debug/" /Fd"C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\/../Build/Debug/vc110.pdb" /Gd /TP /analyze- /errorReport:prompt ..\Source\BSplineCamera.cpp ..\Source\Models\BillBoard.cpp ..\Source\Models\LightModel.cpp ..\Source\Models\Model.cpp ..\Source\Models\PlaneModel.cpp ..\Source\Models\particleEmitter.cpp ..\Source\ThirdPersonCamera.cpp ..\Source\World.cpp ..\Source\main.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"../ThirdParty/glew-1.10.0/include" /I"../ThirdParty/glfw-3.0.4/include" /I../ThirdParty/glm /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"D:\GraphicsAhoy\GraphicsAhoy-fog\371ProjectTeam4\VS2012\/../Build/Debug/" /Fd"D:\GraphicsAhoy\GraphicsAhoy-fog\371ProjectTeam4\VS2012\/../Build/Debug/vc120.pdb" /Gd /TP /analyze- /errorReport:prompt ..\Source\BSpline.cpp ..\Source\BSplineCamera.cpp ..\Source\Camera.cpp ..\Source\light.cpp ..\Source\Mesh.cpp ..\Source\meshLoader.cpp ..\Source\Models\BillBoard.cpp ..\Source\Models\Craters.cpp ..\Source\Models\CubeModel.cpp ..\Source\Models\GroupModel.cpp ..\Source\Models\LightModel.cpp ..\Source\Models\Model.cpp ..\Source\Models\particle.cpp ..\Source\Models\particleEmitter.cpp ..\Source\Models\PlaneModel.cpp ..\Source\Models\RazorbackModel.cpp ..\Source\Models\SphereModel.cpp ..\Source\Models\Terrain.cpp ..\Source\Models\TorrentModel.cpp ..\Source\Path.cpp ..\Source\StaticCamera.cpp ..\Source\EventManager.cpp ..\Source\main.cpp ..\Source\Renderer.cpp ..\Source\TextureLoader.cpp ..\Source\ThirdPersonCamera.cpp ..\Source\World.cpp
          World.cpp
-     1>c:\users\jordan\desktop\graphicsahoy-master\371projectteam4\source\world.cpp(25): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-     1>c:\users\jordan\desktop\graphicsahoy-master\371projectteam4\source\world.cpp(251): warning C4244: 'initializing' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\jordan\desktop\graphicsahoy-master\371projectteam4\source\world.cpp(328): warning C4244: 'initializing' : conversion from 'int' to 'float', possible loss of data
-     1>c:\users\jordan\desktop\graphicsahoy-master\371projectteam4\source\world.cpp(332): warning C4244: 'initializing' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\jordan\desktop\graphicsahoy-master\371projectteam4\source\world.cpp(498): warning C4018: '<' : signed/unsigned mismatch
+     1>d:\graphicsahoy\graphicsahoy-fog\371projectteam4\source\world.cpp(27): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+     1>d:\graphicsahoy\graphicsahoy-fog\371projectteam4\source\world.cpp(251): warning C4244: 'initializing' : conversion from 'float' to 'int', possible loss of data
+     1>d:\graphicsahoy\graphicsahoy-fog\371projectteam4\source\world.cpp(306): warning C4244: 'initializing' : conversion from 'int' to 'float', possible loss of data
+     1>d:\graphicsahoy\graphicsahoy-fog\371projectteam4\source\world.cpp(310): warning C4244: 'initializing' : conversion from 'float' to 'int', possible loss of data
+     1>d:\graphicsahoy\graphicsahoy-fog\371projectteam4\source\world.cpp(503): warning C4018: '<' : signed/unsigned mismatch
          GLM: perspective function taking degrees as a parameter is deprecated. #define GLM_FORCE_RADIANS before including GLM headers to remove this message.
-         Generating Code...
-         Skipping... (no relevant changes detected)
-         main.cpp
          ThirdPersonCamera.cpp
-         particleEmitter.cpp
+     1>d:\graphicsahoy\graphicsahoy-fog\371projectteam4\source\thirdpersoncamera.cpp(226): warning C4244: '-=' : conversion from 'double' to 'float', possible loss of data
+     1>d:\graphicsahoy\graphicsahoy-fog\371projectteam4\source\thirdpersoncamera.cpp(235): warning C4244: '+=' : conversion from 'double' to 'float', possible loss of data
+     1>d:\graphicsahoy\graphicsahoy-fog\371projectteam4\source\thirdpersoncamera.cpp(267): warning C4244: '+=' : conversion from 'double' to 'float', possible loss of data
+     1>d:\graphicsahoy\graphicsahoy-fog\371projectteam4\source\thirdpersoncamera.cpp(274): warning C4244: '-=' : conversion from 'double' to 'float', possible loss of data
+         GLM: rotate function taking degrees as a parameter is deprecated. #define GLM_FORCE_RADIANS before including GLM headers to remove this message.
+         TextureLoader.cpp
+     1>d:\graphicsahoy\graphicsahoy-fog\371projectteam4\source\textureloader.cpp(22): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdio.h(211) : see declaration of 'fopen'
+     1>d:\graphicsahoy\graphicsahoy-fog\371projectteam4\source\textureloader.cpp(128): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdio.h(211) : see declaration of 'fopen'
+         Renderer.cpp
+     1>d:\graphicsahoy\graphicsahoy-fog\371projectteam4\source\renderer.cpp(189): warning C4018: '<' : signed/unsigned mismatch
+         main.cpp
+         EventManager.cpp
+     1>d:\graphicsahoy\graphicsahoy-fog\371projectteam4\source\eventmanager.cpp(67): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>d:\graphicsahoy\graphicsahoy-fog\371projectteam4\source\eventmanager.cpp(149): warning C4244: 'return' : conversion from 'double' to 'float', possible loss of data
+     1>d:\graphicsahoy\graphicsahoy-fog\371projectteam4\source\eventmanager.cpp(154): warning C4244: 'return' : conversion from 'double' to 'float', possible loss of data
+     1>d:\graphicsahoy\graphicsahoy-fog\371projectteam4\source\eventmanager.cpp(157): warning C4244: 'return' : conversion from 'double' to 'float', possible loss of data
+     1>d:\graphicsahoy\graphicsahoy-fog\371projectteam4\source\eventmanager.cpp(160): warning C4244: 'return' : conversion from 'double' to 'float', possible loss of data
+         StaticCamera.cpp
+         Path.cpp
+         TorrentModel.cpp
+         Terrain.cpp
+         SphereModel.cpp
+         RazorbackModel.cpp
          PlaneModel.cpp
+     1>d:\graphicsahoy\graphicsahoy-fog\371projectteam4\source\models\planemodel.cpp(134): warning C4305: 'initializing' : truncation from 'double' to 'float'
+         particleEmitter.cpp
+     1>d:\graphicsahoy\graphicsahoy-fog\371projectteam4\source\models\particleemitter.cpp(42): warning C4244: 'initializing' : conversion from 'int' to 'float', possible loss of data
+         particle.cpp
          Model.cpp
+         GLM: rotate function taking degrees as a parameter is deprecated. #define GLM_FORCE_RADIANS before including GLM headers to remove this message.
          LightModel.cpp
+         GroupModel.cpp
+         CubeModel.cpp
+         Craters.cpp
+         Generating Code...
+         Compiling...
          BillBoard.cpp
+         GLM: rotate function taking degrees as a parameter is deprecated. #define GLM_FORCE_RADIANS before including GLM headers to remove this message.
+         meshLoader.cpp
+     1>d:\graphicsahoy\graphicsahoy-fog\371projectteam4\source\meshloader.cpp(219): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdio.h(211) : see declaration of 'fopen'
+     1>d:\graphicsahoy\graphicsahoy-fog\371projectteam4\source\meshloader.cpp(228): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdio.h(230) : see declaration of 'fscanf'
+     1>d:\graphicsahoy\graphicsahoy-fog\371projectteam4\source\meshloader.cpp(235): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdio.h(230) : see declaration of 'fscanf'
+     1>d:\graphicsahoy\graphicsahoy-fog\371projectteam4\source\meshloader.cpp(240): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdio.h(230) : see declaration of 'fscanf'
+     1>d:\graphicsahoy\graphicsahoy-fog\371projectteam4\source\meshloader.cpp(245): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdio.h(230) : see declaration of 'fscanf'
+     1>d:\graphicsahoy\graphicsahoy-fog\371projectteam4\source\meshloader.cpp(251): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdio.h(230) : see declaration of 'fscanf'
+         Mesh.cpp
+         light.cpp
+         Camera.cpp
+         GLM: perspective function taking degrees as a parameter is deprecated. #define GLM_FORCE_RADIANS before including GLM headers to remove this message.
          BSplineCamera.cpp
+         GLM: rotate function taking degrees as a parameter is deprecated. #define GLM_FORCE_RADIANS before including GLM headers to remove this message.
+         BSpline.cpp
+     1>d:\graphicsahoy\graphicsahoy-fog\371projectteam4\source\bspline.cpp(96): warning C4244: 'argument' : conversion from 'float' to 'const unsigned long', possible loss of data
+     1>d:\graphicsahoy\graphicsahoy-fog\371projectteam4\source\bspline.cpp(98): warning C4018: '<' : signed/unsigned mismatch
+     1>d:\graphicsahoy\graphicsahoy-fog\371projectteam4\source\bspline.cpp(71): warning C4101: 'l' : unreferenced local variable
+     1>d:\graphicsahoy\graphicsahoy-fog\371projectteam4\source\bspline.cpp(193): warning C4244: 'return' : conversion from 'unsigned long' to 'float', possible loss of data
+         Generating Code...
        Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\/../Bin/371ProjectTeam4-Debug.exe" /INCREMENTAL /NOLOGO /LIBPATH:"../ThirdParty/glew-1.10.0/lib/Release/Win32" /LIBPATH:"../ThirdParty/glfw-3.0.4/lib/Win32/lib-msvc110" opengl32.lib glew32s.lib glfw3.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\/../Bin/371ProjectTeam4-Debug.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\/../Bin/371ProjectTeam4-Debug.lib" /MACHINE:X86 "C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\/../Build/Debug/BSpline.obj"
-         "C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\/../Build/Debug/BSplineCamera.obj"
-         "C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\/../Build/Debug/Camera.obj"
-         "C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\/../Build/Debug/light.obj"
-         "C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\/../Build/Debug/Mesh.obj"
-         "C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\/../Build/Debug/meshLoader.obj"
-         "C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\/../Build/Debug/BillBoard.obj"
-         "C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\/../Build/Debug/CubeModel.obj"
-         "C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\/../Build/Debug/GroupModel.obj"
-         "C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\/../Build/Debug/LightModel.obj"
-         "C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\/../Build/Debug/Model.obj"
-         "C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\/../Build/Debug/particle.obj"
-         "C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\/../Build/Debug/particleEmitter.obj"
-         "C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\/../Build/Debug/PlaneModel.obj"
-         "C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\/../Build/Debug/RazorbackModel.obj"
-         "C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\/../Build/Debug/SphereModel.obj"
-         "C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\/../Build/Debug/TorrentModel.obj"
-         "C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\/../Build/Debug/Path.obj"
-         "C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\/../Build/Debug/StaticCamera.obj"
-         "C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\/../Build/Debug/EventManager.obj"
-         "C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\/../Build/Debug/main.obj"
-         "C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\/../Build/Debug/Renderer.obj"
-         "C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\/../Build/Debug/ThirdPersonCamera.obj"
-         "C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\/../Build/Debug/World.obj"
-         Assignment1.vcxproj -> C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\/../Bin/371ProjectTeam4-Debug.exe
-     1>Done Building Project "C:\Users\Jordan\Desktop\GraphicsAhoy-master\371ProjectTeam4\VS2012\Assignment1.vcxproj" (Build target(s)).
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\GraphicsAhoy\GraphicsAhoy-fog\371ProjectTeam4\VS2012\/../Bin/371ProjectTeam4-Debug.exe" /INCREMENTAL /NOLOGO /LIBPATH:"../ThirdParty/glew-1.10.0/lib/Release/Win32" /LIBPATH:"../ThirdParty/glfw-3.0.4/lib/Win32/lib-msvc110" opengl32.lib glew32s.lib glfw3.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:\GraphicsAhoy\GraphicsAhoy-fog\371ProjectTeam4\VS2012\/../Bin/371ProjectTeam4-Debug.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\GraphicsAhoy\GraphicsAhoy-fog\371ProjectTeam4\VS2012\/../Bin/371ProjectTeam4-Debug.lib" /MACHINE:X86 "D:\GraphicsAhoy\GraphicsAhoy-fog\371ProjectTeam4\VS2012\/../Build/Debug/BSpline.obj"
+         "D:\GraphicsAhoy\GraphicsAhoy-fog\371ProjectTeam4\VS2012\/../Build/Debug/BSplineCamera.obj"
+         "D:\GraphicsAhoy\GraphicsAhoy-fog\371ProjectTeam4\VS2012\/../Build/Debug/Camera.obj"
+         "D:\GraphicsAhoy\GraphicsAhoy-fog\371ProjectTeam4\VS2012\/../Build/Debug/light.obj"
+         "D:\GraphicsAhoy\GraphicsAhoy-fog\371ProjectTeam4\VS2012\/../Build/Debug/Mesh.obj"
+         "D:\GraphicsAhoy\GraphicsAhoy-fog\371ProjectTeam4\VS2012\/../Build/Debug/meshLoader.obj"
+         "D:\GraphicsAhoy\GraphicsAhoy-fog\371ProjectTeam4\VS2012\/../Build/Debug/BillBoard.obj"
+         "D:\GraphicsAhoy\GraphicsAhoy-fog\371ProjectTeam4\VS2012\/../Build/Debug/Craters.obj"
+         "D:\GraphicsAhoy\GraphicsAhoy-fog\371ProjectTeam4\VS2012\/../Build/Debug/CubeModel.obj"
+         "D:\GraphicsAhoy\GraphicsAhoy-fog\371ProjectTeam4\VS2012\/../Build/Debug/GroupModel.obj"
+         "D:\GraphicsAhoy\GraphicsAhoy-fog\371ProjectTeam4\VS2012\/../Build/Debug/LightModel.obj"
+         "D:\GraphicsAhoy\GraphicsAhoy-fog\371ProjectTeam4\VS2012\/../Build/Debug/Model.obj"
+         "D:\GraphicsAhoy\GraphicsAhoy-fog\371ProjectTeam4\VS2012\/../Build/Debug/particle.obj"
+         "D:\GraphicsAhoy\GraphicsAhoy-fog\371ProjectTeam4\VS2012\/../Build/Debug/particleEmitter.obj"
+         "D:\GraphicsAhoy\GraphicsAhoy-fog\371ProjectTeam4\VS2012\/../Build/Debug/PlaneModel.obj"
+         "D:\GraphicsAhoy\GraphicsAhoy-fog\371ProjectTeam4\VS2012\/../Build/Debug/RazorbackModel.obj"
+         "D:\GraphicsAhoy\GraphicsAhoy-fog\371ProjectTeam4\VS2012\/../Build/Debug/SphereModel.obj"
+         "D:\GraphicsAhoy\GraphicsAhoy-fog\371ProjectTeam4\VS2012\/../Build/Debug/Terrain.obj"
+         "D:\GraphicsAhoy\GraphicsAhoy-fog\371ProjectTeam4\VS2012\/../Build/Debug/TorrentModel.obj"
+         "D:\GraphicsAhoy\GraphicsAhoy-fog\371ProjectTeam4\VS2012\/../Build/Debug/Path.obj"
+         "D:\GraphicsAhoy\GraphicsAhoy-fog\371ProjectTeam4\VS2012\/../Build/Debug/StaticCamera.obj"
+         "D:\GraphicsAhoy\GraphicsAhoy-fog\371ProjectTeam4\VS2012\/../Build/Debug/EventManager.obj"
+         "D:\GraphicsAhoy\GraphicsAhoy-fog\371ProjectTeam4\VS2012\/../Build/Debug/main.obj"
+         "D:\GraphicsAhoy\GraphicsAhoy-fog\371ProjectTeam4\VS2012\/../Build/Debug/Renderer.obj"
+         "D:\GraphicsAhoy\GraphicsAhoy-fog\371ProjectTeam4\VS2012\/../Build/Debug/TextureLoader.obj"
+         "D:\GraphicsAhoy\GraphicsAhoy-fog\371ProjectTeam4\VS2012\/../Build/Debug/ThirdPersonCamera.obj"
+         "D:\GraphicsAhoy\GraphicsAhoy-fog\371ProjectTeam4\VS2012\/../Build/Debug/World.obj"
+     1>LINK : warning LNK4098: defaultlib 'LIBCMT' conflicts with use of other libs; use /NODEFAULTLIB:library
+     1>LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
+     1>glew32s.lib(glew.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'glew32s.lib(glew.obj)' or at 'D:\GraphicsAhoy\GraphicsAhoy-fog\371ProjectTeam4\Bin\vc100.pdb'; linking object as if no debug info
+         Assignment1.vcxproj -> D:\GraphicsAhoy\GraphicsAhoy-fog\371ProjectTeam4\VS2012\/../Bin/371ProjectTeam4-Debug.exe
+     1>Done Building Project "D:\GraphicsAhoy\GraphicsAhoy-fog\371ProjectTeam4\VS2012\Assignment1.vcxproj" (Rebuild target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:04.56
+Time Elapsed 00:00:18.12

@@ -50,8 +50,6 @@ controlpoint = 4.0 -1.0 10.0
 controlpoint = 4.0 0.0 2.5
 
 
-
-
 [Cube]
 name     = "Cube"
 scaling  = 5.0 1.0 3.0
@@ -59,6 +57,7 @@ position = 0.0 1.0 0.0
 rotation = 0.0 0.0 1.0 180
 boundpath = "Path2"
 pathspeed = 3.0
+
 
 [Sphere]
 name     = "Sphere1"

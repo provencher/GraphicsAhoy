@@ -143,7 +143,7 @@ void ThirdPersonCamera::UpdateTargeModel(float dt){
 	// Settings -------------------------------------------------------
 	int turn = 0;				//turn direction - for left + for right
 	int verticalTilt = 0;		//- for up + for down
-	float tiltspeed = 10.0f;	
+	float tiltspeed = 5.0f;	
 
 	//vec3 v3MaxAngles = vec3(0,0,0);
 	float maxZTilt = 45;
@@ -192,15 +192,6 @@ void ThirdPersonCamera::UpdateTargeModel(float dt){
 
 			turn++;
 		}
-		//*
-		//Control Flap movement when turning --------------------------------------------------------
-		Model* leftFlap = mTargetModel->child["wing"]->child["left"]->child["flap"];
-		leftFlap->SetRotation(leftFlap->GetRotationAxis(), -45*mTargetModel->mRotationAngleZ/maxZTilt);
-
-		Model* rightFlap = mTargetModel->child["wing"]->child["right"]->child["flap"];
-		rightFlap->SetRotation(rightFlap->GetRotationAxis(), 45*mTargetModel->mRotationAngleZ/maxZTilt);
-		//---------------------------------------------------------------------------------------------
-		//*/
 	}
 
 	//===========================================================================
@@ -212,6 +203,21 @@ void ThirdPersonCamera::UpdateTargeModel(float dt){
 		movementDir -= mRight;
 		//-------------------------------------------
 	}
+
+
+	//*
+	//Control Flap movement when turning --------------------------------------------------------
+	float flapFactorH = mTargetModel->mRotationAngleZ/maxZTilt;
+	float flapFactorV = mTargetModel->mRotationAngleX/maxXTilt;
+	float maxFlapAngle = 30;
+	Model* leftFlap = mTargetModel->child["wing"]->child["left"]->child["flap"];
+	leftFlap->SetRotation(leftFlap->GetRotationAxis(), -maxFlapAngle*flapFactorH -maxFlapAngle*flapFactorV);
+
+	Model* rightFlap = mTargetModel->child["wing"]->child["right"]->child["flap"];
+	rightFlap->SetRotation(rightFlap->GetRotationAxis(), maxFlapAngle*flapFactorH -maxFlapAngle*flapFactorV);
+	//---------------------------------------------------------------------------------------------
+	//*/
+
 
 
 	//Move up Move down
