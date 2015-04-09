@@ -12,6 +12,8 @@
 #include "../Path.h"
 #include "../BSpline.h"
 #include "../World.h"
+#include "..\Tools\ray.h"
+#include "..\Tools\RayTriangleCollision.h"
 //#include "StaticCamera.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/common.hpp>
@@ -277,7 +279,12 @@ void	Model::DrawChildren(){
 void	Model::SetParent(Model* m){
 	this->mParent = m;
 }
-
+//delete child competly
+void	Model::DeleteChild(ci_string key){ 
+	Model* old = child[key];	
+	delete old;
+	child.erase(key);			
+}
 void Model::CreateDefaultCollisionCube()
 {
 	if (mCollisionCube == nullptr)
@@ -296,76 +303,149 @@ void Model::ReScaleCollisionCube(vec3 newScale) // (1.0f, 1.0f, 1.0f) is normal 
 	}
 }
 
-void Model::collideWith(Model* other)
+bool Model::CollideWith(Model* other)
 {
 	if (this->mCollisionCube == nullptr || other == this || other->mCollisionCube == nullptr)
 	{
-		return;
+		return false;
+	}
+	
+	//vec3 thisWorldPosition = vec3(GetWorldMatrix() * vec4(mPosition, 1.0f));
+	//vec3 otherWorldPosition = vec3(other->GetWorldMatrix() * vec4(other->mPosition, 1.0f));
+	vec3 thisWorldPosition = this->mPosition;
+	vec3 otherWorldPosition = other->mPosition;
+	
+	float Axa = thisWorldPosition.x - this->mCollisionCube->x * this->mScaling.x / 2.0f;
+	float Axb = thisWorldPosition.x + this->mCollisionCube->x * this->mScaling.x / 2.0f;
+	float Aya = thisWorldPosition.y - this->mCollisionCube->y * this->mScaling.y / 2.0f;
+	float Ayb = thisWorldPosition.y + this->mCollisionCube->y * this->mScaling.y / 2.0f;
+	float Aza = thisWorldPosition.z - this->mCollisionCube->z * this->mScaling.z / 2.0f;
+	float Azb = thisWorldPosition.z + this->mCollisionCube->z * this->mScaling.z / 2.0f;
+	float Bxa = otherWorldPosition.x - other->mCollisionCube->x * other->mScaling.x / 2.0f;
+	float Bxb = otherWorldPosition.x + other->mCollisionCube->x * other->mScaling.x / 2.0f;
+	float Bya = otherWorldPosition.y - other->mCollisionCube->y * other->mScaling.y / 2.0f;
+	float Byb = otherWorldPosition.y + other->mCollisionCube->y * other->mScaling.y / 2.0f;
+	float Bza = otherWorldPosition.z - other->mCollisionCube->z * other->mScaling.z / 2.0f;
+	float Bzb = otherWorldPosition.z + other->mCollisionCube->z * other->mScaling.z / 2.0f;
+
+	float xOffset = 0.0f;
+	float yOffset = 0.0f;
+	float zOffset = 0.0f;
+
+	bool collided = false;
+	
+	if (Axa >= Bxa && Axa <= Bxb && Aya >= Bya && Aya <= Byb && Aza >= Bza && Aza <= Bzb)
+	{
+		xOffset = Bxb - Axa;
+		yOffset = Byb - Aya;
+		zOffset = Bzb - Aza;
+		collided = true;
+	}
+	else if (Axa >= Bxa && Axa <= Bxb && Ayb >= Bya && Ayb <= Byb && Aza >= Bza && Aza <= Bzb)
+	{
+		xOffset = Bxb - Axa;
+		yOffset = Bya - Ayb;
+		zOffset = Bzb - Aza;
+		collided = true;
+	}
+	else if (Axb >= Bxa && Axb <= Bxb && Ayb >= Bya && Ayb <= Byb && Aza >= Bza && Aza <= Bzb)
+	{
+		xOffset = Bxa - Axb;
+		yOffset = Bya - Ayb;
+		zOffset = Bzb - Aza;
+		collided = true;
+	}
+	else if (Axb >= Bxa && Axb <= Bxb && Aya >= Bya && Aya <= Byb && Aza >= Bza && Aza <= Bzb)
+	{
+		xOffset = Bxa - Axb;
+		yOffset = Byb - Aya;
+		zOffset = Bzb - Aza;
+		collided = true;
+	}
+	else if (Axa >= Bxa && Axa <= Bxb && Aya >= Bya && Aya <= Byb && Azb >= Bza && Azb <= Bzb)
+	{
+		xOffset = Bxb - Axa;
+		yOffset = Byb - Aya;
+		zOffset = Bza - Azb;
+		collided = true;
+	}
+	else if (Axa >= Bxa && Axa <= Bxb && Ayb >= Bya && Ayb <= Byb && Azb >= Bza && Azb <= Bzb)
+	{
+		xOffset = Bxb - Axa;
+		yOffset = Bya - Ayb;
+		zOffset = Bza - Azb;
+		collided = true;
+	}
+	else if (Axb >= Bxa && Axb <= Bxb && Ayb >= Bya && Ayb <= Byb && Azb >= Bza && Azb <= Bzb)
+	{
+		xOffset = Bxa - Axb;
+		yOffset = Bya - Ayb;
+		zOffset = Bza - Azb;
+		collided = true;
+	}
+	else if (Axb >= Bxa && Axb <= Bxb && Aya >= Bya && Aya <= Byb && Azb >= Bza && Azb <= Bzb)
+	{
+		xOffset = Bxa - Axb;
+		yOffset = Byb - Aya;
+		zOffset = Bza - Azb;
+		collided = true;
 	}
 
-	float Axa = this->mPosition.x - this->mCollisionCube->x * this->mScaling.x / 2.0f;
-	float Axb = this->mPosition.x + this->mCollisionCube->x * this->mScaling.x / 2.0f;
-	float Aya = this->mPosition.z - this->mCollisionCube->z * this->mScaling.z / 2.0f;
-	float Ayb = this->mPosition.z + this->mCollisionCube->z * this->mScaling.z / 2.0f;
-	float Bxa = other->mPosition.x - other->mCollisionCube->x * other->mScaling.x / 2.0f;
-	float Bxb = other->mPosition.x + other->mCollisionCube->x * other->mScaling.x / 2.0f;
-	float Bya = other->mPosition.z - other->mCollisionCube->z * other->mScaling.z / 2.0f;
-	float Byb = other->mPosition.z + other->mCollisionCube->z * other->mScaling.z / 2.0f;
+	if (abs(xOffset) < abs(yOffset) && abs(xOffset) < abs(zOffset))
+	{
+		mPosition.x += xOffset;
+	}
+	else if (abs(yOffset) < abs(zOffset))
+	{
+		mPosition.y += yOffset;
+	}
+	else
+	{
+		mPosition.z += zOffset;
+	}
 
-	if (Axa >= Bxa && Axa <= Bxb && Aya >= Bya && Aya <= Byb)
-	{
-		float horizOffset = Bxb - Axa;
-		float vertOffset = Byb - Aya;
-		if (abs(horizOffset) < abs(vertOffset))
-		{
-			mPosition.x += horizOffset;
-		}
-		else
-		{
-			mPosition.z += vertOffset;
-		}
-	}
-	else if (Axa >= Bxa && Axa <= Bxb && Ayb >= Bya && Ayb <= Byb)
-	{
-		float horizOffset = Bxb - Axa;
-		float vertOffset = Ayb - Bya;
-		if (abs(horizOffset) < abs(vertOffset))
-		{
-			mPosition.x += horizOffset;
-		}
-		else
-		{
-			mPosition.z -= vertOffset;
-		}
-	}
-	else if (Axb >= Bxa && Axb <= Bxb && Ayb >= Bya && Ayb <= Byb)
-	{
-		float horizOffset = Axb - Bxa;
-		float vertOffset = Ayb - Bya;
-		if (abs(horizOffset) < abs(vertOffset))
-		{
-			mPosition.x -= horizOffset;
-		}
-		else
-		{
-			mPosition.z -= vertOffset;
-		}
-	}
-	else if (Axb >= Bxa && Axb <= Bxb && Aya >= Bya && Aya <= Byb)
-	{
-		float horizOffset = Axb - Bxa;
-		float vertOffset = Byb - Aya;
-		if (abs(horizOffset) < abs(vertOffset))
-		{
-			mPosition.x -= horizOffset;
-		}
-		else
-		{
-			mPosition.z += vertOffset;
-		}
-	}
+	return collided;
 }
 
+void Model::Intersect(const Ray& ray, std::vector<std::pair<Model*, glm::vec3>>& intersectionPoints)
+{
+	//vec3 worldPosition = vec3(GetWorldMatrix() * vec4(mPosition, 1.0f));
+	vec3 worldPosition = this->mPosition;
+
+	float xa = worldPosition.x - this->mCollisionCube->x * this->mScaling.x / 2.0f;
+	float xb = worldPosition.x + this->mCollisionCube->x * this->mScaling.x / 2.0f;
+	float ya = worldPosition.y - this->mCollisionCube->y * this->mScaling.y / 2.0f;
+	float yb = worldPosition.y + this->mCollisionCube->y * this->mScaling.y / 2.0f;
+	float za = worldPosition.z - this->mCollisionCube->z * this->mScaling.z / 2.0f;
+	float zb = worldPosition.z + this->mCollisionCube->z * this->mScaling.z / 2.0f;
+
+	vec3 intersection;
+
+	if (RayTriangleCollision::TestIntersectionPlane(vec3(xa, yb, zb), vec3(xa, yb, za), vec3(xb, yb, za), ray, intersection, true))
+	{
+		intersectionPoints-.push_back(std::pair<Model*, glm::vec3>(this, intersection));
+	}
+	if (RayTriangleCollision::TestIntersectionPlane(vec3(xb, yb, zb), vec3(xb, yb, za), vec3(xb, ya, zb), ray, intersection, true))
+	{
+		intersectionPoints.push_back(std::pair<Model*, glm::vec3>(this, intersection));
+	}
+	if (RayTriangleCollision::TestIntersectionPlane(vec3(xa, ya, za), vec3(xa, yb, za), vec3(xb, yb, za), ray, intersection, true))
+	{
+		intersectionPoints.push_back(std::pair<Model*, glm::vec3>(this, intersection));
+	}
+	if (RayTriangleCollision::TestIntersectionPlane(vec3(xa, yb, zb), vec3(xa, yb, za), vec3(xa, ya, zb), ray, intersection, true))
+	{
+		intersectionPoints.push_back(std::pair<Model*, glm::vec3>(this, intersection));
+	}
+	if (RayTriangleCollision::TestIntersectionPlane(vec3(xa, ya, zb), vec3(xa, yb, zb), vec3(xb, yb, zb), ray, intersection, true))
+	{
+		intersectionPoints.push_back(std::pair<Model*, glm::vec3>(this, intersection));
+	}
+	if (RayTriangleCollision::TestIntersectionPlane(vec3(xa, ya, zb), vec3(xa, ya, za), vec3(xb, ya, za), ray, intersection, true))
+	{
+		intersectionPoints.push_back(std::pair<Model*, glm::vec3>(this, intersection));
+	}
+}
 
 //Physics ------------------------------------------------
 void	Model::SetSplineParameterT(float t){

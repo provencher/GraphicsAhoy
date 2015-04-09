@@ -10,7 +10,7 @@
 #pragma once
 
 #include "../ParsingHelper.h"
-
+#include "../Tools/ray.h"
 #include <vector>
 #include <unordered_map>
 #include <GLM/glm.hpp>
@@ -65,7 +65,7 @@ public:		//------------------------------------------
 	Model*	Parent();
 	int		mNthChild;
 	glm::vec4 materialConst;
-
+	void		DeleteChild(ci_string key);
 	std::map <ci_string, Model*> child;
 
 	void	  AddChild(ci_string key, Model* m);
@@ -74,10 +74,10 @@ public:		//------------------------------------------
 	float     mRotationAngleX;
 	float     mRotationAngleY;
 	float     mRotationAngleZ;
-	void      collideWith(Model* other);
+	bool      CollideWith(Model* other);
 	void      CreateDefaultCollisionCube();
 	void      ReScaleCollisionCube(glm::vec3 newScale);
-
+	void      Intersect(const Ray& ray, std::vector<std::pair<Model*, glm::vec3>>& intersectionPoints);
 protected: //------------------------------------------
 	//Children 
 	Model* mParent;
@@ -89,7 +89,7 @@ protected: //------------------------------------------
 	glm::vec3 mScaling;
 	glm::vec3 mRotationAxis;
 	float     mRotationAngleInDegrees;
-	glm::vec3* mCollisionCube; // can be null; only x & z components are calculated
+	glm::vec3* mCollisionCube; // can be null;
 	
 
 

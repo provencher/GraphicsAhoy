@@ -210,61 +210,59 @@ void World::LoadScene(const char * scene_path){
 	
 	// Create World
 
-	////////////////////////////////////////////////////
-	Model* m = new RazorbackModel();
-	m->SetPosition(vec3(0.0f, 1, -80.0f));
-	mModel.push_back(m);
-
-
-	GroupModel* world = new GroupModel();
-
+	//------------------------------------------------------------------------------------
+	GroupModel* ground = new GroupModel();
+	//Basic World Generation Starter Kit By Jordan --------------------------------------
 	if(1){ //Ground ===============================
-		GroupModel* ground = new GroupModel();
-		vec3 plateSize = vec3(vec3(200,1,200));
+		
+		ground->SetName("Ground");
 
+
+		//Generate Ground plate -----------------------------------------------------
+		vec3 plateSize = vec3(vec3(200,1,200));
+		Model* group = new GroupModel();
+		group->SetPosition(vec3(0,-0.5f,0));
+		ground->AddChild(group);
 
 		Model* groundPlate = new CubeModel(vec3(0.6f));
 		groundPlate->SetScaling(plateSize);
-		groundPlate->SetPosition(vec3(0,-0.5f,0));
-		//m->SetRotation(vec3(0,0,1), 90.0f);
-		ground->AddChild(groundPlate);
+		group->AddChild(groundPlate);
 		
-
-		//Billboard
-		//============================================
-		for(int i=0; i< 50; i++){
-			
-			vec3 randSize = vec3(
-				rand() % 10+3,
-				rand() % 10+3,
-				rand() % 10+3
-			);
-			vec3 randPos = vec3(
-				(rand() % (int)plateSize.x) - 0.5f*plateSize.x,
-				randSize.y/2,
-				(rand() % (int)plateSize.z) - 0.5f*plateSize.z
-			);
-
-			
-
+		
+		//Add objects to GroundPlate -------------------------------------------------
+		//Drawing a terrain. To toggle this, enable "RenderTerrain()"  
+		DrawTerrain(ground);
+		
+		//Generate 1 Ground plate, just have to spawn more and keep track of what to despawn
+		for(int i=0; i< 40; i++){
+			//Choose object to spawn
 			Model* shape = new CubeModel(vec3(0.8f));
-			int x = 1.0f;
-			shape->SetPosition(randPos);
-			shape->SetScaling(randSize);
-			shape->CreateDefaultCollisionCube();
-			ground->AddChild(shape);
-
-			ground->AddChild("dog",shape);
 			
+
+			int maxSize = 15;
+			int minSize = 5;
+			//Random shape
+			vec3 randSize = vec3(
+				rand() % (maxSize-minSize)+minSize,
+				rand() % (maxSize-minSize)+minSize,
+				rand() % (maxSize-minSize)+minSize
+			);
+			//Random position relative to plate
+			vec3 randPos = vec3(
+				(rand() % (int)plateSize.x) - 0.5f*plateSize.x, // center on plate
+				randSize.y/2-0.5f,
+				(rand() % (int)plateSize.z)- 0.5f*plateSize.z	// center on plate
+			);
+
+			//Spawn Shape
+			shape->SetScaling(randSize);
+			shape->SetPosition(randPos);
+			shape->CreateDefaultCollisionCube();
+			group->AddChild(shape);	
 		}
-
-		world->AddChild("Ground", ground);
+		//AddChild("Ground", ground);
+		mModel.push_back(ground);
 	}	
-	
-	//(rand() % 10 + 50)/10;
-
-	mModel.push_back(world);
-
 
 
 
