@@ -133,7 +133,7 @@ float ApplyShadow(Light light) {
 	bias = clamp(bias, 0,0.01);
 
 	// Sample the shadow map 4 times
-	for (int i=0;i<4;i++){
+	for (int i=0;i<1;i++){
 		// use either :
 		//  - Always the same samples.
 		//    Gives a fixed pattern in the shadow, but no noise
@@ -141,7 +141,7 @@ float ApplyShadow(Light light) {
 		
 		// being fully in the shadow will eat up 4*0.2 = 0.8
 		// 0.2 potentially remain, which is quite dark.
-		visibility -= 0.2*(1.0-texture( R_shadowMap, vec3(shadowMapCoords0.xy + poissonDisk[index]/700.0,  (shadowMapCoords0.z-bias)/shadowMapCoords0.w) ));
+		visibility -= 0.48*(1.0-texture( R_shadowMap, vec3(shadowMapCoords0.xy + poissonDisk[index]/700.0,  (shadowMapCoords0.z-bias)/shadowMapCoords0.w) ));
 	}	
    
     return visibility;
