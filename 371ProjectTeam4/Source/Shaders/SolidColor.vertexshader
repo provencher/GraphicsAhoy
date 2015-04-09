@@ -1,5 +1,18 @@
 #version 330 core
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+// 
+//	4rce of Nature
+//		World Shaders
+//
+//	Contributors:
+//		Eric Provencher
+//		Rita Phom
+//		Jordan Rutty
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 // Input vertex data, different for all executions of this shader.
 layout(location = 0) in vec3 vertexPosition_modelspace;
 layout(location = 1) in vec3 vertexNormal_modelspace;  // You will need this when you do lighting
