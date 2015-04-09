@@ -432,28 +432,39 @@ void Model::Intersect(const Ray& ray, std::vector<std::pair<Model*, glm::vec3>>&
 	float zb = worldPosition.z + this->mCollisionCube->z * this->mScaling.z / 2.0f;
 
 	vec3 intersection;
-
+	
 	if (RayTriangleCollision::TestIntersectionPlane(vec3(xa, yb, zb), vec3(xa, yb, za), vec3(xb, yb, za), ray, intersection, true))
 	{
 		intersectionPoints.push_back(std::pair<Model*, glm::vec3>(this, intersection));
 	}
-	if (RayTriangleCollision::TestIntersectionPlane(vec3(xb, yb, zb), vec3(xb, yb, za), vec3(xb, ya, zb), ray, intersection, true))
+	if (RayTriangleCollision::TestIntersectionPlane(vec3(xa, yb, zb), vec3(xb, yb, zb), vec3(xb, yb, za), ray, intersection, true))
 	{
 		intersectionPoints.push_back(std::pair<Model*, glm::vec3>(this, intersection));
 	}
+	
+	if (RayTriangleCollision::TestIntersectionPlane(vec3(xa, ya, zb), vec3(xa, ya, za), vec3(xb, ya, za), ray, intersection, true))
+	{
+		intersectionPoints.push_back(std::pair<Model*, glm::vec3>(this, intersection));
+	}
+	if (RayTriangleCollision::TestIntersectionPlane(vec3(xa, ya, zb), vec3(xb, ya, zb), vec3(xb, ya, za), ray, intersection, true))
+	{
+		intersectionPoints.push_back(std::pair<Model*, glm::vec3>(this, intersection));
+	}
+	
+	if (RayTriangleCollision::TestIntersectionPlane(vec3(xb, yb, zb), vec3(xb, yb, za), vec3(xb, ya, za), ray, intersection, true))
+	{
+		intersectionPoints.push_back(std::pair<Model*, glm::vec3>(this, intersection));
+	}
+	if (RayTriangleCollision::TestIntersectionPlane(vec3(xb, yb, zb), vec3(xb, ya, zb), vec3(xb, ya, za), ray, intersection, true))
+	{
+		intersectionPoints.push_back(std::pair<Model*, glm::vec3>(this, intersection));
+	}
+	
 	if (RayTriangleCollision::TestIntersectionPlane(vec3(xa, ya, za), vec3(xa, yb, za), vec3(xb, yb, za), ray, intersection, true))
 	{
 		intersectionPoints.push_back(std::pair<Model*, glm::vec3>(this, intersection));
 	}
-	if (RayTriangleCollision::TestIntersectionPlane(vec3(xa, yb, zb), vec3(xa, yb, za), vec3(xa, ya, zb), ray, intersection, true))
-	{
-		intersectionPoints.push_back(std::pair<Model*, glm::vec3>(this, intersection));
-	}
-	if (RayTriangleCollision::TestIntersectionPlane(vec3(xa, ya, zb), vec3(xa, yb, zb), vec3(xb, yb, zb), ray, intersection, true))
-	{
-		intersectionPoints.push_back(std::pair<Model*, glm::vec3>(this, intersection));
-	}
-	if (RayTriangleCollision::TestIntersectionPlane(vec3(xa, ya, zb), vec3(xa, ya, za), vec3(xb, ya, za), ray, intersection, true))
+	if (RayTriangleCollision::TestIntersectionPlane(vec3(xa, ya, za), vec3(xb, ya, za), vec3(xb, yb, za), ray, intersection, true))
 	{
 		intersectionPoints.push_back(std::pair<Model*, glm::vec3>(this, intersection));
 	}

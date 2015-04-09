@@ -335,26 +335,26 @@ void PlayerCamera::UpdateTargeModel(float dt){
 		std::pair<Model*, vec3>* closestIntersection = nullptr;
 		for (int i = 0, iMax = intersectionPoints.size(); i < iMax; ++i)
 		{
-			if (closestIntersection == nullptr || (distance(intersectionPoints[i].second, shootRay.getOrigin()) < distance(closestIntersection->second, shootRay.getOrigin())))
+			if (intersectionPoints[i].first != mTargetModel && (closestIntersection == nullptr || (distance(intersectionPoints[i].second, shootRay.getOrigin()) < distance(closestIntersection->second, shootRay.getOrigin()))))
 			{
 				closestIntersection = &(intersectionPoints[i]);
 			}
 		}
 		if (closestIntersection != nullptr)
 		{
-			//closestIntersection->first->Parent()->DeleteChild(closestIntersection->first->GetName());
-			//ParticleEmitter* pe = new ParticleEmitter(vec3(0,1,0));
-			//pe->SetPosition(vec3(0.0f, 1, -88.0f));
-			//pe->SetScaling(vec3(5,1,0.5f));
-			//std::vector<Model*>& models = *World::GetInstance()->GetModels();
-			//for (int i = 0, iMax = models.size(); i < iMax; ++i)
-			//{
-			//	if (models[i]->GetName().compare("Ground") == 0)
-			//	{
-			//		models[i]->AddChild("left-afterburner", pe);
-			//		break;
-			//	}
-			//}
+			ParticleEmitter* pe = new ParticleEmitter(vec3(0,1,0));
+			pe->SetPosition(closestIntersection->first->GetPosition());
+			pe->SetScaling(vec3(5,1,0.5f));
+			closestIntersection->first->Parent()->DeleteChild(closestIntersection->first->GetName());
+			std::vector<Model*>& models = *World::GetInstance()->GetModels();
+			for (int i = 0, iMax = models.size(); i < iMax; ++i)
+			{
+				if (models[i]->GetName().compare("Ground") == 0)
+				{
+					models[i]->AddChild("left-afterburner", pe);
+					break;
+				}
+			}
 		}
 	}
 }
