@@ -1,11 +1,15 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+// 
+//	4rce of Nature
+//		Scene Render Framework
 //
-// COMP 371 Assignment Framework
+//	Contributors:
+//		Eric Provencher
+//		Rita Phom
+//		Nicolas Bergeron
+//		Gary Chang
 //
-// Created by Nicolas Bergeron on 8/7/14.
-// Updated by Gary Chang on 14/1/15
-//
-// Copyright (c) 2014-2015 Concordia University. All rights reserved.
-//
+////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #include "Renderer.h"
 
@@ -138,6 +142,8 @@ void Renderer::BeginFrame()
 	int height;
 	glfwGetWindowSize(spWindow, &width, &height);
 	glViewport(0, 0, width, height);
+
+	//Use default framebuffer to render scene
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
@@ -147,7 +153,7 @@ void Renderer::EndFrame()
 	glfwSwapBuffers(spWindow);
 }
 
-
+//Reworked from OpenGL-Tutorial #16 to allow for binding depth information to a texture
 void Renderer::BindFrame(){
 
 	// The framebuffer, which regroups 0, 1, or more textures, and 0 or 1 depth buffer.

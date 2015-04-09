@@ -3,9 +3,8 @@
 //
 // Created by Nicolas Bergeron on 8/7/14.
 // Updated by Gary Chang on 14/1/15
-// Jordan
+// Hierarchy, Color and Transforms Added by Jordan Rutty
 //
-// Copyright (c) 2014-2015 Concordia University. All rights reserved.
 //
 
 #include "Model.h"
@@ -252,9 +251,17 @@ Model*	Model::RemoveChild(ci_string key){
 
 
 void Model::DeleteAllChildren(){
-	//will clear the array but may still have memory leak
-	child.clear();
+	std::map<ci_string, Model*>::iterator it;
+	if(!child.empty()){
+		for (it = child.begin(); it != child.end(); it++){
+			Model* item = (*it).second;
+			if(item != nullptr)
+			delete item;
+		}
+		child.clear();
+	}
 }
+
 //----------------------------------------
 void	Model::UpdateChildren(float dt){
 	if (GetChildCount() > 0){

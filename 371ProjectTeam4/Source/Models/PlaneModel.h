@@ -36,6 +36,7 @@ protected:
 private:
 	// The vertex format could be different for different types of models
 	glm::vec3 color;
+	float mBlack;
 	struct Vertex
 	{
 		glm::vec3 position;

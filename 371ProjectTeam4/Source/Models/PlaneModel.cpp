@@ -21,9 +21,9 @@ using namespace glm;
 
 PlaneModel::PlaneModel(vec3 size) : GroupModel(){
 
-	//note if(1){} used to seperate scope to allow rapid development
-
 	color =  vec3(1,0,0);
+	mBlack = 0.05f;
+	//note if(1){} used to seperate scope to allow rapid development
 	MakeBody();
 	//MakePropeller();
 	MakeWings();
@@ -33,13 +33,6 @@ PlaneModel::PlaneModel(vec3 size) : GroupModel(){
 	MakeThrust();
 	
 
-
-
-
-
-
-	//########################################################################################
-	//*/
 }
 
 PlaneModel::~PlaneModel(){
@@ -97,7 +90,8 @@ void PlaneModel::MakeBody(){
 	if(1){//cockpit
 		GroupModel* group = new GroupModel();
 		if(1){ //glass
-			SphereModel* model = new SphereModel(vec3(0.4f,0.4f,0.4f));
+			float col = mBlack;
+			SphereModel* model = new SphereModel(vec3(col,col,col));
 			model->SetScaling(vec3(0.5f, 0.4f, 1.7f));
 			model->SetPosition(vec3(0.0f, 0.3f, 0.0f));
 			//model->SetRotation(vec3(0.0f, 1.0f, 0.0f), 45.0f);
@@ -208,7 +202,7 @@ void PlaneModel::MakeGuns(){
 				g->AddChild(m);
 			}
 			if(1){
-				Model* m = new CubeModel(vec3(0.4f));
+				Model* m = new CubeModel(vec3(mBlack));
 				m->SetPosition(vec3(0,0,0.0f));
 				m->SetScaling(boxsize);
 				g->AddChild(m);
@@ -230,7 +224,7 @@ void PlaneModel::MakeGuns(){
 				g->AddChild(m);
 			}
 			if(1){
-				Model* m = new CubeModel(vec3(0.4f));
+				Model* m = new CubeModel(vec3(mBlack));
 				m->SetPosition(vec3(0,0,0.0f));
 				m->SetScaling(boxsize);
 				g->AddChild(m);
@@ -250,7 +244,7 @@ void PlaneModel::MakeThrusters(){
 
 	//*
 	if(1){
-		vec3 thrusterColor = vec3(0.4,0.4,0.4);
+		vec3 thrusterColor = vec3(mBlack,mBlack,mBlack);
 		GroupModel* group = new GroupModel();
 		
 		if(1){//thruster1
@@ -306,7 +300,7 @@ void PlaneModel::MakeThrust(){
 	if(1){
 		LightModel* lm = new LightModel();
 		lm->SetPosition(vec3(0,0.0f,-1.5f));
-		lm->SetIntensities(-3.2f*vec3(1,0.6f,0.4f));
+		lm->SetIntensities(-1.2f*vec3(1,0.6f,0.4f));
 		lm->SetIsDirectional(1);
 		lm->SetAttenuation(0.2f);
 		lm->SetAmbientCoefficient(0.0f);

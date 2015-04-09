@@ -118,7 +118,6 @@
     <ClCompile Include="..\Source\BSplineCamera.cpp" />
     <ClCompile Include="..\Source\Camera.cpp" />
     <ClCompile Include="..\Source\light.cpp" />
-    <ClCompile Include="..\Source\Mesh.cpp" />
     <ClCompile Include="..\Source\meshLoader.cpp" />
     <ClCompile Include="..\Source\Models\BillBoard.cpp" />
     <ClCompile Include="..\Source\Models\Craters.cpp" />
@@ -134,6 +133,7 @@
     <ClCompile Include="..\Source\Models\Terrain.cpp" />
     <ClCompile Include="..\Source\Models\TorrentModel.cpp" />
     <ClCompile Include="..\Source\Path.cpp" />
+    <ClCompile Include="..\Source\PlayerCamera.cpp" />
     <ClCompile Include="..\Source\StaticCamera.cpp" />
     <ClCompile Include="..\Source\EventManager.cpp" />
     <ClCompile Include="..\Source\main.cpp" />
@@ -148,7 +148,6 @@
     <ClInclude Include="..\Source\Camera.h" />
     <ClInclude Include="..\Source\light.h" />
     <ClInclude Include="..\Source\math2.h" />
-    <ClInclude Include="..\Source\Mesh.h" />
     <ClInclude Include="..\Source\meshLoader.h" />
     <ClInclude Include="..\Source\Models\BillBoard.h" />
     <ClInclude Include="..\Source\Models\Craters.h" />
@@ -165,6 +164,7 @@
     <ClInclude Include="..\Source\Models\TorrentModel.h" />
     <ClInclude Include="..\Source\ParsingHelper.h" />
     <ClInclude Include="..\Source\Path.h" />
+    <ClInclude Include="..\Source\PlayerCamera.h" />
     <ClInclude Include="..\Source\StaticCamera.h" />
     <ClInclude Include="..\Source\EventManager.h" />
     <ClInclude Include="..\Source\Renderer.h" />
@@ -178,6 +178,12 @@
     <Image Include="..\Scenes\Obj\XA-20_Razorback_Strike_Fighter\Pilot_usa.png" />
     <Image Include="..\Scenes\Obj\XA-20_Razorback_Strike_Fighter\XA-20_Razorback_Strike_Fighter_N.png" />
     <Image Include="..\Scenes\Obj\XA-20_Razorback_Strike_Fighter\XA-20_Razorback_Strike_Fighter_P01.png" />
+    <Image Include="..\Source\Textures\ice.bmp" />
+    <Image Include="..\Source\Textures\ice2.bmp" />
+    <Image Include="..\Source\Textures\img1.bmp" />
+    <Image Include="..\Source\Textures\terrain.bmp" />
+    <Image Include="..\Source\Textures\tiles1.bmp" />
+    <Image Include="..\Source\Textures\wood.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

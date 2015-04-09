@@ -1,10 +1,4 @@
-//
-// COMP 371 Assignment Framework
-//
-// Created by Jordan Rutty on 2015-03-17
-//
-// Copyright (c) 2014-2015 Concordia University. All rights reserved.
-//
+// by Jordan Rutty  Partially working, correct rotation matrix in progress
 
 #include "BillBoard.h"
 #include "PropellerModel.h"

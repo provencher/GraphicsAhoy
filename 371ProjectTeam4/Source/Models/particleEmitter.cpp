@@ -1,4 +1,4 @@
-
+//Created By Jordan Rutty
 
 #include <GLM/glm.hpp>
 #include <time.h>       
@@ -12,7 +12,7 @@
 #include "../World.h"
 
 
-//Quick and Dirty Particle Emitter
+//Emitter for Jet Thrusters
 ParticleEmitter::ParticleEmitter(vec3 dir){
 	Init(dir);
 

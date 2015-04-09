@@ -3,8 +3,7 @@
 //
 // Created by Nicolas Bergeron on 8/7/14.
 // Updated by Gary Chang on 14/1/15
-//
-// Copyright (c) 2014-2015 Concordia University. All rights reserved.
+// Hierarchy, Color and Transforms Added by Jordan Rutty
 //
 
 #pragma once
@@ -24,6 +23,7 @@ class BSpline;
 class Model{
 public:		//------------------------------------------
 	Model();
+	glm::vec4 materialConst;
 	//Events------------------------------------
 	void		 Load(ci_istringstream& iss);
 	virtual	bool ParseLine(const std::vector<ci_string> &token) = 0;
@@ -36,51 +36,50 @@ public:		//------------------------------------------
 	void		SetName(ci_string name){ mName=name; }
 	ci_string	mType; //model, sphere, cube, plane,
 	ci_string	mShaderName; //name used to draw object
-	//T ------------------------------------------
+	//Transforms ------------------------------------------
+	glm::mat4	transform;	//apply transform to model first before trs
 	void		SetPosition(glm::vec3 position);
 	glm::vec3	GetPosition()		const	{ return mPosition; }
-	//R------------------------------------------
 	void		SetRotation(glm::vec3 axis, float angleDegrees);
 	glm::vec3	GetRotationAxis()	const	{ return mRotationAxis; }
 	float		GetRotationAngle()	const	{ return mRotationAngleInDegrees; }
-	//S------------------------------------------
+	float		mRotationAngleX;
+	float		mRotationAngleY;
+	float		mRotationAngleZ;
+	//S--------------------------------------------------------
 	void		SetScaling(glm::vec3 scaling);
 	glm::vec3	GetScaling()		const	{ return mScaling; }
-	//--------------------------------------------
+	//----------------------------------------------------------
 	void		SetSideColor(glm::vec3 col);			//#Idea		possibly best set through 
-    //--------------------------------------------
+    //----------------------------------------------------------
 	float		GetSpeed();
 	void		SetSpeed(float spd);
 	void		SetSpline(BSpline* sp);
 	BSpline*	GetSpline();
 	void		SetSplineParameterT(float t);
-	// Children --------------------------------
-	void	SetParent(Model* m);
-	void	AddChild(Model* m);
-	int		GetChildCount() const { return child.size(); }
-	void	UpdateChildren(float dt);
-	void	DeleteAllChildren();
-	void	DrawChildren();
-	bool	HasParent();
-	Model*	Parent();
-	int		mNthChild;
-	glm::vec4 materialConst;
-
+	//Hierarchy ----------------------------------------------
+	Model*		Parent();
+	bool		HasParent();
+	void		SetParent(Model* m);
 	std::map <ci_string, Model*> child;
+	int			GetChildCount() const { return child.size(); }
+	void		DeleteAllChildren();
+	void		UpdateChildren(float dt);
+	void		DrawChildren();
+	void		AddChild(Model* m);
+	void		AddChild(ci_string key, Model* m);
+	Model*		RemoveChild(ci_string key);
+	//Collision ----------------------------------------------
+	void		collideWith(Model* other);
+	void		CreateDefaultCollisionCube();
+	void		ReScaleCollisionCube(glm::vec3 newScale);
 
-	void	  AddChild(ci_string key, Model* m);
-	Model*	  RemoveChild(ci_string key);
-	glm::mat4 transform;
-	float     mRotationAngleX;
-	float     mRotationAngleY;
-	float     mRotationAngleZ;
-	void      collideWith(Model* other);
-	void      CreateDefaultCollisionCube();
-	void      ReScaleCollisionCube(glm::vec3 newScale);
 
 protected: //------------------------------------------
-	//Children 
-	Model* mParent;
+	//Hierarchy 
+	Model*	mParent;
+	int		mNthChild;// used for naming unnamed children, counter incereses for every spawn, never decreases
+
 	//Update Methods
 	virtual void updateSpline(float dt);
 	virtual void updatePath(float dt);
