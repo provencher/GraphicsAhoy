@@ -141,7 +141,7 @@ float ApplyShadow(Light light) {
 		
 		// being fully in the shadow will eat up 4*0.2 = 0.8
 		// 0.2 potentially remain, which is quite dark.
-		visibility -= 0.48*(1.0-texture( R_shadowMap, vec3(shadowMapCoords0.xy + poissonDisk[index]/700.0,  (shadowMapCoords0.z-bias)/shadowMapCoords0.w) ));
+		visibility -= 0.60*(1.0-texture( R_shadowMap, vec3(shadowMapCoords0.xy + poissonDisk[index]/700.0,  (shadowMapCoords0.z-bias)/shadowMapCoords0.w) ));
 	}	
    
     return visibility;
@@ -174,7 +174,7 @@ void main() {
 
 	//final color (after gamma correction)
     vec3 gamma = vec3(1.0/2.2);
-    color = vec4(pow(v_color.rgb*0.75*linearColor*shadowAmt, gamma), surfaceColor.a*0.75 );
+    color = vec4(pow(v_color.rgb*0.75*linearColor*shadowAmt, gamma), surfaceColor.a*shadowAmt*0.75 );
 
 }
 //mix(SkyColour, v_color.rgb *linearColor*shadowAmt, fogVisibility)
