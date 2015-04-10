@@ -182,7 +182,7 @@ void PlayerCamera::UpdateTargeModel(float dt){
 			mTargetModel->mRotationAngleZ = -maxZTilt;
 
 		
-		//mHorizontalAngle += turnSpeed;//<-aron contribute
+		mHorizontalAngle += turnSpeed;//<-aron contribute
 	}
 	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_D ) == GLFW_PRESS){ //Right
 		//Go right
@@ -198,10 +198,10 @@ void PlayerCamera::UpdateTargeModel(float dt){
 			mTargetModel->mRotationAngleZ = maxZTilt;
 
 		
-		//mHorizontalAngle -= turnSpeed;//<-aron contribute
+		mHorizontalAngle -= turnSpeed;//<-aron contribute
 	}
 	
-
+	/*
 	// HOROZONTAL MOVEMENT -------------------------------------------------
 	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_D ) == GLFW_PRESS){ 
 		movementDir += mRight;
@@ -209,7 +209,7 @@ void PlayerCamera::UpdateTargeModel(float dt){
 	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_A ) == GLFW_PRESS){ 
 		movementDir -= mRight;
 	}
-
+	*/
 
 	
 	//Control Flap controls when turning --------------------------------------------------------

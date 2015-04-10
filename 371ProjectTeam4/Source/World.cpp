@@ -22,6 +22,7 @@
 
 
 //Models
+#include "ThirdPersonCamera.h";
 #include "Models/GroupModel.h"
 #include "Models/PlaneModel.h"
 #include "Models/CubeModel.h"
@@ -56,9 +57,9 @@ World::World()
 
 	//Create light Vector
 	gLights = new vector<Light>();
-	float d = 0.4f;
+	float d = 0.1f;
 	// setup lights
-	/*
+	//*
 	Light spotlight;
 	spotlight.position = glm::vec4(0, 10, 0, 1);
 	spotlight.intensities = glm::vec3(0, 1, 2); //strong white light
@@ -67,19 +68,21 @@ World::World()
 	spotlight.coneAngle = 15.0f;
 	spotlight.coneDirection = glm::vec3(0, -1, 0);
 	gLights->push_back(spotlight);
-	*/
+	//*/
+	//*
 	Light directionalLight;
 	directionalLight.position = glm::vec4(15, 18, 0.6, 0); //w == 0 indications a directional light
 	directionalLight.intensities = glm::vec3(d, d, d); 
 	directionalLight.ambientCoefficient = 0.2f;
 	gLights->push_back(directionalLight);
-
+	//*/
+	/*
 	Light light3;
 	light3.position = glm::vec4(-15, 5, 15, 0); //w == 0 indications a directional light
 	light3.intensities = glm::vec3(d/4.5, d/4, d/5); //weak yellowish light
 	light3.ambientCoefficient = 0.06f;
 	gLights->push_back(light3);
-
+	//*/
 
 	glfwGetWindowSize(EventManager::GetWindow(), &width, &height);
 
@@ -297,10 +300,15 @@ void World::LoadScene(const char * scene_path){
 	character->SetSpeed(25.0f);	//Should move to camera
     mModel.push_back(character);
 
+
 	// Create Camera -----------------------------------------
+	//ThirdPersonCamera* newCam = new ThirdPersonCamera(character);
 	PlayerCamera* newCam = new PlayerCamera(character);
 	newCam->SetCameraRadius(7.0f);
 	mCamera.push_back(newCam); //4
+
+
+
     //*note: to be moved into its own class
 	////////////////////////////////////////////////////////
 
