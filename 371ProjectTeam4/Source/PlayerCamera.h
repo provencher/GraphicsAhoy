@@ -11,6 +11,7 @@
 
 #include "Camera.h"
 #include "BSpline.h"
+#include "Models/LightModel.h"
 
 class PlayerCamera : public Camera
 {
@@ -42,7 +43,10 @@ private:
 	bool ProcessCollisions(Model& targetModel);
 	bool CollideChildren_r(Model& collider, std::map<ci_string, Model*>& children);
 	void IntersectChildren_r(const Ray& ray, std::map<ci_string, Model*>& children, std::vector<std::pair<Model*, glm::vec3>>& intersections);
-    Model* mTargetModel;
+	LightModel* mSpotLight;
+	Model* mTargetModel;
+	
+	
     // Cartesian Coordinates
     float mHorizontalAngle;
     float mVerticalAngle;

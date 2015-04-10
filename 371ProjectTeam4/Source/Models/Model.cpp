@@ -20,9 +20,7 @@
 
 using namespace std;
 using namespace glm;
-//###############################################################
-
-//Construct Destruct
+//Construct Destruct ###################################################
 Model::Model() : mName("UNNAMED"), mPosition(0.0f, 0.0f, 0.0f), mScaling(1.0f, 1.0f, 1.0f), mRotationAxis(0.0f, 1.0f, 0.0f), mRotationAngleInDegrees(0.0f), mPath(nullptr), mSpeed(0.0f), mTargetWaypoint(1), mSpline(nullptr), mSplineParameterT(0.0f), mCollisionCube(nullptr)
 {
 	mParent = nullptr;
@@ -34,7 +32,6 @@ Model::Model() : mName("UNNAMED"), mPosition(0.0f, 0.0f, 0.0f), mScaling(1.0f, 1
 	mRotationAngleZ = 0;
 	mNthChild = 0;
 }
-
 Model::~Model()
 {
 	if (mCollisionCube != nullptr)
@@ -44,7 +41,6 @@ Model::~Model()
 	DeleteAllChildren();
 }
 
-//Init----------------------------------------
 void Model::Load(ci_istringstream& iss){
 	ci_string line;
 
@@ -130,7 +126,24 @@ bool Model::ParseLine(const std::vector<ci_string> &token){
 
 	return true;
 }//parse line of text 
-//Update--------------------------------------
+glm::mat4 Model::GetWorldMatrix(){
+	mat4 worldMatrix(1.0f);
+
+	mat4 t = glm::translate(mat4(1.0f), mPosition);
+	mat4 r = glm::rotate(mat4(1.0f), mRotationAngleInDegrees, mRotationAxis);
+	mat4 rx = glm::rotate(mat4(1.0f), mRotationAngleX, vec3(1,0,0));
+	mat4 ry = glm::rotate(mat4(1.0f), mRotationAngleY, vec3(0,1,0));
+	mat4 rz = glm::rotate(mat4(1.0f), mRotationAngleZ, vec3(0,0,1));
+
+	mat4 s = glm::scale(mat4(1.0f), mScaling);
+	worldMatrix = t * (r * rz * ry * rx)* s * transform;
+	
+	if(HasParent()){//relative to parent
+		return Parent()->GetWorldMatrix() * worldMatrix;
+	} else //relative to world
+		return worldMatrix;
+}
+
 void Model::Update(float dt){
 
 	if(mPath != nullptr)		
@@ -141,7 +154,7 @@ void Model::Update(float dt){
 	UpdateChildren(dt);
 	//updateChildren(Tree(list, values), dt) 
 }
-	void Model::updatePath(float dt){
+void Model::updatePath(float dt){
 	//Translate Along Path
 	//==============================================================================
 	bool makeMove = true;
@@ -168,7 +181,7 @@ void Model::Update(float dt){
 		mPosition += step*moveDirection;													//step toward direction
 	}
 }
-	void Model::updateSpline(float dt){
+void Model::updateSpline(float dt){
 	//Translate Along Spline	 @TODO - Animate along the spline
 		//==============================================================================
 		mSplineParameterT = mSpline->Travel(mSplineParameterT, dt*mSpeed);
@@ -180,32 +193,10 @@ void Model::Update(float dt){
 		
 		mPosition = mSpline->GetPosition(mSplineParameterT);
 }
-//Draw------------------------------------------
 void Model::Draw(){}
 
 
-
-glm::mat4 Model::GetWorldMatrix(){
-	mat4 worldMatrix(1.0f);
-
-	mat4 t = glm::translate(mat4(1.0f), mPosition);
-	mat4 r = glm::rotate(mat4(1.0f), mRotationAngleInDegrees, mRotationAxis);
-	mat4 rx = glm::rotate(mat4(1.0f), mRotationAngleX, vec3(1,0,0));
-	mat4 ry = glm::rotate(mat4(1.0f), mRotationAngleY, vec3(0,1,0));
-	mat4 rz = glm::rotate(mat4(1.0f), mRotationAngleZ, vec3(0,0,1));
-
-	mat4 s = glm::scale(mat4(1.0f), mScaling);
-	worldMatrix = t * (r * rz * ry * rx)* s * transform;
-	
-	if(HasParent()){//relative to parent
-		return Parent()->GetWorldMatrix() * worldMatrix;
-	} else //relative to world
-		return worldMatrix;
-}
-
-//#########################################################
-//						Orientation
-/////#####################################################
+//Orientation ###################################################
 void Model::SetPosition(glm::vec3 position){
 	mPosition = position;
 }
@@ -217,42 +208,44 @@ void Model::SetRotation(glm::vec3 axis, float angleDegrees){
 	mRotationAngleInDegrees = angleDegrees;
 }
 
-
-
-//#########################################################
-//						Children
-/////#####################################################
+//Hierarchy #####################################################
+Model*	Model::Parent(){
+	return mParent;
+}
 bool	Model::HasParent(){
 	if (mParent != nullptr)
 		return true;
 	return false;
 }
-Model*	Model::Parent(){
-	return mParent;
+void	Model::SetParent(Model* m){
+	this->mParent = m;
 }
-//----------------------------------------
+bool	Model::HasChild(ci_string key){
+	return child.count(key) > 0;
+}
 void	Model::AddChild(Model* m){
 	m->SetParent(this);
 	std::string str = to_string(mNthChild++);
 	m->SetName(str.c_str());
 	child[str.c_str()] = m;
 }	
-
-void Model::AddChild(ci_string key, Model* m){
+void	Model::AddChild(ci_string key, Model* m){
 	m->SetName(key);
 	m->SetParent(this);
 	child[key] = m;
 	mNthChild++;
 }	
-
-Model*	Model::RemoveChild(ci_string key){ 
+void	Model::DeleteChild(ci_string key){ //delete child competly
+	Model* old = child[key];	
+	delete old;
+	child.erase(key);			
+}
+Model*	Model::RemoveChild(ci_string key){ //Remove from Hierarchy
 	Model* old = child[key];	//keep track of pointer
 	child.erase(key);			//remove
 	return old;					//return
 }
-
-
-void Model::DeleteAllChildren(){
+void	Model::DeleteAllChildren(){
 	std::map<ci_string, Model*>::iterator it;
 	if(!child.empty()){
 		for (it = child.begin(); it != child.end(); it++){
@@ -263,8 +256,6 @@ void Model::DeleteAllChildren(){
 		child.clear();
 	}
 }
-
-//----------------------------------------
 void	Model::UpdateChildren(float dt){
 	if (GetChildCount() > 0){
 		typedef std::map<ci_string, Model*>::iterator it_type;
@@ -274,24 +265,16 @@ void	Model::UpdateChildren(float dt){
 	}
 }
 void	Model::DrawChildren(){
-	int count = GetChildCount();
-	if (count > 0){
+	if (GetChildCount() > 0){
 		typedef std::map<ci_string, Model*>::iterator it_type;
 		for(it_type iterator = child.begin(); iterator != child.end(); iterator++) {
 			iterator->second->Draw();
 		}
 	}
 }
-//----------------------------------------
-void	Model::SetParent(Model* m){
-	this->mParent = m;
-}
-//delete child competly
-void	Model::DeleteChild(ci_string key){ 
-	Model* old = child[key];	
-	delete old;
-	child.erase(key);			
-}
+
+
+//Collision ######################################################
 void Model::CreateDefaultCollisionCube()
 {
 	if (mCollisionCube == nullptr)
@@ -470,7 +453,7 @@ void Model::Intersect(const Ray& ray, std::vector<std::pair<Model*, glm::vec3>>&
 	}
 }
 
-//Physics ------------------------------------------------
+//Physics #########################################################
 void	Model::SetSplineParameterT(float t){
 	mSplineParameterT = t;
 }
@@ -481,10 +464,10 @@ void	Model::SetSpline(BSpline* sp){
 BSpline*	Model::GetSpline(){
 	return mSpline;
 }
-void	Model::SetSpeed(float spd){
+void		Model::SetSpeed(float spd){
     mSpeed = spd;
 }
-float	Model::GetSpeed(){return mSpeed;}
+float		Model::GetSpeed(){return mSpeed;}
 //force
 //acceleration
 

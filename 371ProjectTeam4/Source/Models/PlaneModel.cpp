@@ -297,19 +297,6 @@ void PlaneModel::MakeThrust(){
 
 
 
-	
-	//Cast Darkness
-	if(1){
-		LightModel* lm = new LightModel();
-		lm->SetPosition(vec3(0,0.0f,0.0f));
-		lm->SetIntensities(5.2f*vec3(1,0.6f,0.4f));
-		lm->SetIsDirectional(1);
-		lm->SetAttenuation(0.2f);
-		lm->SetAmbientCoefficient(0.0f);
-		lm->SetConeAngle(45);
-		lm->SetConeDirection(vec3(0,0,1));//relative to world
-		AddChild(lm);
-	}
 
 	//Cast Darkness
 	if(1){
