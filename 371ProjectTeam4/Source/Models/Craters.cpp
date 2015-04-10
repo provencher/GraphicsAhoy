@@ -134,6 +134,7 @@ Craters::Craters(vec3 size) : Model()
 
 	glDisable(GL_TEXTURE_2D);
 	Texture = loadBMP_custom("../Source/Textures/wood.bmp");
+	CreateDefaultCollisionCube();
 
 }
 

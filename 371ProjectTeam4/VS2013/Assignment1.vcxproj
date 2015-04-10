@@ -140,6 +140,11 @@
     <ClCompile Include="..\Source\Renderer.cpp" />
     <ClCompile Include="..\Source\TextureLoader.cpp" />
     <ClCompile Include="..\Source\ThirdPersonCamera.cpp" />
+    <ClCompile Include="..\Source\Tools\intersection.cpp" />
+    <ClCompile Include="..\Source\Tools\material.cpp" />
+    <ClCompile Include="..\Source\Tools\plane.cpp" />
+    <ClCompile Include="..\Source\Tools\ray.cpp" />
+    <ClCompile Include="..\Source\Tools\RayTriangleCollision.cpp" />
     <ClCompile Include="..\Source\World.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -170,6 +175,13 @@
     <ClInclude Include="..\Source\Renderer.h" />
     <ClInclude Include="..\Source\TextureLoader.h" />
     <ClInclude Include="..\Source\ThirdPersonCamera.h" />
+    <ClInclude Include="..\Source\Tools\intersection.h" />
+    <ClInclude Include="..\Source\Tools\mat4op.h" />
+    <ClInclude Include="..\Source\Tools\material.h" />
+    <ClInclude Include="..\Source\Tools\plane.h" />
+    <ClInclude Include="..\Source\Tools\quaternion.h" />
+    <ClInclude Include="..\Source\Tools\ray.h" />
+    <ClInclude Include="..\Source\Tools\RayTriangleCollision.h" />
     <ClInclude Include="..\Source\World.h" />
   </ItemGroup>
   <ItemGroup>
