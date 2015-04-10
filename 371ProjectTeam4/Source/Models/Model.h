@@ -31,12 +31,13 @@ public:		//------------------------------------------
 	virtual void Draw() = 0;
 	virtual ~Model();
 	//Identity----------------------------------
-	virtual		glm::mat4	GetWorldMatrix();
 	ci_string	GetName(){ return mName; }
 	void		SetName(ci_string name){ mName=name; }
 	ci_string	mType; //model, sphere, cube, plane,
 	ci_string	mShaderName; //name used to draw object
 	//Transforms ------------------------------------------
+	virtual		glm::mat4	GetWorldMatrix();
+	virtual		glm::mat4	GetRecursiveScalingMatrix();
 	glm::mat4	transform;	//apply transform to model first before trs
 	//T
 	void		SetPosition(glm::vec3 position);

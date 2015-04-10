@@ -143,7 +143,13 @@ glm::mat4 Model::GetWorldMatrix(){
 	} else //relative to world
 		return worldMatrix;
 }
-
+glm::mat4	Model::GetRecursiveScalingMatrix(){
+	if(HasParent()){
+		return glm::scale(Parent()->GetRecursiveScalingMatrix(), mScaling);
+	} else {
+		return glm::scale(mat4(1.0f), mScaling);
+	}
+}
 void Model::Update(float dt){
 
 	if(mPath != nullptr)		

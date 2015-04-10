@@ -91,7 +91,7 @@ void PlayerCamera::Update(float dt)
 	//------------------------------------
 	// 1 - Map Mouse motion to Spherical Angles
 	float mouseSpeed = 0.005f;
-	mHorizontalAngle -= mouseSpeed * dx;
+	//mHorizontalAngle -= mouseSpeed * dx;
 	mVerticalAngle   -= mouseSpeed * dy;
 	//-------------------------------------------------------
 
@@ -198,7 +198,7 @@ void PlayerCamera::UpdateTargeModel(float dt){
 		if(mTargetModel->mRotationAngleZ < -maxZTilt)		//Limit left roll
 			mTargetModel->mRotationAngleZ = -maxZTilt;
 
-		mHorizontalAngle += turnSpeed;//<-aron contribute
+		mHorizontalAngle += turnSpeed;
 	}
 	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_D ) == GLFW_PRESS){ //Right
 		//Go right
@@ -211,7 +211,7 @@ void PlayerCamera::UpdateTargeModel(float dt){
 		if(mTargetModel->mRotationAngleZ > maxZTilt)		//Limit right roll
 			mTargetModel->mRotationAngleZ = maxZTilt;
 
-		mHorizontalAngle -= turnSpeed;//<-aron contribute
+		mHorizontalAngle -= turnSpeed;
 	}
 	
 	/*// HOROZONTAL MOVEMENT -------------------------------------------------
@@ -226,17 +226,19 @@ void PlayerCamera::UpdateTargeModel(float dt){
 	float flapFactorH = mTargetModel->mRotationAngleZ/maxZTilt;
 	float flapFactorV = mTargetModel->mRotationAngleX/maxXTilt;
 	float maxFlapAngle = 30;
-	//Left Flap
-	Model* leftFlap = mTargetModel->child["wing"]->child["left"]->child["flap"];
-	leftFlap->SetRotation(leftFlap->GetRotationAxis(), -maxFlapAngle*flapFactorH -maxFlapAngle*flapFactorV);
-	//Right Flap
-	Model* rightFlap = mTargetModel->child["wing"]->child["right"]->child["flap"];
-	rightFlap->SetRotation(rightFlap->GetRotationAxis(), maxFlapAngle*flapFactorH -maxFlapAngle*flapFactorV);
-	
+	if(mTargetModel->HasChild("wing")){
+		//Left Flap
+		Model* leftFlap = mTargetModel->child["wing"]->child["left"]->child["flap"];  //assumes left and flaps exist
+		leftFlap->SetRotation(leftFlap->GetRotationAxis(), -maxFlapAngle*flapFactorH -maxFlapAngle*flapFactorV);
+		//Right Flap
+		Model* rightFlap = mTargetModel->child["wing"]->child["right"]->child["flap"];
+		rightFlap->SetRotation(rightFlap->GetRotationAxis(), maxFlapAngle*flapFactorH -maxFlapAngle*flapFactorV);
+	}
+
 	//Move up Move down ------------------------------------------------------------------------
 	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_SPACE ) == GLFW_PRESS){ //Up
 		movementDir += tempUp;
-		mTargetModel->mRotationAngleX-=0.2*tiltspeed;
+		mTargetModel->mRotationAngleX-=0.2f*tiltspeed;
 			//Limit Right roll
 			if(mTargetModel->mRotationAngleX < -maxXTilt) 
 				mTargetModel->mRotationAngleX = -maxXTilt;
@@ -245,7 +247,7 @@ void PlayerCamera::UpdateTargeModel(float dt){
 	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_RIGHT_SHIFT ) == GLFW_PRESS ||
 		glfwGetKey(EventManager::GetWindow(), GLFW_KEY_LEFT_SHIFT ) == GLFW_PRESS){ //Down
 		movementDir -= tempUp;
-		mTargetModel->mRotationAngleX+=0.2*tiltspeed;
+		mTargetModel->mRotationAngleX+=0.2f*tiltspeed;
 			//Limit Right roll
 			if(mTargetModel->mRotationAngleX > maxXTilt) 
 				mTargetModel->mRotationAngleX = maxXTilt;
