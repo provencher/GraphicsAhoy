@@ -48,6 +48,12 @@ public:
 	
 	//World Generation
 	ci_string groupIdentifier;
+	std::vector<std::vector<ci_string>> nameTracker;
+	Model* groundGroup;
+	Model* playerModel;
+
+	ci_string searchForNearest(Model* character);
+	void generateWorldSection();
 
 	//Shadows
 	void RenderShadows();

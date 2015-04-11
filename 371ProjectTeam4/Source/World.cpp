@@ -246,6 +246,7 @@ void World::LoadScene(const char * scene_path){
 		//Generate 1 Ground plate, just have to spawn more and keep track of what to despa
 		//AddChild("Ground", ground);
 		mModel.push_back(ground);
+		groundGroup = ground;
 	}
 
 
@@ -278,6 +279,7 @@ void World::LoadScene(const char * scene_path){
 	character->ReScaleCollisionCube(vec3(4));
 	character->SetSpeed(35.0f);	//Should move to camera
     mModel.push_back(character);
+	playerModel = character;
 
 	
 	// Create Camera -----------------------------------------
@@ -401,6 +403,10 @@ void World::Update(float dt)
 
 	//std::cout << "x " << camPos.x << "y " << camPos.y << "z " << camPos.z << endl;
 
+	if (playerModel->GetPosition().z > groundGroup->child[groupIdentifier]->child[nameTracker[1][1]]->GetPosition().z) {
+		generateWorldSection();
+	}
+
 	// Update models
 	for (vector<Model*>::iterator it = mModel.begin(); it < mModel.end(); ++it){
 		(*it)->Update(dt);
@@ -439,6 +445,8 @@ void World::RenderFog(){
 
 // Drawing a terrain -- Rita Contribution to add other objects in scene
 void World::DrawTerrain(GroupModel *ground){
+	std::vector<std::vector<ci_string>> plateTracker(3, std::vector<ci_string>(3));
+	int plateCount = 0;
 	//Create a simple terrain object
 	//Edited to generate multiple terrains in a 3x3 grid - Aron
 	for (int i = 0; i < 3; i++) {
@@ -492,9 +500,18 @@ void World::DrawTerrain(GroupModel *ground){
 				ground->child[groupIdentifier]->AddChild(shape);
 			}
 
+			ci_string str = to_string(++plateCount).c_str();
+
+			plateTracker[i][j] = str;
+
 			ground->child[groupIdentifier]->AddChild(terrain);
+
 		}
+
 	}
+
+	nameTracker = plateTracker;
+
 	//Creating craters for decor (needs to be adjust)
 	Model* crater = new Craters();
 	crater->SetScaling(vec3(2, 2, 2));
@@ -592,6 +609,11 @@ void World::RenderCommon(){
 		gluints[5] = glGetUniformLocation(Renderer::GetShaderProgramID(), (c_str = uniformName.c_str()));
 		glUniform3fv(gluints[5], 1, &temp[0]);
 
+	}
+
+	if (playerModel->GetPosition().z > groundGroup->child[groupIdentifier]->child[nameTracker[1][1]]->GetPosition().z - 150) {
+		cout << groundGroup->child[groupIdentifier]->child[nameTracker[1][1]]->GetPosition().z << endl;
+		generateWorldSection();
 	}
 
 	// Draw models
@@ -820,3 +842,41 @@ void World::RemoveLight(int index){
 	gLights->erase(gLights->begin()+index); // NOTE gLights should be map, issue will arise when deleting corrupting indexes that follow
 }
 
+ci_string World::searchForNearest(Model* character) {
+	//for full plane gen
+	return "";
+}
+
+void World::generateWorldSection() {
+	printf("World generation triggered.");
+	vec3 playerPosition = playerModel->GetPosition();
+
+	//offsets for left/right
+	int xOffset = 0, zOffset = 0;
+	
+	for (int i = 0; i < 3; i++) {
+		
+		cout << groundGroup->child[groupIdentifier]->child[nameTracker[i][1]]->GetScaling().z << endl;
+
+		groundGroup->child[groupIdentifier]->child[nameTracker[i][2]] = groundGroup->child[groupIdentifier]->child[nameTracker[i][1]]; //shift mid row to back
+		groundGroup->child[groupIdentifier]->child[nameTracker[i][1]] = groundGroup->child[groupIdentifier]->child[nameTracker[i][0]]; //shift front to mid
+
+		groundGroup->child[groupIdentifier]->child[nameTracker[i][0]] = new Terrain();
+		//positioning of front row established
+		groundGroup->child[groupIdentifier]->child[nameTracker[i][0]]->SetScaling(vec3(200, 0.01, 200)); //scaling is identical in all rows to keep textures from distorting
+		groundGroup->child[groupIdentifier]->child[nameTracker[i][0]]->SetRotation(vec3(0, 0, 1), 360.0f);
+
+		cout << groundGroup->child[groupIdentifier]->child[nameTracker[i][1]]->GetScaling().z << endl;
+
+		groundGroup->child[groupIdentifier]->child[nameTracker[i][0]]->SetPosition( //position is determined by the position of the previous row
+			vec3(
+			groundGroup->child[groupIdentifier]->child[nameTracker[i][1]]->GetPosition().x, //x position is unmodified, will be changed in final build to prevent player flying sideways into void
+			-0.5f, //y is unchanged to keep plane level
+			groundGroup->child[groupIdentifier]->child[nameTracker[i][1]]->GetPosition().z + groundGroup->child[groupIdentifier]->child[nameTracker[i][1]]->GetScaling().z / 2 //z is pushed forward so it doesn't clip the middle row
+			)
+			);
+
+		cout << groundGroup->child[groupIdentifier]->child[nameTracker[i][1]]->GetScaling().z << endl;
+		
+	}
+}
