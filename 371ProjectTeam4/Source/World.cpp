@@ -7,6 +7,7 @@
 //		Eric Provencher
 //		Rita Phom
 //		Jordan Rutty
+//		Aron Sigurdsson
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -216,20 +217,22 @@ void World::LoadScene(const char * scene_path){
 	//####################################################################################
 	
 	// Create World
-
+	//Basic world gen by Jordan
+	//Updated to fit n plates & reorganized by Aron
 	//------------------------------------------------------------------------------------
 	GroupModel* ground = new GroupModel();
 	//Basic World Generation Starter Kit By Jordan --------------------------------------
-	if(1){ //Ground ===============================
-		
+	if (1){ //Ground ===============================
+
 		ground->SetName("Ground");
 
+		groupIdentifier = "group";
 
 		//Generate Ground plate -----------------------------------------------------
-		vec3 plateSize = vec3(vec3(200,1,200));
+		vec3 plateSize = vec3(vec3(200, 1, 200));
 		Model* group = new GroupModel();
-		group->SetPosition(vec3(0,-0.5f,0));
-		ground->AddChild(group);
+		group->SetPosition(vec3(0, -0.5f, 0));
+		ground->AddChild(groupIdentifier, group);
 
 		//Generate Ground plate -----------------------------------------------------
 		//vec3 plateSize = vec3(vec3(200,1,200));
@@ -239,37 +242,11 @@ void World::LoadScene(const char * scene_path){
 		//Add objects to GroundPlate -------------------------------------------------
 		//Drawing a terrain. To toggle this, enable "RenderTerrain()"  
 		DrawTerrain(ground);
-		
-		//Generate 1 Ground plate, just have to spawn more and keep track of what to despawn
-		for(int i=0; i< 40; i++){
-			//Choose object to spawn
-			Model* shape = new CubeModel(vec3(0.8f)); // new Craters();
-			
 
-			int maxSize = 15;
-			int minSize = 5;
-			//Random shape
-			vec3 randSize = vec3(
-				rand() % (maxSize-minSize)+minSize,
-				rand() % (maxSize-minSize)+minSize,
-				rand() % (maxSize-minSize)+minSize
-			);
-			//Random position relative to plate
-			vec3 randPos = vec3(
-				(rand() % (int)plateSize.x) - 0.5f*plateSize.x, // center on plate
-				randSize.y/2,
-				(rand() % (int)plateSize.z)- 0.5f*plateSize.z	// center on plate
-			);
-
-			//Spawn Shape
-			shape->SetScaling(randSize);
-			shape->SetPosition(randPos);
-			shape->CreateDefaultCollisionCube();
-			group->AddChild(shape);	
-		}
+		//Generate 1 Ground plate, just have to spawn more and keep track of what to despa
 		//AddChild("Ground", ground);
 		mModel.push_back(ground);
-	}	
+	}
 
 
 
@@ -463,12 +440,61 @@ void World::RenderFog(){
 // Drawing a terrain -- Rita Contribution to add other objects in scene
 void World::DrawTerrain(GroupModel *ground){
 	//Create a simple terrain object
-	Model* terrain = new Terrain();
-	terrain->SetScaling(vec3(200,0.01,200));
-	terrain->SetPosition(vec3(0, 0, 0));
-	terrain->SetRotation(vec3(0, 0, 1), 360.0f);
-	ground->AddChild(terrain);
+	//Edited to generate multiple terrains in a 3x3 grid - Aron
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 3; j++) {
+			Model* terrain = new Terrain();
+			vec3 plateSize(200, 0.01, 200);
+			terrain->SetScaling(plateSize);
+			terrain->SetRotation(vec3(0, 0, 1), 360.0f);
 
+			//offsets to determine where to position relative to the origin
+			int offsetX = 0, offsetZ = 0;
+
+			//offsets determined, i = 0: left, i = 2: right
+			if (i == 0) offsetX = terrain->GetScaling().x / 2;
+			else if (i == 2) offsetX = -terrain->GetScaling().x / 2;
+			//j = 0: front, j = 2: rear
+			if (j == 0) offsetZ = terrain->GetScaling().z / 2;
+			else if (j == 2) offsetZ = -terrain->GetScaling().z / 2;
+
+			terrain->SetPosition(vec3(
+				ground->GetPosition().x + offsetX,
+				-0.5f,
+				ground->GetPosition().z + offsetZ
+				));
+
+			//Moved obstacle generation to DrawTerrain to simplify how obstacles are generated per plate - Aron
+
+			for (int k = 0; k< 10; k++){
+				//Choose object to spawn
+				Model* shape = new CubeModel(vec3(0.8f));
+
+				int maxSize = 15;
+				int minSize = 5;
+				//Random shape
+				vec3 randSize = vec3(
+					rand() % (maxSize - minSize) + minSize,
+					rand() % (maxSize - minSize) + minSize,
+					rand() % (maxSize - minSize) + minSize
+					);
+				//Random position relative to plate
+				vec3 randPos = vec3(
+					(rand() % (int)plateSize.x) - 0.5f*plateSize.x + terrain->GetPosition().x, // terrain offsets position from origin plate out to end plate destination
+					randSize.y / 2 - 0.5f,
+					(rand() % (int)plateSize.z) - 0.5f*plateSize.z + terrain->GetPosition().z
+					);
+
+				//Spawn Shape
+				shape->SetScaling(randSize);
+				shape->SetPosition(randPos);
+				shape->CreateDefaultCollisionCube();
+				ground->child[groupIdentifier]->AddChild(shape);
+			}
+
+			ground->child[groupIdentifier]->AddChild(terrain);
+		}
+	}
 	//Creating craters for decor (needs to be adjust)
 	Model* crater = new Craters();
 	crater->SetScaling(vec3(2, 2, 2));
@@ -488,6 +514,8 @@ void World::DrawTerrain(GroupModel *ground){
 	crater->SetRotation(vec3(0, 1, 0), 35.0f);
 	ground->AddChild(crater2);
 }
+
+
 
 
 //Common Rendering for all aspects of the program
