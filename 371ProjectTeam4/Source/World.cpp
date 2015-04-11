@@ -60,6 +60,16 @@ World::World()
 	float d = 0.1f;
 	// setup lights
 	//*
+
+	//*/
+	//*
+	Light directionalLight;
+	directionalLight.position = glm::vec4(15, 18, 0.6, 0); //w == 0 indications a directional light
+	directionalLight.intensities = glm::vec3(d, d, d); 
+	directionalLight.ambientCoefficient = 0.2f;
+	gLights->push_back(directionalLight);
+
+
 	Light spotlight;
 	spotlight.position = glm::vec4(0, 10, 0, 1);
 	spotlight.intensities = glm::vec3(0, 1, 2); //strong white light
@@ -68,13 +78,6 @@ World::World()
 	spotlight.coneAngle = 15.0f;
 	spotlight.coneDirection = glm::vec3(0, -1, 0);
 	gLights->push_back(spotlight);
-	//*/
-	//*
-	Light directionalLight;
-	directionalLight.position = glm::vec4(15, 18, 0.6, 0); //w == 0 indications a directional light
-	directionalLight.intensities = glm::vec3(d, d, d); 
-	directionalLight.ambientCoefficient = 0.2f;
-	gLights->push_back(directionalLight);
 	//*/
 	/*
 	Light light3;
@@ -299,15 +302,15 @@ void World::LoadScene(const char * scene_path){
 	character->SetSpeed(35.0f);	//Should move to camera
     mModel.push_back(character);
 
-
+	
 	// Create Camera -----------------------------------------
 	//ThirdPersonCamera* newCam = new ThirdPersonCamera(character);
 	PlayerCamera* newCam = new PlayerCamera(character);
 	newCam->SetCameraRadius(7.0f);
 	mCamera.push_back(newCam); //1
-	//ThirdPersonCamera* third = new ThirdPersonCamera(character);
-	//mCamera.push_back(third); //2 <--- breaks shadows
-
+	ThirdPersonCamera* third = new ThirdPersonCamera(character);
+	mCamera.push_back(third); //2 <--- breaks shadows
+	LoadCameras();
 
     //*note: to be moved into its own class
 	////////////////////////////////////////////////////////
@@ -330,7 +333,7 @@ void World::LoadScene(const char * scene_path){
 	}
 	*/
 
-    LoadCameras();
+    //LoadCameras();
 	mCurrentCamera = 0;
 
 	// Set PATH vertex buffers
@@ -364,13 +367,13 @@ void World::LoadCameras()
     
 	// Create Character -----------------------------------
 	////////////////////////////////////////////////////////
+	
 
-	//Setup Alt Camera -- Eric contribution
-	glm::vec3 pos = mCamera[1]->GetPosition();
-	glm::vec3 look = mCamera[0]->GetLookAt();
-	glm::vec3 up = mCamera[1]->GetUp();
-	altCamera = new StaticCamera(pos, look, up);
-
+	altCamera = new StaticCamera(
+		vec3(3.0f, 30.0f, 5.0f),
+		vec3(0.0f, 0.0f, 0.0f),
+		vec3(0.0f, 1.0f, 0.0f));
+	
 
     // BSpline Camera --------------------------------------
     BSpline* spline = FindSpline("\"RollerCoaster\"");
