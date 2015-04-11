@@ -864,6 +864,17 @@ void World::generateWorldSection() {
 
 		generateObstacles(groundGroup->child[groupIdentifier]->child[nameTracker[i][0]]);
 
+		std::map<ci_string, Model*> child = groundGroup->child[obstIdentifier]->child;
+
+		std::map<ci_string, Model*>::iterator it;
+		if (!child.empty()){
+			for (it = child.begin(); it != child.end(); it++){
+				Model* item = (*it).second;
+				if (item->GetPosition().z - 50 < playerPosition.z)
+					groundGroup->child[obstIdentifier]->DeleteChild((*it).first);
+			}
+		}
+
 		//cout << groundGroup->child[groupIdentifier]->child[nameTracker[1][1]]->GetPosition().z << endl;
 		
 	}
