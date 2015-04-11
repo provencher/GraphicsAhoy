@@ -57,7 +57,7 @@ World::World()
 
 	//Create light Vector
 	gLights = new vector<Light>();
-	float d = 0.1f;
+	float d = 0.8f;
 	// setup lights
 	//*
 

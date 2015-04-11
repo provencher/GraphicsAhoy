@@ -174,7 +174,9 @@ void main() {
 
 	//final color (after gamma correction)
     vec3 gamma = vec3(1.0/2.2);
-    color = vec4(pow(v_color.rgb*0.75*linearColor*shadowAmt, gamma), surfaceColor.a*0.75 );
+    //color = vec4(pow(v_color.rgb*0.75*linearColor*shadowAmt, gamma), surfaceColor.a*0.75 );
+		//final color
+	color = vec4(v_color.rgb * linearColor * shadowAmt, 1.0);
 
 }
 //mix(SkyColour, v_color.rgb *linearColor*shadowAmt, fogVisibility)
