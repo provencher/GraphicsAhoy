@@ -31,53 +31,62 @@ public:		//------------------------------------------
 	virtual void Draw() = 0;
 	virtual ~Model();
 	//Identity----------------------------------
-	virtual		glm::mat4	GetWorldMatrix();
 	ci_string	GetName(){ return mName; }
 	void		SetName(ci_string name){ mName=name; }
 	ci_string	mType; //model, sphere, cube, plane,
 	ci_string	mShaderName; //name used to draw object
 	//Transforms ------------------------------------------
+	virtual		glm::mat4	GetWorldMatrix();
+	virtual		glm::mat4	GetRecursiveScalingMatrix();
 	glm::mat4	transform;	//apply transform to model first before trs
+	//T
 	void		SetPosition(glm::vec3 position);
 	glm::vec3	GetPosition()		const	{ return mPosition; }
 	void		SetRotation(glm::vec3 axis, float angleDegrees);
+	//R
 	glm::vec3	GetRotationAxis()	const	{ return mRotationAxis; }
 	float		GetRotationAngle()	const	{ return mRotationAngleInDegrees; }
 	float		mRotationAngleX;
 	float		mRotationAngleY;
 	float		mRotationAngleZ;
-	//S--------------------------------------------------------
+	//S
 	void		SetScaling(glm::vec3 scaling);
 	glm::vec3	GetScaling()		const	{ return mScaling; }
 	//----------------------------------------------------------
-	void		SetSideColor(glm::vec3 col);			//#Idea		possibly best set through 
+	void		SetSideColor(glm::vec3 col);			//#Idea best implemented though OpenGl color 
     //----------------------------------------------------------
 	float		GetSpeed();
 	void		SetSpeed(float spd);
 	void		SetSpline(BSpline* sp);
 	BSpline*	GetSpline();
 	void		SetSplineParameterT(float t);
-	// Children --------------------------------
-	void	SetParent(Model* m);
-	void	AddChild(Model* m);
-	void	AddChild(ci_string key, Model* m);
-	int		GetChildCount() const { return child.size(); }
-	void	UpdateChildren(float dt);
-	void	DeleteAllChildren();
-	void	DrawChildren();
-	bool	HasParent();
-	Model*	Parent();
-	void		DeleteChild(ci_string key);
-
+	// Hierarchy --------------------------------
 	std::map <ci_string, Model*> child;
-	Model*		RemoveChild(ci_string key);
-	//Collision ----------------------------------------------
+	Model*	Parent();
+	bool	HasParent();
+	void	SetParent(Model* m);
+	bool	HasChild(ci_string key);
+	Model*	GetChild(ci_string key);
+	void	AddChild(Model* m);					//Auto Asign name to_string(++(#spawned))
+	void	AddChild(ci_string key, Model* m);	//Give name & Key accosiation
+	Model*	RemoveChild(ci_string key);			//Removed from Hierarchy
+	void	DeleteChild(ci_string key);			//deleted Completley
+	int		GetChildCount() const				{ return child.size(); }
+	void	UpdateChildren(float dt);			//update the nodes children | note: can be modified to only update when activly called, by disabling in the Update()
+	void	DeleteAllChildren();				
+	void	DrawChildren();						//Must be called in extending class to draw
+	//-----------------------------------------
+	
+	
+
+	
+	// Collision ----------------------------------------------
 	bool      CollideWith(Model* other);
 	void      CreateDefaultCollisionCube();
 	void      ReScaleCollisionCube(glm::vec3 newScale);
 	void      Intersect(const Ray& ray, std::vector<std::pair<Model*, glm::vec3>>& intersectionPoints);
 protected: //------------------------------------------
-	//Hierarchy 
+	// Hierarchy --------------------------------
 	Model*	mParent;
 	int		mNthChild;// used for naming unnamed children, counter incereses for every spawn, never decreases
 

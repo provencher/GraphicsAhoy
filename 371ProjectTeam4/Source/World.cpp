@@ -22,6 +22,7 @@
 
 
 //Models
+#include "ThirdPersonCamera.h";
 #include "Models/GroupModel.h"
 #include "Models/PlaneModel.h"
 #include "Models/CubeModel.h"
@@ -56,9 +57,9 @@ World::World()
 
 	//Create light Vector
 	gLights = new vector<Light>();
-	float d = 0.4f;
+	float d = 0.1f;
 	// setup lights
-	/*
+	//*
 	Light spotlight;
 	spotlight.position = glm::vec4(0, 10, 0, 1);
 	spotlight.intensities = glm::vec3(0, 1, 2); //strong white light
@@ -67,19 +68,21 @@ World::World()
 	spotlight.coneAngle = 15.0f;
 	spotlight.coneDirection = glm::vec3(0, -1, 0);
 	gLights->push_back(spotlight);
-	*/
+	//*/
+	//*
 	Light directionalLight;
 	directionalLight.position = glm::vec4(15, 18, 0.6, 0); //w == 0 indications a directional light
 	directionalLight.intensities = glm::vec3(d, d, d); 
 	directionalLight.ambientCoefficient = 0.2f;
 	gLights->push_back(directionalLight);
-
+	//*/
+	/*
 	Light light3;
 	light3.position = glm::vec4(-15, 5, 15, 0); //w == 0 indications a directional light
 	light3.intensities = glm::vec3(d/4.5, d/4, d/5); //weak yellowish light
 	light3.ambientCoefficient = 0.06f;
 	gLights->push_back(light3);
-
+	//*/
 
 	glfwGetWindowSize(EventManager::GetWindow(), &width, &height);
 
@@ -237,7 +240,7 @@ void World::LoadScene(const char * scene_path){
 		//Generate 1 Ground plate, just have to spawn more and keep track of what to despawn
 		for(int i=0; i< 40; i++){
 			//Choose object to spawn
-			Model* shape = new CubeModel(vec3(0.8f));
+			Model* shape = new CubeModel(vec3(0.8f)); // new Craters();
 			
 
 			int maxSize = 15;
@@ -251,7 +254,7 @@ void World::LoadScene(const char * scene_path){
 			//Random position relative to plate
 			vec3 randPos = vec3(
 				(rand() % (int)plateSize.x) - 0.5f*plateSize.x, // center on plate
-				randSize.y/2-0.5f,
+				randSize.y/2,
 				(rand() % (int)plateSize.z)- 0.5f*plateSize.z	// center on plate
 			);
 
@@ -268,7 +271,7 @@ void World::LoadScene(const char * scene_path){
 
 
 	//for getting a better view of the Jet plane spawn one above map
-	if(1){
+	if(0){
 		//Big Plane
 		GroupModel* character = new PlaneModel();
 		//character->SetRotation(vec3(1,0,0), 90);//change thirs person to accomidate 
@@ -276,7 +279,6 @@ void World::LoadScene(const char * scene_path){
 		character->SetScaling(vec3(scale, scale, scale));
 		character->SetPosition(vec3(20, 20, 0));
 		character->SetRotation(vec3(0, 1, 0),  0);
-		character->SetSpeed(14.0f);	//Should move to camera
 		mModel.push_back(character);
 	}
 	
@@ -294,13 +296,19 @@ void World::LoadScene(const char * scene_path){
 	character->SetRotation(vec3(0, 1, 0),  90);
 	character->CreateDefaultCollisionCube();
 	character->ReScaleCollisionCube(vec3(4));
-	character->SetSpeed(25.0f);	//Should move to camera
+	character->SetSpeed(35.0f);	//Should move to camera
     mModel.push_back(character);
 
+
 	// Create Camera -----------------------------------------
+	//ThirdPersonCamera* newCam = new ThirdPersonCamera(character);
 	PlayerCamera* newCam = new PlayerCamera(character);
 	newCam->SetCameraRadius(7.0f);
-	mCamera.push_back(newCam); //4
+	mCamera.push_back(newCam); //1
+	//ThirdPersonCamera* third = new ThirdPersonCamera(character);
+	//mCamera.push_back(third); //2 <--- breaks shadows
+
+
     //*note: to be moved into its own class
 	////////////////////////////////////////////////////////
 
