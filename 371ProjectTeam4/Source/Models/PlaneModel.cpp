@@ -296,8 +296,6 @@ void PlaneModel::MakeThrust(){
 	}
 
 
-
-
 	//Cast Darkness
 	if(1){
 		LightModel* lm = new LightModel();

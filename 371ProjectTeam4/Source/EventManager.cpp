@@ -146,12 +146,12 @@ void EventManager::DisableMouseCursor()
 float EventManager::GetMouseX(){
 	double x, y;
 	glfwGetCursorPos(spWindow, &x, &y);
-	return (float)x;
+	return x;
 }
 float EventManager::GetMouseY(){
 	double x, y;
 	glfwGetCursorPos(spWindow, &x, &y);
-	return (float)y;
+	return y;
 }
 float EventManager::GetLastMouseX(){
 	return sLastMousePositionX;

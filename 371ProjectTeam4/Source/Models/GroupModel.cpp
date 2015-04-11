@@ -16,7 +16,6 @@ GroupModel::GroupModel(vec3 size) : Model()
 
 	//initialize rotation speed;
 	rotationSpeed = 0.0f;
-	CreateDefaultCollisionCube();
 }
 
 GroupModel::~GroupModel()

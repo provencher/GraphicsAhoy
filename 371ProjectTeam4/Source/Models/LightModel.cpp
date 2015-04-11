@@ -13,10 +13,10 @@ LightModel::LightModel(glm::vec3 pos, glm::vec3 color) : Model(){
 	mLastColor = mColor;
 	mPosition = pos;
 	
-	mLightIndex = World::GetInstance()->AddLight(glm::vec4(mPosition, mDir), GetColorScalingFactor()*color);
+	mLightIndex = World::GetInstance()->AddLight(glm::vec4(mPosition, mDir), color);
 }
 LightModel::~LightModel(){
-	//NOTE:: Vector of lights should become a map so the index is independant of sequence position for removal
+	//NOTE:: Vector of lights should become a map so the index is independant of sequence position
 }
 void LightModel::Update(float dt){
 	Model::Update(dt);
@@ -24,15 +24,9 @@ void LightModel::Update(float dt){
 	World::GetInstance()->UpdateLight(
 		mLightIndex,	//key to light
 		glm::vec4(vec3(GetWorldMatrix()*vec4(mPosition,mDir)), mDir), //update world position of light, send is directional
-		GetColorScalingFactor()*mColor,		//Scale light intensity with model
-		mAttenuation, mAmbientCoefficient, 
+		(length(GetScaling())/length(vec3(1)))*mColor, mAttenuation, mAmbientCoefficient, 
 		mConeAngle, mConeDirection
 	);
-}
-
-
-float LightModel::GetColorScalingFactor(){
-	return length(vec3(GetRecursiveScalingMatrix()*vec4(1.0f)))/length(vec3(1));
 }
 
 //Helper ------------------------------------------------------------------------

@@ -135,7 +135,6 @@ Terrain::Terrain(vec3 size) : Model()
 	glDisable(GL_TEXTURE_2D);
 	// Load the texture 
 	Texture = loadBMP_custom("../Source/Textures/tiles1.bmp");
-	CreateDefaultCollisionCube();
 	
 }
 

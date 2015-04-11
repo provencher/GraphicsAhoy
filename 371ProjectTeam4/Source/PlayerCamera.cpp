@@ -14,7 +14,6 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/vector_angle.hpp>
 #include "Models/particleEmitter.h"
-#include "Models/LightModel.h"
 #include <GLFW/glfw3.h>
 #include <algorithm>
 #include <math.h>
@@ -26,10 +25,9 @@ using namespace glm;
 //####$%^%$#@!$%^&*%$#@$%^&*(^%$#@$%^&*(&^%$#$%^&*()*&^%$#%^&*(#$%^&*^%$#%^&*(^%$
 /////////////////////////////////////////////////////////
 PlayerCamera::PlayerCamera(Model* targetModel)
-    : Camera(),  mHorizontalAngle(0.0f), mVerticalAngle(0.0f), mRadius(10.0f){
+    : Camera(), mTargetModel(targetModel), mHorizontalAngle(0.0f), mVerticalAngle(0.0f), mRadius(10.0f){
     assert(mTargetModel != nullptr);
 
-	mTargetModel = targetModel;
 	//Orient ---------------------------------------
 	glm::vec3 defaultDir = glm::vec3(0,0,1);							//front of the model
 	//mTargetModel->SetRotation(mTargetModel->GetRotationAxis(), 45);	//test initial rotation
@@ -51,22 +49,6 @@ PlayerCamera::PlayerCamera(Model* targetModel)
 
 	//defailt move direction
 	mVelocity = mLookAt;
-
-	
-	
-	//*Add Spotlight
-	if(1){
-		mSpotLight = new LightModel();
-		mSpotLight->SetPosition(vec3(0,0.0f,1.5f));
-		mSpotLight->SetIntensities(5.0f*vec3(1,0.5f,0.1f));
-		mSpotLight->SetIsDirectional(1);
-		mSpotLight->SetAttenuation(0.5f);
-		mSpotLight->SetAmbientCoefficient(0.0f);
-		mSpotLight->SetConeAngle(35);
-		mSpotLight->SetConeDirection(glm::rotate(vec3(0,0,1), 20.0f, vec3(1,0,0)));	//forward facing spotlight
-		mTargetModel->AddChild("SpotLight", mSpotLight);
-	}//*/
-
 }
 PlayerCamera::~PlayerCamera(){
 }
@@ -79,7 +61,8 @@ float PlayerCamera::GetCameraRadius(){
 void PlayerCamera::Update(float dt)
 {
 
-	//Get Mouse
+	    // @TODO
+	//*///////////////////////////////////////////////////////////////
 	float dx, dy;
 	dx = EventManager::GetMouseDX();
 	dy = EventManager::GetMouseMotionY();
@@ -91,7 +74,7 @@ void PlayerCamera::Update(float dt)
 	//------------------------------------
 	// 1 - Map Mouse motion to Spherical Angles
 	float mouseSpeed = 0.005f;
-	//mHorizontalAngle -= mouseSpeed * dx;
+	mHorizontalAngle -= mouseSpeed * dx;
 	mVerticalAngle   -= mouseSpeed * dy;
 	//-------------------------------------------------------
 
@@ -118,15 +101,10 @@ void PlayerCamera::Update(float dt)
     // Align target model with the horizontal angle
 	mTargetModel->SetRotation(mTargetModel->GetRotationAxis(), (mHorizontalAngle/pif*180));
 	mPosition = mTargetModel->GetPosition() - mLookAt*mRadius;
-
-
-	//mSpotLight->SetConeDirection(mLookAt); // spotlight strait ahead
-	glm::vec3 spotLightDir = -normalize(mLookAt);
-	spotLightDir.y=0;
-	//spotLightDir = glm::rotate(spotLightDir, 20.0f, vec3(1,0,0))
-	mSpotLight->SetConeDirection(spotLightDir); // spotlight tilted
-	//mSpotLight->SetPosition(vec3(mTargetModel->GetWorldMatrix()*vec4(mPosition, 1)));
-	
+	/*idea
+	mat4 Model transform = new transformModel()->SetRotation;
+	transform = model
+	//*/
 
 	//lock camera above ground
 	if(mPosition.y <= 0.1f)	
@@ -188,17 +166,23 @@ void PlayerCamera::UpdateTargeModel(float dt){
 	float normalTiltX = 0;
 	float normalTiltY = 0;
 
+
 	//Roll Angle --------------------------------------------------------------
 	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_A ) == GLFW_PRESS){ //Left
+		
+		
+		//tilt left
 		turn--;
 		if(mTargetModel->mRotationAngleZ+tiltspeed > normalTiltZ)
 			mTargetModel->mRotationAngleZ-=2*tiltspeed;		//tilt faster if already leaning in other direction 
 		else 
 			mTargetModel->mRotationAngleZ-=tiltspeed;		//tilt normal speed
+		
 		if(mTargetModel->mRotationAngleZ < -maxZTilt)		//Limit left roll
 			mTargetModel->mRotationAngleZ = -maxZTilt;
 
-		mHorizontalAngle += turnSpeed;
+		
+		//mHorizontalAngle += turnSpeed;//<-aron contribute
 	}
 	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_D ) == GLFW_PRESS){ //Right
 		//Go right
@@ -208,37 +192,44 @@ void PlayerCamera::UpdateTargeModel(float dt){
 			mTargetModel->mRotationAngleZ+=2*tiltspeed;		//tilt faster if already leaning in other direction 
 		else 
 			mTargetModel->mRotationAngleZ+=tiltspeed;		//tilt normal speed
+
+
 		if(mTargetModel->mRotationAngleZ > maxZTilt)		//Limit right roll
 			mTargetModel->mRotationAngleZ = maxZTilt;
 
-		mHorizontalAngle -= turnSpeed;
+		
+		//mHorizontalAngle -= turnSpeed;//<-aron contribute
 	}
 	
-	/*// HOROZONTAL MOVEMENT -------------------------------------------------
+
+	// HOROZONTAL MOVEMENT -------------------------------------------------
 	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_D ) == GLFW_PRESS){ 
 		movementDir += mRight;
 	}
 	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_A ) == GLFW_PRESS){ 
 		movementDir -= mRight;
-	}//*/
+	}
 
+
+	
 	//Control Flap controls when turning --------------------------------------------------------
 	float flapFactorH = mTargetModel->mRotationAngleZ/maxZTilt;
 	float flapFactorV = mTargetModel->mRotationAngleX/maxXTilt;
 	float maxFlapAngle = 30;
-	if(mTargetModel->HasChild("wing")){
-		//Left Flap
-		Model* leftFlap = mTargetModel->child["wing"]->child["left"]->child["flap"];  //assumes left and flaps exist
-		leftFlap->SetRotation(leftFlap->GetRotationAxis(), -maxFlapAngle*flapFactorH -maxFlapAngle*flapFactorV);
-		//Right Flap
-		Model* rightFlap = mTargetModel->child["wing"]->child["right"]->child["flap"];
-		rightFlap->SetRotation(rightFlap->GetRotationAxis(), maxFlapAngle*flapFactorH -maxFlapAngle*flapFactorV);
-	}
+	//Left Flap
+	Model* leftFlap = mTargetModel->child["wing"]->child["left"]->child["flap"];
+	leftFlap->SetRotation(leftFlap->GetRotationAxis(), -maxFlapAngle*flapFactorH -maxFlapAngle*flapFactorV);
+	//Right Flap
+	Model* rightFlap = mTargetModel->child["wing"]->child["right"]->child["flap"];
+	rightFlap->SetRotation(rightFlap->GetRotationAxis(), maxFlapAngle*flapFactorH -maxFlapAngle*flapFactorV);
+	
+
+
 
 	//Move up Move down ------------------------------------------------------------------------
 	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_SPACE ) == GLFW_PRESS){ //Up
 		movementDir += tempUp;
-		mTargetModel->mRotationAngleX-=0.2f*tiltspeed;
+		mTargetModel->mRotationAngleX-=0.2*tiltspeed;
 			//Limit Right roll
 			if(mTargetModel->mRotationAngleX < -maxXTilt) 
 				mTargetModel->mRotationAngleX = -maxXTilt;
@@ -247,7 +238,7 @@ void PlayerCamera::UpdateTargeModel(float dt){
 	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_RIGHT_SHIFT ) == GLFW_PRESS ||
 		glfwGetKey(EventManager::GetWindow(), GLFW_KEY_LEFT_SHIFT ) == GLFW_PRESS){ //Down
 		movementDir -= tempUp;
-		mTargetModel->mRotationAngleX+=0.2f*tiltspeed;
+		mTargetModel->mRotationAngleX+=0.2*tiltspeed;
 			//Limit Right roll
 			if(mTargetModel->mRotationAngleX > maxXTilt) 
 				mTargetModel->mRotationAngleX = maxXTilt;
@@ -255,6 +246,8 @@ void PlayerCamera::UpdateTargeModel(float dt){
 
 	}
 
+
+	
 	//Correct roll ----------------------------------------------------------------------------
 	if(turn == 0){
 		if(mTargetModel->mRotationAngleZ < normalTiltZ)
@@ -269,6 +262,7 @@ void PlayerCamera::UpdateTargeModel(float dt){
 			else
 				mTargetModel->mRotationAngleZ -= tiltspeed;
 	}
+
 
 	//Correct tilt ----------------------------------------------------------------------------
 	if(verticalTilt == 0){
@@ -285,6 +279,9 @@ void PlayerCamera::UpdateTargeModel(float dt){
 				mTargetModel->mRotationAngleX -= 0.2*tiltspeed;
 	}
 	
+
+	
+	
 	//distance -------------------------------------------------------
 	float dist = dt*mTargetModel->GetSpeed();
 	movementDir = glm::normalize(movementDir)*dist;
@@ -299,19 +296,17 @@ void PlayerCamera::UpdateTargeModel(float dt){
 	if(pos.y > 28) 
 		pos.y = 28;	//	max height
 	mTargetModel->SetPosition(pos);
-	//*///////////////////////////////////////////////////////////////////////////
+	//Jordan Part End //////////////////////////////////////////////////////////////////////
 
 
 
+	//*///////////////////////////////////////////////////////////////
 
 	if (ProcessCollisions(*mTargetModel)) // returns whether a collision occurred
 	{
 		// Payer dies?
 	}
 	
-
-
-
 	//////////////////////////////////////////////////
 
 	// LOOK AT
@@ -325,12 +320,6 @@ void PlayerCamera::UpdateTargeModel(float dt){
 	mRight = glm::normalize(glm::cross(mLookAt, vec3(0.0f, 1.0f, 0.0f)));
     mUp = glm::cross(mRight, mLookAt);
 
-	//
-	if(mTargetModel->HasChild("SpotLight")){
-		//LightModel* light = mTargetModel->child["SpotLight"];
-
-	}
-	//=====================================================================================
 	// Process shooting
 
 	if (glfwGetMouseButton(EventManager::GetWindow(), 0) == GLFW_PRESS)
@@ -346,26 +335,26 @@ void PlayerCamera::UpdateTargeModel(float dt){
 		std::pair<Model*, vec3>* closestIntersection = nullptr;
 		for (int i = 0, iMax = intersectionPoints.size(); i < iMax; ++i)
 		{
-			if (intersectionPoints[i].first != mTargetModel && (closestIntersection == nullptr || (distance(intersectionPoints[i].second, shootRay.getOrigin()) < distance(closestIntersection->second, shootRay.getOrigin()))))
+			if (closestIntersection == nullptr || (distance(intersectionPoints[i].second, shootRay.getOrigin()) < distance(closestIntersection->second, shootRay.getOrigin())))
 			{
 				closestIntersection = &(intersectionPoints[i]);
 			}
 		}
 		if (closestIntersection != nullptr)
 		{
-			ParticleEmitter* pe = new ParticleEmitter(vec3(0,1,0));
-			pe->SetPosition(closestIntersection->first->GetPosition());
-			pe->SetScaling(vec3(5,1,0.5f));
-			closestIntersection->first->Parent()->DeleteChild(closestIntersection->first->GetName());
-			std::vector<Model*>& models = *World::GetInstance()->GetModels();
-			for (int i = 0, iMax = models.size(); i < iMax; ++i)
-			{
-				if (models[i]->GetName().compare("Ground") == 0)
-				{
-					models[i]->AddChild("left-afterburner", pe);
-					break;
-				}
-			}
+			//closestIntersection->first->Parent()->DeleteChild(closestIntersection->first->GetName());
+			//ParticleEmitter* pe = new ParticleEmitter(vec3(0,1,0));
+			//pe->SetPosition(vec3(0.0f, 1, -88.0f));
+			//pe->SetScaling(vec3(5,1,0.5f));
+			//std::vector<Model*>& models = *World::GetInstance()->GetModels();
+			//for (int i = 0, iMax = models.size(); i < iMax; ++i)
+			//{
+			//	if (models[i]->GetName().compare("Ground") == 0)
+			//	{
+			//		models[i]->AddChild("left-afterburner", pe);
+			//		break;
+			//	}
+			//}
 		}
 	}
 }

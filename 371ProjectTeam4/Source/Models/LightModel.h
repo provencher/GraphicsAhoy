@@ -21,7 +21,10 @@ public:
 	~LightModel();
 	void Update(float dt);
 	void Draw(){}
-	float GetColorScalingFactor();			//used to scale the intensities of the light
+
+	
+
+
 	void SetIsDirectional(bool w);
 	void SetIntensities(glm::vec3 color);
 	void SetAttenuation(float c);

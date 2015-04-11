@@ -21,7 +21,6 @@ CubeModel::CubeModel(vec3 color, vec3 size, vec3 pos) : Model()
 	LoadMesh(color, size);
 	SetPosition(pos);
 	mType = "CubeModel";	//allow to tell the type of object for more specific functions
-	CreateDefaultCollisionCube();
 }
 
 
