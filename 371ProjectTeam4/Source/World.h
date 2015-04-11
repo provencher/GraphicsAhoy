@@ -47,13 +47,14 @@ public:
 	void RenderTerrain(); // Render the shader for drawing a terrain
 	
 	//World Generation
-	ci_string groupIdentifier;
+	ci_string groupIdentifier, obstIdentifier;
 	std::vector<std::vector<ci_string>> nameTracker;
 	Model* groundGroup;
 	Model* playerModel;
 
 	ci_string searchForNearest(Model* character);
 	void generateWorldSection();
+	void generateObstacles(Model* terrain);
 
 	//Shadows
 	void RenderShadows();

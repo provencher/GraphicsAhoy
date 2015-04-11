@@ -228,11 +228,20 @@ void World::LoadScene(const char * scene_path){
 
 		groupIdentifier = "group";
 
+		obstIdentifier = "obst";
+
 		//Generate Ground plate -----------------------------------------------------
 		vec3 plateSize = vec3(vec3(200, 1, 200));
 		Model* group = new GroupModel();
+		Model* obst = new GroupModel();
+
 		group->SetPosition(vec3(0, -0.5f, 0));
+		obst->SetPosition(vec3(0, -0.5f, 0));
+
 		ground->AddChild(groupIdentifier, group);
+		ground->AddChild(obstIdentifier, obst);
+
+		groundGroup = ground;
 
 		//Generate Ground plate -----------------------------------------------------
 		//vec3 plateSize = vec3(vec3(200,1,200));
@@ -246,7 +255,7 @@ void World::LoadScene(const char * scene_path){
 		//Generate 1 Ground plate, just have to spawn more and keep track of what to despa
 		//AddChild("Ground", ground);
 		mModel.push_back(ground);
-		groundGroup = ground;
+		//groundGroup = ground;
 	}
 
 
@@ -403,7 +412,7 @@ void World::Update(float dt)
 
 	//std::cout << "x " << camPos.x << "y " << camPos.y << "z " << camPos.z << endl;
 
-	if (playerModel->GetPosition().z > groundGroup->child[groupIdentifier]->child[nameTracker[1][1]]->GetPosition().z) {
+	if (playerModel->GetPosition().z > groundGroup->child[groupIdentifier]->GetChild(nameTracker[1][1])->GetPosition().z) {
 		generateWorldSection();
 	}
 
@@ -444,9 +453,10 @@ void World::RenderFog(){
 }
 
 // Drawing a terrain -- Rita Contribution to add other objects in scene
-//Modified to generate much larger initial map by Aron
+//Modified to generate much larger initial map by Aron & better sort objects into hierarchical tree
 void World::DrawTerrain(GroupModel *ground){
 	std::vector<std::vector<ci_string>> plateTracker(3, std::vector<ci_string>(3));
+	nameTracker = plateTracker;
 	int plateCount = 0;
 	//Create a simple terrain object
 	//Edited to generate multiple terrains in a 3x3 grid - Aron
@@ -472,46 +482,22 @@ void World::DrawTerrain(GroupModel *ground){
 				-0.5f,
 				ground->GetPosition().z + offsetZ
 				));
-
-			//Moved obstacle generation to DrawTerrain to simplify how obstacles are generated per plate - Aron
-
-			for (int k = 0; k< 10; k++){
-				//Choose object to spawn
-				Model* shape = new CubeModel(vec3(0.8f));
-
-				int maxSize = 15;
-				int minSize = 5;
-				//Random shape
-				vec3 randSize = vec3(
-					rand() % (maxSize - minSize) + minSize,
-					rand() % (maxSize - minSize) + minSize,
-					rand() % (maxSize - minSize) + minSize
-					);
-				//Random position relative to plate
-				vec3 randPos = vec3(
-					(rand() % (int)plateSize.x) - 0.5f*plateSize.x + terrain->GetPosition().x, // terrain offsets position from origin plate out to end plate destination
-					randSize.y / 2 - 0.5f,
-					(rand() % (int)plateSize.z) - 0.5f*plateSize.z + terrain->GetPosition().z
-					);
-
-				//Spawn Shape
-				shape->SetScaling(randSize);
-				shape->SetPosition(randPos);
-				shape->CreateDefaultCollisionCube();
-				ground->child[groupIdentifier]->AddChild(shape);
-			}
-
+			
 			ci_string str = to_string(++plateCount).c_str();
 
-			plateTracker[i][j] = str;
+			nameTracker[i][j] = str;
 
-			ground->AddChild(terrain);
+			ground->child[groupIdentifier]->AddChild(nameTracker[i][j], terrain);
 
+			//Moved obstacle generation to its own function to simplify how obstacles are generated per plate - Aron
+		
+			generateObstacles(terrain);
+			
 		}
 
 	}
 
-	nameTracker = plateTracker;
+	//nameTracker = plateTracker;
 
 	/*
 	//Creating craters for decor (needs to be adjust)
@@ -871,12 +857,43 @@ void World::generateWorldSection() {
 		groundGroup->child[groupIdentifier]->child[nameTracker[i][0]]->SetPosition( //position is determined by the position of the previous row
 			vec3(
 			groundGroup->child[groupIdentifier]->child[nameTracker[i][1]]->GetPosition().x, //x position is unmodified, will be changed in final build to prevent player flying sideways into void
-			-0.9f, //y is unchanged to keep plane level
+			groundGroup->child[groupIdentifier]->child[nameTracker[i][1]]->GetPosition().y, //y is unchanged to keep plane level
 			groundGroup->child[groupIdentifier]->child[nameTracker[i][1]]->GetPosition().z + groundGroup->child[groupIdentifier]->child[nameTracker[i][1]]->GetScaling().z / 2 //z is pushed forward so it doesn't clip the middle row
 			)
+		);
+
+		generateObstacles(groundGroup->child[groupIdentifier]->child[nameTracker[i][0]]);
+
+		//cout << groundGroup->child[groupIdentifier]->child[nameTracker[1][1]]->GetPosition().z << endl;
+		
+	}
+}
+
+void World::generateObstacles(Model* terrain) {
+	for (int k = 0; k< 10; k++){
+		//Choose object to spawn
+		Model* shape = new CubeModel(vec3(0.8f));
+		vec3 plateSize(200, 0.01, 200);
+
+		int maxSize = 15;
+		int minSize = 5;
+		//Random shape
+		vec3 randSize = vec3(
+			rand() % (maxSize - minSize) + minSize,
+			rand() % (maxSize - minSize) + minSize,
+			rand() % (maxSize - minSize) + minSize
+			);
+		//Random position relative to plate
+		vec3 randPos = vec3(
+			(rand() % (int)plateSize.x) - 0.5f*plateSize.x + terrain->GetPosition().x, // terrain offsets position from origin plate out to end plate destination
+			randSize.y / 2 - 0.5f,
+			(rand() % (int)plateSize.z) - 0.5f*plateSize.z + terrain->GetPosition().z
 			);
 
-		cout << groundGroup->child[groupIdentifier]->child[nameTracker[1][1]]->GetPosition().z << endl;
-		
+		//Spawn Shape
+		shape->SetScaling(randSize);
+		shape->SetPosition(randPos);
+		shape->CreateDefaultCollisionCube();
+		groundGroup->child[obstIdentifier]->AddChild(shape);
 	}
 }
