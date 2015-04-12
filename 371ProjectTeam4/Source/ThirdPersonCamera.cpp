@@ -180,7 +180,7 @@ void ThirdPersonCamera::UpdateTargetPosition(float dt){
 
 	//movement  -----------------------------------------------------
 	glm::vec3 movementDir = glm::vec3(0,0,0);
-    if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_W ) == GLFW_PRESS)//Forward
+    //if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_W ) == GLFW_PRESS)//Forward
 		movementDir += direction;
     if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_S ) == GLFW_PRESS)//Back
 		movementDir -= direction;
@@ -190,6 +190,7 @@ void ThirdPersonCamera::UpdateTargetPosition(float dt){
 		mTargetModel->mRotationAngleY = tiltspeed;
 		turn--;
 	}
+
 	if (glfwGetKey(EventManager::GetWindow(), GLFW_KEY_D ) == GLFW_PRESS){//Right
 		movementDir += mRight;
 		mTargetModel->mRotationAngleZ = tiltspeed;
