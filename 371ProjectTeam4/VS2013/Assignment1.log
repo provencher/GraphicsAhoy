@@ -1,9 +1,42 @@
-﻿Build started 2015-04-12 8:42:47 PM.
-     1>Project "D:\GraphicsAhoy\371ProjectTeam4\VS2013\Assignment1.vcxproj" on node 2 (Build target(s)).
+﻿Build started 4/12/2015 10:50:59 PM.
+     1>Project "D:\Documents\Repositories\GitHub\GraphicsNGen\371ProjectTeam4\VS2013\Assignment1.vcxproj" on node 2 (Build target(s)).
      1>Link:
-         Assignment1.vcxproj -> D:\GraphicsAhoy\371ProjectTeam4\VS2013\/../Bin/371ProjectTeam4-Debug.exe
-     1>Done Building Project "D:\GraphicsAhoy\371ProjectTeam4\VS2013\Assignment1.vcxproj" (Build target(s)).
+         C:\Program Files (x86)\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\Documents\Repositories\GitHub\GraphicsNGen\371ProjectTeam4\VS2013\/../Bin/371ProjectTeam4-Debug.exe" /INCREMENTAL /NOLOGO /LIBPATH:"../ThirdParty/glew-1.10.0/lib/Release/Win32" /LIBPATH:"../ThirdParty/glfw-3.0.4/lib/Win32/lib-msvc110" opengl32.lib glew32s.lib glfw3.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:\Documents\Repositories\GitHub\GraphicsNGen\371ProjectTeam4\VS2013\/../Bin/371ProjectTeam4-Debug.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\Documents\Repositories\GitHub\GraphicsNGen\371ProjectTeam4\VS2013\/../Bin/371ProjectTeam4-Debug.lib" /MACHINE:X86 D:\Documents\Repositories\GitHub\GraphicsNGen\371ProjectTeam4\VS2013\/../Build/Debug/BSpline.obj
+         D:\Documents\Repositories\GitHub\GraphicsNGen\371ProjectTeam4\VS2013\/../Build/Debug/BSplineCamera.obj
+         D:\Documents\Repositories\GitHub\GraphicsNGen\371ProjectTeam4\VS2013\/../Build/Debug/Camera.obj
+         D:\Documents\Repositories\GitHub\GraphicsNGen\371ProjectTeam4\VS2013\/../Build/Debug/light.obj
+         D:\Documents\Repositories\GitHub\GraphicsNGen\371ProjectTeam4\VS2013\/../Build/Debug/meshLoader.obj
+         D:\Documents\Repositories\GitHub\GraphicsNGen\371ProjectTeam4\VS2013\/../Build/Debug/BillBoard.obj
+         D:\Documents\Repositories\GitHub\GraphicsNGen\371ProjectTeam4\VS2013\/../Build/Debug/Craters.obj
+         D:\Documents\Repositories\GitHub\GraphicsNGen\371ProjectTeam4\VS2013\/../Build/Debug/CubeModel.obj
+         D:\Documents\Repositories\GitHub\GraphicsNGen\371ProjectTeam4\VS2013\/../Build/Debug/GroupModel.obj
+         D:\Documents\Repositories\GitHub\GraphicsNGen\371ProjectTeam4\VS2013\/../Build/Debug/LightModel.obj
+         D:\Documents\Repositories\GitHub\GraphicsNGen\371ProjectTeam4\VS2013\/../Build/Debug/Model.obj
+         D:\Documents\Repositories\GitHub\GraphicsNGen\371ProjectTeam4\VS2013\/../Build/Debug/Obstacle.obj
+         D:\Documents\Repositories\GitHub\GraphicsNGen\371ProjectTeam4\VS2013\/../Build/Debug/particle.obj
+         D:\Documents\Repositories\GitHub\GraphicsNGen\371ProjectTeam4\VS2013\/../Build/Debug/particleEmitter.obj
+         D:\Documents\Repositories\GitHub\GraphicsNGen\371ProjectTeam4\VS2013\/../Build/Debug/PlaneModel.obj
+         D:\Documents\Repositories\GitHub\GraphicsNGen\371ProjectTeam4\VS2013\/../Build/Debug/RazorbackModel.obj
+         D:\Documents\Repositories\GitHub\GraphicsNGen\371ProjectTeam4\VS2013\/../Build/Debug/SphereModel.obj
+         D:\Documents\Repositories\GitHub\GraphicsNGen\371ProjectTeam4\VS2013\/../Build/Debug/Terrain.obj
+         D:\Documents\Repositories\GitHub\GraphicsNGen\371ProjectTeam4\VS2013\/../Build/Debug/TorrentModel.obj
+         D:\Documents\Repositories\GitHub\GraphicsNGen\371ProjectTeam4\VS2013\/../Build/Debug/Path.obj
+         D:\Documents\Repositories\GitHub\GraphicsNGen\371ProjectTeam4\VS2013\/../Build/Debug/PlayerCamera.obj
+         D:\Documents\Repositories\GitHub\GraphicsNGen\371ProjectTeam4\VS2013\/../Build/Debug/StaticCamera.obj
+         D:\Documents\Repositories\GitHub\GraphicsNGen\371ProjectTeam4\VS2013\/../Build/Debug/EventManager.obj
+         D:\Documents\Repositories\GitHub\GraphicsNGen\371ProjectTeam4\VS2013\/../Build/Debug/main.obj
+         D:\Documents\Repositories\GitHub\GraphicsNGen\371ProjectTeam4\VS2013\/../Build/Debug/Renderer.obj
+         D:\Documents\Repositories\GitHub\GraphicsNGen\371ProjectTeam4\VS2013\/../Build/Debug/TextureLoader.obj
+         D:\Documents\Repositories\GitHub\GraphicsNGen\371ProjectTeam4\VS2013\/../Build/Debug/ThirdPersonCamera.obj
+         D:\Documents\Repositories\GitHub\GraphicsNGen\371ProjectTeam4\VS2013\/../Build/Debug/intersection.obj
+         D:\Documents\Repositories\GitHub\GraphicsNGen\371ProjectTeam4\VS2013\/../Build/Debug/material.obj
+         D:\Documents\Repositories\GitHub\GraphicsNGen\371ProjectTeam4\VS2013\/../Build/Debug/plane.obj
+         D:\Documents\Repositories\GitHub\GraphicsNGen\371ProjectTeam4\VS2013\/../Build/Debug/ray.obj
+         D:\Documents\Repositories\GitHub\GraphicsNGen\371ProjectTeam4\VS2013\/../Build/Debug/RayTriangleCollision.obj
+         D:\Documents\Repositories\GitHub\GraphicsNGen\371ProjectTeam4\VS2013\/../Build/Debug/World.obj
+         Assignment1.vcxproj -> D:\Documents\Repositories\GitHub\GraphicsNGen\371ProjectTeam4\VS2013\/../Bin/371ProjectTeam4-Debug.exe
+     1>Done Building Project "D:\Documents\Repositories\GitHub\GraphicsNGen\371ProjectTeam4\VS2013\Assignment1.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:00.09
+Time Elapsed 00:00:00.32

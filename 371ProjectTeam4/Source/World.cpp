@@ -891,7 +891,7 @@ void World::generateWorldSection() {
 		if (!child.empty()){
 			for (it = child.begin(); it != child.end(); it++){
 				Model* item = (*it).second;
-				if (item->GetPosition().z - 50 < playerPosition.z)
+				if (item->GetPosition().z + 50 < playerPosition.z)
 					groundGroup->child[obstIdentifier]->DeleteChild((*it).first);
 			}
 		}
