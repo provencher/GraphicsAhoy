@@ -28,6 +28,8 @@
 #include "Models/PlaneModel.h"
 #include "Models/CubeModel.h"
 #include "Models/Craters.h"
+#include "Models/Obstacle.h"
+#include "Models/Skybox.h"
 #include "Models/Terrain.h"
 #include "Models/SphereModel.h"
 #include "Models/Billboard.h"
@@ -180,6 +182,12 @@ void World::LoadScene(const char * scene_path){
 				//cube->Load(iss);
 				//mModel.push_back(cube);
 			}
+			//else if (result == "terrain"){    // Initial approach of loading a terrain using .scene file
+			//	// Load terrain -----------
+			//	Terrain* terrain = new Terrain();
+			//	terrain->Load(iss);
+			//	mModel.push_back(terrain);
+			//}
 			else if( result == "sphere" ){
 				// Load Sphere -----------
                 SphereModel* sphere = new SphereModel();
@@ -211,12 +219,7 @@ void World::LoadScene(const char * scene_path){
 	input.close();
 	
 
-	
-
-
-	//####################################################################################
-	
-	// Create World
+	//Create World
 	//Basic world gen by Jordan
 	//Updated to fit n plates & reorganized by Aron
 	//------------------------------------------------------------------------------------
@@ -225,9 +228,7 @@ void World::LoadScene(const char * scene_path){
 	if (1){ //Ground ===============================
 
 		ground->SetName("Ground");
-
 		groupIdentifier = "group";
-
 		obstIdentifier = "obst";
 
 		//Generate Ground plate -----------------------------------------------------
@@ -249,6 +250,7 @@ void World::LoadScene(const char * scene_path){
 		//groundPlate->SetScaling(plateSize);
 		//group->AddChild(groundPlate);
 		//Add objects to GroundPlate -------------------------------------------------
+		
 		//Drawing a terrain. To toggle this, enable "RenderTerrain()"  
 		DrawTerrain(ground);
 
@@ -273,10 +275,8 @@ void World::LoadScene(const char * scene_path){
 	}
 	
 
-	////////////////////////////////////////////////////////
 
 	// PLAYER
-
 	// Third Person Cube Character -------------------------
     GroupModel* character = new PlaneModel();
 	//character->SetRotation(vec3(1,0,0), 90);//change thirs person to accomidate 
@@ -301,7 +301,6 @@ void World::LoadScene(const char * scene_path){
 	LoadCameras();
 
     //*note: to be moved into its own class
-	////////////////////////////////////////////////////////
 
 	/*
 	//Billboard
@@ -413,7 +412,7 @@ void World::Update(float dt)
 	//std::cout << "x " << camPos.x << "y " << camPos.y << "z " << camPos.z << endl;
 
 	if (playerModel->GetPosition().z > groundGroup->child[groupIdentifier]->GetChild(nameTracker[1][1])->GetPosition().z) {
-		generateWorldSection();
+		generateWorldSection(); //Toggle to generate world section
 	}
 
 	// Update models
@@ -503,7 +502,7 @@ void World::DrawTerrain(GroupModel *ground){
 	//Creating craters for decor (needs to be adjust)
 	Model* crater = new Craters();
 	crater->SetScaling(vec3(2, 2, 2));
-	crater->SetPosition(vec3(5, 1, 5));		//Rita I fixed this - Jordan, cubes where floating
+	crater->SetPosition(vec3(5, 1, 5));		
 	crater->SetRotation(vec3(0, 1, 0), 50.0f);
 	ground->AddChild(crater);
 
@@ -611,6 +610,28 @@ void World::RenderCommon(){
 	}
 }
 
+
+//Draw a skybox
+void World::DrawSkybox(){
+
+	/*
+	Model* obj = new Skybox();
+	obj->SetScaling();
+	obj->SetPosition(); // must be centered at the camera position
+	//T0D0....
+	*/
+}
+
+//Render a skybox
+void World::RenderSkybox(){
+	//T0D0...
+	//Set shader for skybox with NO lighting
+	//glDisable(GL_DEPTH_TEST);
+	//DrawSkybox();
+	//glEnable(GL_DEPTH_TEST);
+
+	//...
+}
 
 // Render the terrain to the scenery
 void World::RenderTerrain(){
@@ -883,7 +904,9 @@ void World::generateWorldSection() {
 void World::generateObstacles(Model* terrain) {
 	for (int k = 0; k< 10; k++){
 		//Choose object to spawn
-		Model* shape = new CubeModel(vec3(0.8f));
+		//Model* shape = new CubeModel(vec3(0.8f));
+		Model* shape = new Obstacle(vec3(0.8f));
+
 		vec3 plateSize(200, 0.01, 200);
 
 		int maxSize = 15;
@@ -904,6 +927,7 @@ void World::generateObstacles(Model* terrain) {
 		//Spawn Shape
 		shape->SetScaling(randSize);
 		shape->SetPosition(randPos);
+		shape->SetRotation(vec3(0, 0, 1), 90.0);
 		shape->CreateDefaultCollisionCube();
 		groundGroup->child[obstIdentifier]->AddChild(shape);
 	}

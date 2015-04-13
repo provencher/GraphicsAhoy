@@ -1,4 +1,10 @@
-
+//
+// COMP 371 Project Team 4
+//
+// Base code initially by Nicolas Bergeron and Gary Chang
+// Updated By Rita Phommarath
+// 
+//
 
 // Include GLEW - OpenGL Extension Wrangler
 #include <GL/glew.h>
@@ -12,59 +18,65 @@ using namespace glm;
 
 Terrain::Terrain(vec3 size) : Model()
 {
-	// Create Vertex Buffer for all the verices of the Cube
+	//Load the texture 
+	Texture = loadBMP("../Source/Textures/bricks0.bmp");
+
+	//Allows collision detection
+	CreateDefaultCollisionCube();
+
+	// Create Vertex Buffer for all the vertices of the Cube
 	vec3 halfSize = size * 0.5f;
 
-	Vertex vertexBuffer[] = {  // position,                normal,                  color
-		{ vec3(-halfSize.x, -halfSize.y, -halfSize.z), vec3(-1.0f, 0.0f, 0.0f), vec3(1.0f, 0.0f, 0.0f) }, //left - red
-		{ vec3(-halfSize.x, -halfSize.y, halfSize.z), vec3(-1.0f, 0.0f, 0.0f), vec3(1.0f, 0.0f, 0.0f) },
-		{ vec3(-halfSize.x, halfSize.y, halfSize.z), vec3(-1.0f, 0.0f, 0.0f), vec3(1.0f, 0.0f, 0.0f) },
+	Vertex vertexBuffer[] = {  // position,                normal,                  color-white
+		{ vec3(-halfSize.x, -halfSize.y, -halfSize.z), vec3(-1.0f, 0.0f, 0.0f), vec3(1.0, 1.0, 1.0) }, //left 
+		{ vec3(-halfSize.x, -halfSize.y, halfSize.z), vec3(-1.0f, 0.0f, 0.0f), vec3(1.0, 1.0, 1.0) },
+		{ vec3(-halfSize.x, halfSize.y, halfSize.z), vec3(-1.0f, 0.0f, 0.0f), vec3(1.0, 1.0, 1.0) },
 
-		{ vec3(-halfSize.x, -halfSize.y, -halfSize.z), vec3(-1.0f, 0.0f, 0.0f), vec3(1.0f, 0.0f, 0.0f) },
-		{ vec3(-halfSize.x, halfSize.y, halfSize.z), vec3(-1.0f, 0.0f, 0.0f), vec3(1.0f, 0.0f, 0.0f) },
-		{ vec3(-halfSize.x, halfSize.y, -halfSize.z), vec3(-1.0f, 0.0f, 0.0f), vec3(1.0f, 0.0f, 0.0f) },
+		{ vec3(-halfSize.x, -halfSize.y, -halfSize.z), vec3(-1.0f, 0.0f, 0.0f), vec3(1.0, 1.0, 1.0) },
+		{ vec3(-halfSize.x, halfSize.y, halfSize.z), vec3(-1.0f, 0.0f, 0.0f), vec3(1.0, 1.0, 1.0) },
+		{ vec3(-halfSize.x, halfSize.y, -halfSize.z), vec3(-1.0f, 0.0f, 0.0f), vec3(1.0, 1.0, 1.0) },
 
-		{ vec3(halfSize.x, halfSize.y, -halfSize.z), vec3(0.0f, 0.0f, -1.0f), vec3(0.0f, 0.0f, 1.0f) }, // far - blue
-		{ vec3(-halfSize.x, -halfSize.y, -halfSize.z), vec3(0.0f, 0.0f, -1.0f), vec3(0.0f, 0.0f, 1.0f) },
-		{ vec3(-halfSize.x, halfSize.y, -halfSize.z), vec3(0.0f, 0.0f, -1.0f), vec3(0.0f, 0.0f, 1.0f) },
+		{ vec3(halfSize.x, halfSize.y, -halfSize.z), vec3(0.0f, 0.0f, -1.0f), vec3(1.0, 1.0, 1.0) }, // far
+		{ vec3(-halfSize.x, -halfSize.y, -halfSize.z), vec3(0.0f, 0.0f, -1.0f), vec3(1.0, 1.0, 1.0) },
+		{ vec3(-halfSize.x, halfSize.y, -halfSize.z), vec3(0.0f, 0.0f, -1.0f), vec3(1.0, 1.0, 1.0) },
 
-		{ vec3(halfSize.x, halfSize.y, -halfSize.z), vec3(0.0f, 0.0f, -1.0f), vec3(0.0f, 0.0f, 1.0f) },
-		{ vec3(halfSize.x, -halfSize.y, -halfSize.z), vec3(0.0f, 0.0f, -1.0f), vec3(0.0f, 0.0f, 1.0f) },
-		{ vec3(-halfSize.x, -halfSize.y, -halfSize.z), vec3(0.0f, 0.0f, -1.0f), vec3(0.0f, 0.0f, 1.0f) },
+		{ vec3(halfSize.x, halfSize.y, -halfSize.z), vec3(0.0f, 0.0f, -1.0f), vec3(1.0, 1.0, 1.0) },
+		{ vec3(halfSize.x, -halfSize.y, -halfSize.z), vec3(0.0f, 0.0f, -1.0f), vec3(1.0, 1.0, 1.0) },
+		{ vec3(-halfSize.x, -halfSize.y, -halfSize.z), vec3(0.0f, 0.0f, -1.0f), vec3(1.0, 1.0, 1.0) },
 
-		{ vec3(halfSize.x, -halfSize.y, halfSize.z), vec3(0.0f, -1.0f, 0.0f), vec3(0.0f, 1.0f, 1.0f) }, // bottom - turquoise
-		{ vec3(-halfSize.x, -halfSize.y, -halfSize.z), vec3(0.0f, -1.0f, 0.0f), vec3(0.0f, 1.0f, 1.0f) },
-		{ vec3(halfSize.x, -halfSize.y, -halfSize.z), vec3(0.0f, -1.0f, 0.0f), vec3(0.0f, 1.0f, 1.0f) },
+		{ vec3(halfSize.x, -halfSize.y, halfSize.z), vec3(0.0f, -1.0f, 0.0f), vec3(1.0, 1.0, 1.0) }, // bottom 
+		{ vec3(-halfSize.x, -halfSize.y, -halfSize.z), vec3(0.0f, -1.0f, 0.0f), vec3(1.0, 1.0, 1.0) },
+		{ vec3(halfSize.x, -halfSize.y, -halfSize.z), vec3(0.0f, -1.0f, 0.0f), vec3(1.0, 1.0, 1.0) },
 
-		{ vec3(halfSize.x, -halfSize.y, halfSize.z), vec3(0.0f, -1.0f, 0.0f), vec3(0.0f, 1.0f, 1.0f) },
-		{ vec3(-halfSize.x, -halfSize.y, halfSize.z), vec3(0.0f, -1.0f, 0.0f), vec3(0.0f, 1.0f, 1.0f) },
-		{ vec3(-halfSize.x, -halfSize.y, -halfSize.z), vec3(0.0f, -1.0f, 0.0f), vec3(0.0f, 1.0f, 1.0f) },
+		{ vec3(halfSize.x, -halfSize.y, halfSize.z), vec3(0.0f, -1.0f, 0.0f), vec3(1.0, 1.0, 1.0) },
+		{ vec3(-halfSize.x, -halfSize.y, halfSize.z), vec3(0.0f, -1.0f, 0.0f), vec3(1.0, 1.0, 1.0) },
+		{ vec3(-halfSize.x, -halfSize.y, -halfSize.z), vec3(0.0f, -1.0f, 0.0f), vec3(1.0, 1.0, 1.0) },
 
-		{ vec3(-halfSize.x, halfSize.y, halfSize.z), vec3(0.0f, 0.0f, 1.0f), vec3(0.5f, 0.5f, 0.5f) }, // near - gray
-		{ vec3(-halfSize.x, -halfSize.y, halfSize.z), vec3(0.0f, 0.0f, 1.0f), vec3(0.5f, 0.5f, 0.5f) },
-		{ vec3(halfSize.x, -halfSize.y, halfSize.z), vec3(0.0f, 0.0f, 1.0f), vec3(0.5f, 0.5f, 0.5f) },
+		{ vec3(-halfSize.x, halfSize.y, halfSize.z), vec3(0.0f, 0.0f, 1.0f), vec3(1.0, 1.0, 1.0) }, // near 
+		{ vec3(-halfSize.x, -halfSize.y, halfSize.z), vec3(0.0f, 0.0f, 1.0f), vec3(1.0, 1.0, 1.0) },
+		{ vec3(halfSize.x, -halfSize.y, halfSize.z), vec3(0.0f, 0.0f, 1.0f), vec3(1.0, 1.0, 1.0) },
 
-		{ vec3(halfSize.x, halfSize.y, halfSize.z), vec3(0.0f, 0.0f, 1.0f), vec3(0.5f, 0.5f, 0.5f) },
-		{ vec3(-halfSize.x, halfSize.y, halfSize.z), vec3(0.0f, 0.0f, 1.0f), vec3(0.5f, 0.5f, 0.5f) },
-		{ vec3(halfSize.x, -halfSize.y, halfSize.z), vec3(0.0f, 0.0f, 1.0f), vec3(0.5f, 0.5f, 0.5f) },
+		{ vec3(halfSize.x, halfSize.y, halfSize.z), vec3(0.0f, 0.0f, 1.0f), vec3(1.0, 1.0, 1.0) },
+		{ vec3(-halfSize.x, halfSize.y, halfSize.z), vec3(0.0f, 0.0f, 1.0f), vec3(1.0, 1.0, 1.0) },
+		{ vec3(halfSize.x, -halfSize.y, halfSize.z), vec3(0.0f, 0.0f, 1.0f), vec3(1.0, 1.0, 1.0) },
 
-		{ vec3(halfSize.x, halfSize.y, halfSize.z), vec3(1.0f, 0.0f, 0.0f), vec3(0.8f, 0.8f, 1.0f) }, // right blue tint
-		{ vec3(halfSize.x, -halfSize.y, -halfSize.z), vec3(1.0f, 0.0f, 0.0f), vec3(0.8f, 0.8f, 1.0f) },
-		{ vec3(halfSize.x, halfSize.y, -halfSize.z), vec3(1.0f, 0.0f, 0.0f), vec3(0.8f, 0.8f, 1.0f) },
+		{ vec3(halfSize.x, halfSize.y, halfSize.z), vec3(1.0f, 0.0f, 0.0f), vec3(1.0, 1.0, 1.0) }, // right 
+		{ vec3(halfSize.x, -halfSize.y, -halfSize.z), vec3(1.0f, 0.0f, 0.0f), vec3(1.0, 1.0, 1.0) },
+		{ vec3(halfSize.x, halfSize.y, -halfSize.z), vec3(1.0f, 0.0f, 0.0f), vec3(1.0, 1.0, 1.0) },
 
-		{ vec3(halfSize.x, -halfSize.y, -halfSize.z), vec3(1.0f, 0.0f, 0.0f), vec3(0.8f, 0.8f, 1.0f) },
-		{ vec3(halfSize.x, halfSize.y, halfSize.z), vec3(1.0f, 0.0f, 0.0f), vec3(0.8f, 0.8f, 1.0f) },
-		{ vec3(halfSize.x, -halfSize.y, halfSize.z), vec3(1.0f, 0.0f, 0.0f), vec3(0.8f, 0.8f, 1.0f) },
+		{ vec3(halfSize.x, -halfSize.y, -halfSize.z), vec3(1.0f, 0.0f, 0.0f), vec3(1.0, 1.0, 1.0) },
+		{ vec3(halfSize.x, halfSize.y, halfSize.z), vec3(1.0f, 0.0f, 0.0f), vec3(1.0, 1.0, 1.0) },
+		{ vec3(halfSize.x, -halfSize.y, halfSize.z), vec3(1.0f, 0.0f, 0.0f), vec3(1.0, 1.0, 1.0) },
 
-		{ vec3(halfSize.x, halfSize.y, halfSize.z), vec3(0.0f, 1.0f, 0.0f), vec3(0.5f, 0.5f, 0.5f) }, // top - gray
-		{ vec3(halfSize.x, halfSize.y, -halfSize.z), vec3(0.0f, 1.0f, 0.0f), vec3(0.5f, 0.5f, 0.5f) },
-		{ vec3(-halfSize.x, halfSize.y, -halfSize.z), vec3(0.0f, 1.0f, 0.0f), vec3(0.5f, 0.5f, 0.5f) },
+		{ vec3(halfSize.x, halfSize.y, halfSize.z), vec3(0.0f, 1.0f, 0.0f), vec3(1.0, 1.0, 1.0) }, // top 
+		{ vec3(halfSize.x, halfSize.y, -halfSize.z), vec3(0.0f, 1.0f, 0.0f), vec3(1.0, 1.0, 1.0) },
+		{ vec3(-halfSize.x, halfSize.y, -halfSize.z), vec3(0.0f, 1.0f, 0.0f), vec3(1.0, 1.0, 1.0) },
 
-		{ vec3(halfSize.x, halfSize.y, halfSize.z), vec3(0.0f, 1.0f, 0.0f), vec3(0.5f, 0.5f, 0.5f) },
-		{ vec3(-halfSize.x, halfSize.y, -halfSize.z), vec3(0.0f, 1.0f, 0.0f), vec3(0.5f, 0.5f, 0.5f) },
-		{ vec3(-halfSize.x, halfSize.y, halfSize.z), vec3(0.0f, 1.0f, 0.0f), vec3(0.5f, 0.5f, 0.5f) }
+		{ vec3(halfSize.x, halfSize.y, halfSize.z), vec3(0.0f, 1.0f, 0.0f), vec3(1.0, 1.0, 1.0) },
+		{ vec3(-halfSize.x, halfSize.y, -halfSize.z), vec3(0.0f, 1.0f, 0.0f), vec3(1.0, 1.0, 1.0) },
+		{ vec3(-halfSize.x, halfSize.y, halfSize.z), vec3(0.0f, 1.0f, 0.0f), vec3(1.0, 1.0, 1.0) }
 	};
-	
+
 	static const GLfloat g_uv_buffer_data[] =
 	{
 		0.0f, 0.0f, //left
@@ -115,10 +127,10 @@ Terrain::Terrain(vec3 size) : Model()
 		0.0f, 0.0f,
 		1.0f, 0.0f
 
-		
+
 	};
 
-	
+
 	// Create a vertex array
 	glGenVertexArrays(1, &mVertexArrayID);
 
@@ -127,16 +139,13 @@ Terrain::Terrain(vec3 size) : Model()
 	glBindBuffer(GL_ARRAY_BUFFER, mVertexBufferID);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertexBuffer), vertexBuffer, GL_STATIC_DRAW);
 
-	
+
 	glGenBuffers(1, &uvbuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(g_uv_buffer_data), g_uv_buffer_data, GL_STATIC_DRAW);
-	
+
 	glDisable(GL_TEXTURE_2D);
-	// Load the texture 
-	Texture = loadBMP_custom("../Source/Textures/tiles1.bmp");
-	CreateDefaultCollisionCube();
-	
+
 }
 
 Terrain::~Terrain()
@@ -148,43 +157,31 @@ Terrain::~Terrain()
 
 void Terrain::Update(float dt)
 {
-	// If you are curious, un-comment this line to have spinning cubes!
-	// That will only work if your world transform is correct...
-	// mRotationAngleInDegrees += 90 * dt; // spins by 90 degrees per second
-
 	Model::Update(dt);
 }
 
 void Terrain::Draw()
 {
 	// Draw the Vertex Buffer
-	// Note this draws a unit Cube
-	// The Model View Projection transforms are computed in the Vertex Shader
 	glBindVertexArray(mVertexArrayID);
-	
-	
 
 	// Get a handle for our "myTextureSampler" uniform
 	GLuint TextureID = glGetUniformLocation(Renderer::GetShaderProgramID(), "mySamplerTexture");
-	
+
 	GLuint WorldMatrixLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "WorldTransform");
 	glUniformMatrix4fv(WorldMatrixLocation, 1, GL_FALSE, &GetWorldMatrix()[0][0]);
 
-	
+
 	//enable texture
 	glEnable(GL_TEXTURE_2D);
-	// Bind our texture in Texture Unit 1?
-	glActiveTexture(GL_TEXTURE2);
 
-	//glEnable(GL_BLEND);
-	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	//glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	// Bind our texture in Texture Unit 2?
+	glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_2D, 2);
 
-
-	// Set our "myTextureSampler" sampler to user Texture Unit 1?
+	// Set our "myTextureSampler" sampler to user Texture Unit 2
 	glUniform1i(TextureID, 2);
-	
+
 
 	// 1st attribute buffer : vertex Positions
 	glEnableVertexAttribArray(0);
@@ -219,7 +216,7 @@ void Terrain::Draw()
 		sizeof(Vertex),
 		(void*)(2 * sizeof(vec3)) // Color is Offseted by 2 vec3 (see class Vertex)
 		);
-	
+
 	// 4th attribute buffer : UVs
 	glEnableVertexAttribArray(3);
 	glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
@@ -232,7 +229,7 @@ void Terrain::Draw()
 		(void*)0
 		);
 
-	
+
 	// Draw the triangles !
 	glDrawArrays(GL_TRIANGLES, 0, 36); // 36 vertices: 3 * 2 * 6 (3 per triangle, 2 triangles per face, 6 faces)
 

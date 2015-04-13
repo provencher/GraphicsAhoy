@@ -5,10 +5,12 @@
 #include "TextureLoader.h"
 #include <GLFW/glfw3.h>
 
+/*
+Reference: OpengGL tutorial
+*/
 
-GLuint loadBMP_custom(const char * imagepath){
-
-	printf("Reading image %s\n", imagepath);
+//Loading .bmp files
+GLuint loadBMP(const char * imagepath){
 
 	// Data read from the header of the BMP file
 	unsigned char header[54];
@@ -20,25 +22,32 @@ GLuint loadBMP_custom(const char * imagepath){
 
 	// Open the file
 	FILE * file = fopen(imagepath, "rb");
-	if (!file)							    { printf("%s could not be opened. Are you in the right directory ? Don't forget to read the FAQ !\n", imagepath); getchar(); return 0; }
+	if (!file){
+		printf("%s could not be opened. Are you in the right directory ? Don't forget to read the FAQ !\n", imagepath);
+		getchar(); return 0;
+	}
 
 	// Read the header, i.e. the 54 first bytes
-
 	// If less than 54 bytes are read, problem
 	if (fread(header, 1, 54, file) != 54){
-		//printf("Not a correct BMP file\n");
-		//return 0;
-		return loadBMP_custom(imagepath);
+
+		return loadBMP(imagepath);
 	}
+
 	// A BMP files always begins with "BM"
 	if (header[0] != 'B' || header[1] != 'M'){
-		//printf("Not a correct BMP file\n");
-		//return 0;
-		return loadBMP_custom(imagepath);
+		return loadBMP(imagepath);
 	}
 	// Make sure this is a 24bpp file
-	if (*(int*)&(header[0x1E]) != 0)         { printf("Not a correct BMP file\n");    return 0; }
-	if (*(int*)&(header[0x1C]) != 24)         { printf("Not a correct BMP file\n");    return 0; }
+	if (*(int*)&(header[0x1E]) != 0){
+		printf("Not a correct BMP file\n");
+		return 0;
+	}
+
+	if (*(int*)&(header[0x1C]) != 24){
+		printf("Not a correct BMP file\n");
+		return 0;
+	}
 
 	// Read the information about the image
 	dataPos = *(int*)&(header[0x0A]);
@@ -87,37 +96,14 @@ GLuint loadBMP_custom(const char * imagepath){
 	return textureID;
 }
 
-// Since GLFW 3, glfwLoadTexture2D() has been removed. You have to use another texture loading library, 
-// or do it yourself (just like loadBMP_custom and loadDDS)
-//GLuint loadTGA_glfw(const char * imagepath){
-//
-//	// Create one OpenGL texture
-//	GLuint textureID;
-//	glGenTextures(1, &textureID);
-//
-//	// "Bind" the newly created texture : all future texture functions will modify this texture
-//	glBindTexture(GL_TEXTURE_2D, textureID);
-//
-//	// Read the file, call glTexImage2D with the right parameters
-//	glfwLoadTexture2D(imagepath, 0);
-//
-//	// Nice trilinear filtering.
-//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR); 
-//	glGenerateMipmap(GL_TEXTURE_2D);
-//
-//	// Return the ID of the texture we just created
-//	return textureID;
-//}
-
 
 
 #define FOURCC_DXT1 0x31545844 // Equivalent to "DXT1" in ASCII
 #define FOURCC_DXT3 0x33545844 // Equivalent to "DXT3" in ASCII
 #define FOURCC_DXT5 0x35545844 // Equivalent to "DXT5" in ASCII
 
+
+//Loading .DDS files
 GLuint loadDDS(const char * imagepath){
 
 	unsigned char header[124];
@@ -205,8 +191,5 @@ GLuint loadDDS(const char * imagepath){
 	}
 
 	free(buffer);
-
 	return textureID;
-
-
 }

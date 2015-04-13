@@ -178,6 +178,9 @@
     <ClCompile Include="..\Source\Tools\RayTriangleCollision.cpp">
       <Filter>Source Files\Tools</Filter>
     </ClCompile>
+    <ClCompile Include="..\Source\Models\Obstacle.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Source\EventManager.h">
@@ -284,6 +287,9 @@
     </ClInclude>
     <ClInclude Include="..\Source\Tools\RayTriangleCollision.h">
       <Filter>Source Files\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Models\Obstacle.h">
+      <Filter>Source Files\Model</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

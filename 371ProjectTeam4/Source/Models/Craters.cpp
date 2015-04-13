@@ -1,3 +1,8 @@
+//
+// COMP 371 Assignment Framework - Team 4
+// 
+// Base code initially by Nicolas Bergeron and Gary Chang
+// Updated by Rita Phommarath on 2015/04/03
 
 
 // Include GLEW - OpenGL Extension Wrangler
@@ -12,109 +17,114 @@ using namespace glm;
 
 Craters::Craters(vec3 size) : Model()
 {
+	//Loads the texture
+	Texture = loadBMP("../Source/Textures/tiles3.bmp");
+
+	//Allows collision detection
+	CreateDefaultCollisionCube();
+
 	// Create Vertex Buffer for all the verices of the Cube
 	vec3 halfSize = size * 0.5f;
 
-	Vertex vertexBuffer[] = {  // position,                normal,                  color
-		{ vec3(-halfSize.x, -halfSize.y, -halfSize.z), vec3(-1.0f, 0.0f, 0.0f), vec3(0.5, 0.4, 0.0f) }, //left - red
-		{ vec3(-halfSize.x, -halfSize.y, halfSize.z), vec3(-1.0f, 0.0f, 0.0f), vec3(0.5, 0.4, 0.0f) },
-		{ vec3(-halfSize.x, halfSize.y, halfSize.z), vec3(-1.0f, 0.0f, 0.0f), vec3(0.5, 0.4, 0.0f) },
+	Vertex vertexBuffer[] = {  // position,                normal,                  color-white
+		{ vec3(-halfSize.x, -halfSize.y, -halfSize.z), vec3(-1.0f, 0.0f, 0.0f), vec3(1.0, 1.0, 1.0) }, //left 
+		{ vec3(-halfSize.x, -halfSize.y, halfSize.z), vec3(-1.0f, 0.0f, 0.0f), vec3(1.0, 1.0, 1.0) },
+		{ vec3(-halfSize.x, halfSize.y, halfSize.z), vec3(-1.0f, 0.0f, 0.0f), vec3(1.0, 1.0, 1.0) },
 
-		{ vec3(-halfSize.x, -halfSize.y, -halfSize.z), vec3(-1.0f, 0.0f, 0.0f), vec3(0.5, 0.4, 0.0f) },
-		{ vec3(-halfSize.x, halfSize.y, halfSize.z), vec3(-1.0f, 0.0f, 0.0f), vec3(0.5, 0.4, 0.0f) },
-		{ vec3(-halfSize.x, halfSize.y, -halfSize.z), vec3(-1.0f, 0.0f, 0.0f), vec3(0.5, 0.4, 0.0f) },
+		{ vec3(-halfSize.x, -halfSize.y, -halfSize.z), vec3(-1.0f, 0.0f, 0.0f), vec3(1.0, 1.0, 1.0) },
+		{ vec3(-halfSize.x, halfSize.y, halfSize.z), vec3(-1.0f, 0.0f, 0.0f), vec3(1.0, 1.0, 1.0) },
+		{ vec3(-halfSize.x, halfSize.y, -halfSize.z), vec3(-1.0f, 0.0f, 0.0f), vec3(1.0, 1.0, 1.0) },
 
-		{ vec3(halfSize.x, halfSize.y, -halfSize.z), vec3(0.0f, 0.0f, -1.0f), vec3(0.5f, 0.4, 0.0f) }, // far - blue
-		{ vec3(-halfSize.x, -halfSize.y, -halfSize.z), vec3(0.0f, 0.0f, -1.0f), vec3(0.5f, 0.4, 0.0f) },
-		{ vec3(-halfSize.x, halfSize.y, -halfSize.z), vec3(0.0f, 0.0f, -1.0f), vec3(0.5f, 0.4, 0.0f) },
+		{ vec3(halfSize.x, halfSize.y, -halfSize.z), vec3(0.0f, 0.0f, -1.0f), vec3(1.0, 1.0, 1.0) }, // far
+		{ vec3(-halfSize.x, -halfSize.y, -halfSize.z), vec3(0.0f, 0.0f, -1.0f), vec3(1.0, 1.0, 1.0) },
+		{ vec3(-halfSize.x, halfSize.y, -halfSize.z), vec3(0.0f, 0.0f, -1.0f), vec3(1.0, 1.0, 1.0) },
 
-		{ vec3(halfSize.x, halfSize.y, -halfSize.z), vec3(0.0f, 0.0f, -1.0f), vec3(0.5f, 0.4, 0.0f) },
-		{ vec3(halfSize.x, -halfSize.y, -halfSize.z), vec3(0.0f, 0.0f, -1.0f), vec3(0.5f, 0.4, 0.0f) },
-		{ vec3(-halfSize.x, -halfSize.y, -halfSize.z), vec3(0.0f, 0.0f, -1.0f), vec3(0.5f, 0.4, 0.0f) },
+		{ vec3(halfSize.x, halfSize.y, -halfSize.z), vec3(0.0f, 0.0f, -1.0f), vec3(1.0, 1.0, 1.0) },
+		{ vec3(halfSize.x, -halfSize.y, -halfSize.z), vec3(0.0f, 0.0f, -1.0f), vec3(1.0, 1.0, 1.0) },
+		{ vec3(-halfSize.x, -halfSize.y, -halfSize.z), vec3(0.0f, 0.0f, -1.0f), vec3(1.0, 1.0, 1.0) },
 
-		{ vec3(halfSize.x, -halfSize.y, halfSize.z), vec3(0.0f, -1.0f, 0.0f), vec3(0.5f, 0.4, 0.0f) }, // bottom - turquoise
-		{ vec3(-halfSize.x, -halfSize.y, -halfSize.z), vec3(0.0f, -1.0f, 0.0f), vec3(0.5f, 0.4, 0.0f) },
-		{ vec3(halfSize.x, -halfSize.y, -halfSize.z), vec3(0.0f, -1.0f, 0.0f), vec3(0.5f, 0.4, 0.0f) },
+		{ vec3(halfSize.x, -halfSize.y, halfSize.z), vec3(0.0f, -1.0f, 0.0f), vec3(1.0, 1.0, 1.0) }, // bottom 
+		{ vec3(-halfSize.x, -halfSize.y, -halfSize.z), vec3(0.0f, -1.0f, 0.0f), vec3(1.0, 1.0, 1.0) },
+		{ vec3(halfSize.x, -halfSize.y, -halfSize.z), vec3(0.0f, -1.0f, 0.0f), vec3(1.0, 1.0, 1.0) },
 
-		{ vec3(halfSize.x, -halfSize.y, halfSize.z), vec3(0.0f, -1.0f, 0.0f), vec3(0.5f, 0.4, 0.0f) },
-		{ vec3(-halfSize.x, -halfSize.y, halfSize.z), vec3(0.0f, -1.0f, 0.0f), vec3(0.5f, 0.4, 0.0f) },
-		{ vec3(-halfSize.x, -halfSize.y, -halfSize.z), vec3(0.0f, -1.0f, 0.0f), vec3(0.5f, 0.4, 0.0f) },
+		{ vec3(halfSize.x, -halfSize.y, halfSize.z), vec3(0.0f, -1.0f, 0.0f), vec3(1.0, 1.0, 1.0) },
+		{ vec3(-halfSize.x, -halfSize.y, halfSize.z), vec3(0.0f, -1.0f, 0.0f), vec3(1.0, 1.0, 1.0) },
+		{ vec3(-halfSize.x, -halfSize.y, -halfSize.z), vec3(0.0f, -1.0f, 0.0f), vec3(1.0, 1.0, 1.0) },
 
-		{ vec3(-halfSize.x, halfSize.y, halfSize.z), vec3(0.0f, 0.0f, 1.0f), vec3(0.5f, 0.4, 0.0f) }, // near - green
-		{ vec3(-halfSize.x, -halfSize.y, halfSize.z), vec3(0.0f, 0.0f, 1.0f), vec3(0.5f, 0.4, 0.0f) },
-		{ vec3(halfSize.x, -halfSize.y, halfSize.z), vec3(0.0f, 0.0f, 1.0f), vec3(0.5f, 0.4, 0.0f) },
+		{ vec3(-halfSize.x, halfSize.y, halfSize.z), vec3(0.0f, 0.0f, 1.0f), vec3(1.0, 1.0, 1.0) }, // near 
+		{ vec3(-halfSize.x, -halfSize.y, halfSize.z), vec3(0.0f, 0.0f, 1.0f), vec3(1.0, 1.0, 1.0) },
+		{ vec3(halfSize.x, -halfSize.y, halfSize.z), vec3(0.0f, 0.0f, 1.0f), vec3(1.0, 1.0, 1.0) },
 
-		{ vec3(halfSize.x, halfSize.y, halfSize.z), vec3(0.0f, 0.0f, 1.0f), vec3(0.5f, 0.4, 0.0f) },
-		{ vec3(-halfSize.x, halfSize.y, halfSize.z), vec3(0.0f, 0.0f, 1.0f), vec3(0.5f, 0.4, 0.0f) },
-		{ vec3(halfSize.x, -halfSize.y, halfSize.z), vec3(0.0f, 0.0f, 1.0f), vec3(0.5f, 0.4, 0.0f) },
+		{ vec3(halfSize.x, halfSize.y, halfSize.z), vec3(0.0f, 0.0f, 1.0f), vec3(1.0, 1.0, 1.0) },
+		{ vec3(-halfSize.x, halfSize.y, halfSize.z), vec3(0.0f, 0.0f, 1.0f), vec3(1.0, 1.0, 1.0) },
+		{ vec3(halfSize.x, -halfSize.y, halfSize.z), vec3(0.0f, 0.0f, 1.0f), vec3(1.0, 1.0, 1.0) },
 
-		{ vec3(halfSize.x, halfSize.y, halfSize.z), vec3(1.0f, 0.0f, 0.0f), vec3(0.5f, 0.4, 0.0f) }, // right - purple
-		{ vec3(halfSize.x, -halfSize.y, -halfSize.z), vec3(1.0f, 0.0f, 0.0f), vec3(0.5f, 0.4, 0.0f) },
-		{ vec3(halfSize.x, halfSize.y, -halfSize.z), vec3(1.0f, 0.0f, 0.0f), vec3(0.5f, 0.4, 0.0f) },
+		{ vec3(halfSize.x, halfSize.y, halfSize.z), vec3(1.0f, 0.0f, 0.0f), vec3(1.0, 1.0, 1.0) }, // right 
+		{ vec3(halfSize.x, -halfSize.y, -halfSize.z), vec3(1.0f, 0.0f, 0.0f), vec3(1.0, 1.0, 1.0) },
+		{ vec3(halfSize.x, halfSize.y, -halfSize.z), vec3(1.0f, 0.0f, 0.0f), vec3(1.0, 1.0, 1.0) },
 
-		{ vec3(halfSize.x, -halfSize.y, -halfSize.z), vec3(1.0f, 0.0f, 0.0f), vec3(0.5f, 0.4, 0.0f) },
-		{ vec3(halfSize.x, halfSize.y, halfSize.z), vec3(1.0f, 0.0f, 0.0f), vec3(0.5f, 0.4, 0.0f) },
-		{ vec3(halfSize.x, -halfSize.y, halfSize.z), vec3(1.0f, 0.0f, 0.0f), vec3(0.5f, 0.4, 0.0f) },
+		{ vec3(halfSize.x, -halfSize.y, -halfSize.z), vec3(1.0f, 0.0f, 0.0f), vec3(1.0, 1.0, 1.0) },
+		{ vec3(halfSize.x, halfSize.y, halfSize.z), vec3(1.0f, 0.0f, 0.0f), vec3(1.0, 1.0, 1.0) },
+		{ vec3(halfSize.x, -halfSize.y, halfSize.z), vec3(1.0f, 0.0f, 0.0f), vec3(1.0, 1.0, 1.0) },
 
-		{ vec3(halfSize.x, halfSize.y, halfSize.z), vec3(0.0f, 1.0f, 0.0f), vec3(0.5f, 0.4, 0.0f) }, // top - yellow
-		{ vec3(halfSize.x, halfSize.y, -halfSize.z), vec3(0.0f, 1.0f, 0.0f), vec3(0.5f, 0.4, 0.0f) },
-		{ vec3(-halfSize.x, halfSize.y, -halfSize.z), vec3(0.0f, 1.0f, 0.0f), vec3(0.5f, 0.4, 0.0f) },
+		{ vec3(halfSize.x, halfSize.y, halfSize.z), vec3(0.0f, 1.0f, 0.0f), vec3(1.0, 1.0, 1.0) }, // top 
+		{ vec3(halfSize.x, halfSize.y, -halfSize.z), vec3(0.0f, 1.0f, 0.0f), vec3(1.0, 1.0, 1.0) },
+		{ vec3(-halfSize.x, halfSize.y, -halfSize.z), vec3(0.0f, 1.0f, 0.0f), vec3(1.0, 1.0, 1.0) },
 
-		{ vec3(halfSize.x, halfSize.y, halfSize.z), vec3(0.0f, 1.0f, 0.0f), vec3(0.5f, 0.4, 0.0f) },
-		{ vec3(-halfSize.x, halfSize.y, -halfSize.z), vec3(0.0f, 1.0f, 0.0f), vec3(0.5f, 0.4, 0.0f) },
-		{ vec3(-halfSize.x, halfSize.y, halfSize.z), vec3(0.0f, 1.0f, 0.0f), vec3(0.5f, 0.4, 0.0f) }
+		{ vec3(halfSize.x, halfSize.y, halfSize.z), vec3(0.0f, 1.0f, 0.0f), vec3(1.0, 1.0, 1.0) },
+		{ vec3(-halfSize.x, halfSize.y, -halfSize.z), vec3(0.0f, 1.0f, 0.0f), vec3(1.0, 1.0, 1.0) },
+		{ vec3(-halfSize.x, halfSize.y, halfSize.z), vec3(0.0f, 1.0f, 0.0f), vec3(1.0, 1.0, 1.0) }
 	};
 
 	static const GLfloat g_uv_buffer_data[] =
 	{
-		0.1f, 0.1f, //left
-		0.1f, 0.0f,
+		0.05f, 0.05f, //left
+		0.05f, 0.0f,
 		0.0f, 0.0f,
 
-		0.1f, 0.1f,
+		0.05f, 0.05f,
 		0.0f, 0.0f,
-		0.0f, 0.1f,
+		0.0f, 0.05f,
 
-		0.0f, 0.1f, //far
-		0.1f, 0.0f,
+		0.0f, 0.05f, //far
+		0.05f, 0.0f,
 		0.0f, 0.0f,
 
-		0.0f, 0.1f,
-		0.1f, 0.1f,
-		0.1f, 0.0f,
+		0.0f, 0.05f,
+		0.05f, 0.05f,
+		0.05f, 0.0f,
 
-		0.1f, 0.1f, // bottom
+		0.05f, 0.05f, // bottom
 		0.0f, 0.0f,
-		0.0f, 0.1f,
+		0.0f, 0.05f,
 
-		0.1f, 0.1f,
-		0.1f, 0.0f,
+		0.05f, 0.05f,
+		0.05f, 0.0f,
 		0.0f, 0.0f,
 
 		0.0f, 0.0f, //near
-		0.1f, 0.0f,
-		0.1f, 0.1f,
+		0.05f, 0.0f,
+		0.05f, 0.05f,
 
-		0.0f, 0.1f,
+		0.0f, 0.05f,
 		0.0f, 0.0f,
-		0.1f, 0.1f,
+		0.05f, 0.05f,
 
 		0.0f, 0.0f, //right
-		0.1f, 0.1f,
-		0.0f, 0.1f,
+		0.05f, 0.05f,
+		0.0f, 0.05f,
 
-		0.1f, 0.1f,
+		0.05f, 0.05f,
 		0.0f, 0.0f,
-		0.1f, 0.0f,
+		0.05f, 0.0f,
 
-		0.1f, 0.1f, //top
-		0.0f, 0.1f,
+		0.05f, 0.05f, //top
+		0.0f, 0.05f,
 		0.0f, 0.0f,
 
-		0.1f, 0.1f,
+		0.05f, 0.05f,
 		0.0f, 0.0f,
-		0.1f, 0.0f
-
+		0.05f, 0.0f
 
 	};
 
@@ -133,8 +143,6 @@ Craters::Craters(vec3 size) : Model()
 	glBufferData(GL_ARRAY_BUFFER, sizeof(g_uv_buffer_data), g_uv_buffer_data, GL_STATIC_DRAW);
 
 	glDisable(GL_TEXTURE_2D);
-	Texture = loadBMP_custom("../Source/Textures/wood.bmp");
-	CreateDefaultCollisionCube();
 
 }
 
@@ -147,23 +155,13 @@ Craters::~Craters()
 
 void Craters::Update(float dt)
 {
-	// If you are curious, un-comment this line to have spinning cubes!
-	// That will only work if your world transform is correct...
-	// mRotationAngleInDegrees += 90 * dt; // spins by 90 degrees per second
-
 	Model::Update(dt);
 }
 
 void Craters::Draw()
 {
 	// Draw the Vertex Buffer
-	// Note this draws a unit Cube
-	// The Model View Projection transforms are computed in the Vertex Shader
 	glBindVertexArray(mVertexArrayID);
-
-	// Load the texture using any two methods
-	//Texture = loadBMP_custom("../Source/Textures/tiles1.bmp");
-	
 
 	// Get a handle for our "myTextureSampler" uniform
 	GLuint TextureID = glGetUniformLocation(Renderer::GetShaderProgramID(), "mySamplerTexture");
@@ -171,19 +169,15 @@ void Craters::Draw()
 	GLuint WorldMatrixLocation = glGetUniformLocation(Renderer::GetShaderProgramID(), "WorldTransform");
 	glUniformMatrix4fv(WorldMatrixLocation, 1, GL_FALSE, &GetWorldMatrix()[0][0]);
 
-
 	//enable texture
 	glEnable(GL_TEXTURE_2D);
-	// Bind our texture in Texture Unit 0
-	glActiveTexture(GL_TEXTURE4);
 
-	
+	// Bind our texture in Texture Unit 4
+	glActiveTexture(GL_TEXTURE4);
 	glBindTexture(GL_TEXTURE_2D, Texture);
 
-
-	// Set our "myTextureSampler" sampler to user Texture Unit 0
+	// Set our "myTextureSampler" sampler to user Texture Unit 4
 	glUniform1i(TextureID, 4);
-
 
 	// 1st attribute buffer : vertex Positions
 	glEnableVertexAttribArray(0);

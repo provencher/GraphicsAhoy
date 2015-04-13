@@ -42,6 +42,10 @@ public:
 	//Render the fog shader
 	void RenderFog(); 
 	
+	//Skybox
+	void DrawSkybox();
+	void RenderSkybox();
+
 	//Terrain
 	void DrawTerrain(GroupModel* ground); //Draw a terrain
 	void RenderTerrain(); // Render the shader for drawing a terrain
