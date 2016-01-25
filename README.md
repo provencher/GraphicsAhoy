@@ -1,5 +1,7 @@
 # GraphicsAhoy
 
+![](https://github.com/provencher/GraphicsAhoy/blob/master/ShaderDemo.jpg)
+
 3D Graphics Engine Tech Demo Source Code Repository.
 
 For Compilation, please use Visual Studio 12.0/ 13.0
