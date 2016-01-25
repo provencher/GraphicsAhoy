@@ -4,7 +4,8 @@
 
 For Compilation, please use Visual Studio 12.0/ 13.0
 
-E-mail erproven@gmail.com with any compilation issues.
+There is a bug with git ignore where the ThirdParty folder is missing lib files. Just extract the zipped files in the ThirdParty folder, and everything should work fine. Solution has been tested on VS2012 and VS2013.
+
 
 Lighting Engine Demo:
 http://imgur.com/oTRhrTd
